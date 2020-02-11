@@ -1,0 +1,90 @@
+﻿<Window x:Class="OnlineCourse.CourseDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineCourse"
+        mc:Ignorable="d"
+        Title="课程细节" Height="750" Width="1300" ResizeMode="CanMinimize">
+
+    <!--样式-->
+    <Window.Resources>
+        <!--搜索按钮样式-->
+        <Style x:Key="SearchButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#43a9c7"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2f96b4"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2a89a4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!--界面布局-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
+
+        <!--领航栏-->
+        <Grid x:Name="HeaderGrid" Grid.Row="0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFC0F9FC" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="26*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--软件logo-->
+            <Image Grid.Column="1" HorizontalAlignment="Left" Height="50" Width="50" Source="Resource/logo.png" Margin="1,0,0,0">
+            </Image>
+
+            <!--课程类型选择-->
+            <Label x:Name="CourseTypeChooseLabel" Content="课程▼" Grid.Column="2" HorizontalAlignment="Left" Margin="9.667,0,0,3" VerticalAlignment="Bottom" FontSize="32" MouseEnter="CourseType_MouseEnter" Background="{x:Null}" MouseLeave="CourseType_MouseLeave" FontWeight="Normal">
+                <Label.Foreground>
+                    <SolidColorBrush Color="MidnightBlue"/>
+                </Label.Foreground>
+            </Label>
+
+            <!--搜索栏-->
+            <DockPanel Grid.Column="3" HorizontalAlignment="Right" Height="25" Margin="0,0,20,8" Width="200" VerticalAlignment="Bottom">
+                <Button DockPanel.Dock="Right" Style="{StaticResource SearchButtonStyle}" Width="50" Content="搜索" FontSize="15"/>
+                <TextBox DockPanel.Dock="Left" FontSize="15" MaxLines="1" MinLines="1" IsUndoEnabled="True" AcceptsReturn="True" Foreground="#FF676767"/>
+            </DockPanel>
+
+            <!--用户头像-->
+            <Image Grid.Column="4" Height="50" Width="50">
+                <Image.Clip>
+                    <RectangleGeometry RadiusX="25" RadiusY="25" Rect="0,0,50,50"/>
+                </Image.Clip>
+            </Image>
+        </Grid>
+
+        <!--具体内容页面-->
+        <Frame Source="CourseDetail.xaml" NavigationUIVisibility="Hidden" Grid.Row="1"/>
+
+    </Grid>
+</Window>
