@@ -28,7 +28,11 @@ namespace OnlineCourse
         // 绘画状态
         Boolean isDrawing = false;
 
-        public LiveWindow()
+        /// <summary>
+        /// 原型中暂时利用Tag分辨老师与学生
+        /// </summary>
+        /// <param name="tag"></param>
+        public LiveWindow(int tag)
         {
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;

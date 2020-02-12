@@ -24,8 +24,6 @@ namespace OnlineCourse
         {
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
-            LiveWindow liveWindow = new LiveWindow();
-            liveWindow.Show();
         }
 
         private void CourseType_MouseEnter(object sender, MouseEventArgs e)

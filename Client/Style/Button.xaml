@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:OnlineCourse.Style">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/BaseStyle.xaml"></ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
     <Style x:Key="ButtonBaseBaseStyle" BasedOn="{StaticResource BaseStyle}" TargetType="{x:Type ButtonBase}">
         <Setter Property="Height" Value="{DynamicResource DefaultControlHeight}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}"/>

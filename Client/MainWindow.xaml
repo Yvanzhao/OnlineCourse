@@ -84,7 +84,7 @@
         </Grid>
 
         <!--具体内容页面-->
-        <Frame Source="CourseDetail.xaml" NavigationUIVisibility="Hidden" Grid.Row="1"/>
+        <Frame Source="Page/CourseDetail.xaml" NavigationUIVisibility="Hidden" Grid.Row="1"/>
 
     </Grid>
 </Window>

@@ -1,0 +1,109 @@
+﻿<Page x:Class="OnlineCourse.CourseDetail"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:OnlineCourse"
+      mc:Ignorable="d" 
+      d:DesignHeight="675" d:DesignWidth="1300"
+      Title="CourseDetail">
+    <Page.Resources>
+        <Style x:Key="Navigation" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{DynamicResource Background-Success1}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush-Success1}"/>
+            <Setter Property="Foreground" Value="#F0FFFF"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#449d44"/>
+                    <Setter Property="BorderBrush" Value="#398439"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#32CD32"/>
+                        <Setter Property="BorderBrush" Value="#398439"/>
+                    </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Width="1300">
+        <ScrollViewer>
+            <Grid Background="#FFDEF8F8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="24*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--实际内容-->
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--侧面导航栏-->
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <!--课程图片、名称以教师-->
+                        <DockPanel Grid.Row="0" Margin="8,8,8,8">
+                            <Label DockPanel.Dock="Bottom" Content="教师：汤恩义" FontSize="18" FontStyle="Italic"/>
+                            <Label DockPanel.Dock="Bottom" Content="Linux程序设计" FontSize="24" FontWeight="Bold"/>
+                            <Image DockPanel.Dock="Top"/>
+                        </DockPanel>
+                        <!--侧边栏-->
+                        <DockPanel Grid.Row="1" Margin="10,10,10,0" LastChildFill="False">
+                            <Button DockPanel.Dock="Top" Style="{StaticResource Navigation}" Content="    课程公告" Margin="0,8,30,4" Height="50" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" Cursor="Hand"/>
+                            <Button DockPanel.Dock="Top" Style="{StaticResource Navigation}" Content="    录播课程" Margin="0,4,30,4" Height="50" HorizontalContentAlignment="Left" FontSize="20" FontWeight="Bold" Cursor="Hand"/>
+                        </DockPanel>
+                    </Grid>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="7*"/>
+                        </Grid.RowDefinitions>
+                        <!--进入直播区域-->
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <!--直播提示区-->
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <Label Content="欢迎回来,YvanGo" FontSize="24" FontWeight="Bold">
+                                    <Label.Foreground>
+                                        <SolidColorBrush Color="{DynamicResource PrimaryColor2}"/>
+                                    </Label.Foreground>
+                                </Label>
+                                <Label Content="现在老师正在直播中。" FontSize="18" Foreground="Red" FontStyle="Italic"/>
+                            </StackPanel>
+                            <!--进入直播按钮-->
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <!--作为原型并不包括实际登录系统，所以使用两个按钮进行替代，实际版本此处只有一个按钮-->
+                                <Button Grid.Row="0" Style="{DynamicResource btn-primary}" Width="200" Height="75" Content="教师进入直播" FontSize="24" FontWeight="Bold" Click="LiveButton_Click" Tag="0"/>
+                                <Button Grid.Row="1" Style="{DynamicResource btn-warning}" Width="200" Height="75" Content="学生进入直播" FontSize="24" FontWeight="Bold" Click="LiveButton_Click" Tag="1"/>
+                            </Grid>
+                        </Grid>
+                        
+                        <!--具体内容区域，应该使用不同page代替，原型作简化处理-->
+                        <ContentControl Style="{DynamicResource panel-success}" Grid.Row="1" Margin="8,8,8,0">
+                            <DockPanel>
+                                <ContentControl Style="{DynamicResource panel-heading-success}" Height="60" Content="课程公告" FontSize="36" FontWeight="Bold" DockPanel.Dock="Top"/>
+                                <ContentControl Style="{DynamicResource panel-body}" DockPanel.Dock="Top">
+                                    <Label Content="暂无公告" FontSize="24"></Label>
+                                </ContentControl>
+                            </DockPanel>
+                        </ContentControl>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

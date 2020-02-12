@@ -7,13 +7,14 @@
         <ResourceDictionary>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Style/Button.xaml"/>
-                <ResourceDictionary Source="Style/BaseStyle.xaml"/>
-                <ResourceDictionary Source="Style/Font.xaml"/>
-                <ResourceDictionary Source="Style/Color.xaml"/>
-                <ResourceDictionary Source="Style/Size.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Button.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/BaseStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Font.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Color.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Panel.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Size.xaml"/>
 
-                <ResourceDictionary Source="Style/Specialize/LiveWindowIcons.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/OnlineCourse;component/Style/Specialize/LiveWindowIcons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>

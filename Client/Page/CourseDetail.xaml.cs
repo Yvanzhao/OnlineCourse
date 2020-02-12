@@ -24,5 +24,17 @@ namespace OnlineCourse
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// 打开直播窗口，原型中暂时用tag分辨学神与教师
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LiveButton_Click(object sender, RoutedEventArgs e)
+        {
+            int tag = int.Parse((sender as Button).Tag.ToString());
+            LiveWindow liveWindow = new LiveWindow(tag);
+            liveWindow.Show();
+        }
     }
 }
