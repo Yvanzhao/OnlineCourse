@@ -1,6 +1,7 @@
 ﻿using Emgu.CV;
 using System;
 using System.Collections.Generic;
+using AForge.Video.DirectShow;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -113,7 +114,6 @@ namespace OnlineCourse
         /// <param name="selfCamera"></param>
         private void InitializeCameraArea(int selfCamera)
         {
-            capture = new Capture();
             if (selfCamera == 0) {
                 teacherVLC.Visibility = Visibility.Collapsed;
                 studentCameraArea_1.Visibility = Visibility.Collapsed;
@@ -122,8 +122,26 @@ namespace OnlineCourse
                 studentCameraArea_4.Visibility = Visibility.Collapsed;
                 studentCameraArea_5.Visibility = Visibility.Collapsed;
 
+                // 
+
+                //模拟学生接入视频
+
+                //VLC播放器的安装位置，我的VLC播放器安装在D:\Program Files (x86)\VideoLAN\VLC文件夹下。
+                string currentDirectory = @"D:\Program Files\VideoLAN\VLC";
+                var vlcLibDirectory = new System.IO.DirectoryInfo(currentDirectory);
+
+                var options = new string[]
+                {
+                "--file-logging", "-vvv", "--logfile=Logs.log"
+                };
+                //初始化播放器
+                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
+                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://localhost:1935/live/home"));
+                
+                
+                //
+
                 cameraPosition = 0;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
             else if (selfCamera == 1)
             {
@@ -135,7 +153,6 @@ namespace OnlineCourse
                 studentCameraArea_5.Visibility = Visibility.Collapsed;
 
                 cameraPosition = 1;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
             else if (selfCamera == 2)
             {
@@ -147,7 +164,6 @@ namespace OnlineCourse
                 studentCameraArea_5.Visibility = Visibility.Collapsed;
 
                 cameraPosition = 2;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
             else if (selfCamera == 3)
             {
@@ -159,7 +175,6 @@ namespace OnlineCourse
                 studentCameraArea_5.Visibility = Visibility.Collapsed;
 
                 cameraPosition = 3;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
             else if (selfCamera == 4)
             {
@@ -171,7 +186,6 @@ namespace OnlineCourse
                 studentCameraArea_5.Visibility = Visibility.Collapsed;
 
                 cameraPosition = 4;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
             else if (selfCamera == 5)
             {
@@ -183,7 +197,6 @@ namespace OnlineCourse
                 studentVLC_5.Visibility = Visibility.Collapsed;
 
                 cameraPosition = 5;
-                capture.ImageGrabbed += Capture_ImageGrabbed;
             }
 
         }
@@ -477,16 +490,39 @@ namespace OnlineCourse
             Image img = sender as Image;
             if (int.Parse(img.Tag.ToString()) == 0)
             {
+                capture = new Capture();
+                capture.ImageGrabbed += Capture_ImageGrabbed;
                 capture.Start();
                 img.SetValue(Button.StyleProperty, Application.Current.Resources["StopIcon"]);
                 img.Tag = "1";
+
+                string audio = "";
+                string video = "";//设备名称
+                getDeviceName(ref audio, ref video);
+                string offset_x = "40";//录屏的左上角坐标
+                string offset_y = "20";//
+                string videoSize = "175x175";//录屏的大小
+                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize);
             }
             else {
                 capture.Stop();
                 img.SetValue(Button.StyleProperty, Application.Current.Resources["StartIcon"]);
                 img.Tag = "0";
+                LiveCapture.Quit();
             }
             mouseClickedTag = 0;
+        }
+
+        private void getDeviceName(ref string audio, ref string video)
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            FilterInfoCollection audeoDevices = new FilterInfoCollection(FilterCategory.AudioInputDevice);
+            if (videoDevices.Count == 0)
+                throw new ApplicationException();
+            if (audeoDevices.Count == 0)
+                throw new ApplicationException();
+            audio = audeoDevices[0].Name;
+            video = videoDevices[0].Name;
         }
     }
 }
