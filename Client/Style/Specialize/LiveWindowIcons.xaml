@@ -26,6 +26,12 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--控制权不可用图标-->
+    <Style x:Key="ComputerInactiveIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource computer_enter}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
+    </Style>
     <!--话筒默认图标-->
     <BitmapImage x:Key="record" UriSource="/OnlineCourse;component/Resource/record.png"/>
     <BitmapImage x:Key="record_enter" UriSource="/OnlineCourse;component/Resource/record_highlight.png"/>
@@ -52,6 +58,13 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--话筒静音不可用图标-->
+    <BitmapImage x:Key="record_inactive" UriSource="/OnlineCourse;component/Resource/record_grey.png"/>
+    <Style x:Key="RecordInactiveIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource record_inactive}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
+    </Style>
     <!--删除图标-->
     <BitmapImage x:Key="delete" UriSource="/OnlineCourse;component/Resource/Delete.png"/>
     <BitmapImage x:Key="delete_enter" UriSource="/OnlineCourse;component/Resource/Delete_highlight.png"/>
@@ -64,6 +77,12 @@
                 <Setter Property="Source" Value="{StaticResource delete_enter}"></Setter>
             </Trigger>
         </Style.Triggers>
+    </Style>
+    <!--删除不可用图标-->
+    <Style x:Key="DeleteInactiveIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource delete_enter}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
     </Style>
     <!--播放图标-->
     <BitmapImage x:Key="stoped" UriSource="/OnlineCourse;component/Resource/Stop.png"/>

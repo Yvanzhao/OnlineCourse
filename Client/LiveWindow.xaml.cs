@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Emgu.CV;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +29,14 @@ namespace OnlineCourse
         List<Point> pointList = new List<Point>();
         // 绘画状态
         Boolean isDrawing = false;
+        //区分老师与学生
+        Boolean isStudent = false;
+        //判断是否有权控制画板
+        Boolean canControl = true;
+        //摄像头
+        Capture capture;
+        //本地摄像头显示位置
+        int cameraPosition;
 
         /// <summary>
         /// 原型中暂时利用Tag分辨老师与学生
@@ -36,15 +46,204 @@ namespace OnlineCourse
         {
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
+            if (tag == 1)
+                StudentInitialization();
+            else
+                TeacherInitialization();
+
         }
 
+        /// <summary>
+        /// 作为老师初始化窗口
+        /// </summary>
+        private void TeacherInitialization() {
+            isStudent = false;
+            canControl = true;
+
+            InitializeCameraArea(0);
+
+            canvasVLC.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// 作为学生初始化窗口，主要包括大量禁用按钮
+        /// </summary>
+        private void StudentInitialization() {
+            isStudent = true;
+            canControl = false;
+
+            InitializeCameraArea(1);
+
+            DeactivateComputerIcon(computerIcon_1);
+            DeactivateComputerIcon(computerIcon_2);
+            DeactivateComputerIcon(computerIcon_3);
+            DeactivateComputerIcon(computerIcon_4);
+            DeactivateComputerIcon(computerIcon_5);
+            DeactivateRecordIcon(recordIcon_1);
+            DeactivateRecordIcon(recordIcon_2);
+            DeactivateRecordIcon(recordIcon_3);
+            DeactivateRecordIcon(recordIcon_4);
+            DeactivateRecordIcon(recordIcon_5);
+
+            deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
+            deleteIcon.Cursor = Cursors.Arrow;
+
+            printCanvas.Visibility = Visibility.Collapsed;
+        }
+        /// <summary>
+        /// 禁用移交控制权按钮
+        /// </summary>
+        /// <param name="button"></param>
+        private void DeactivateComputerIcon(Image button) { 
+            button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]);
+            button.Cursor = Cursors.Arrow;
+        }
+        /// <summary>
+        /// 禁用静音按钮
+        /// </summary>
+        /// <param name="button"></param>
+        private void DeactivateRecordIcon(Image button) {
+            button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+            button.Cursor = Cursors.Arrow;
+        }
+
+        /// <summary>
+        /// 初始化摄像头，根据参数设置不必要的控件隐藏
+        /// </summary>
+        /// <param name="selfCamera"></param>
+        private void InitializeCameraArea(int selfCamera)
+        {
+            capture = new Capture();
+            if (selfCamera == 0) {
+                teacherVLC.Visibility = Visibility.Collapsed;
+                studentCameraArea_1.Visibility = Visibility.Collapsed;
+                studentCameraArea_2.Visibility = Visibility.Collapsed;
+                studentCameraArea_3.Visibility = Visibility.Collapsed;
+                studentCameraArea_4.Visibility = Visibility.Collapsed;
+                studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 0;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+            else if (selfCamera == 1)
+            {
+                teacherCameraArea.Visibility = Visibility.Collapsed;
+                studentVLC_1.Visibility = Visibility.Collapsed;
+                studentCameraArea_2.Visibility = Visibility.Collapsed;
+                studentCameraArea_3.Visibility = Visibility.Collapsed;
+                studentCameraArea_4.Visibility = Visibility.Collapsed;
+                studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 1;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+            else if (selfCamera == 2)
+            {
+                teacherCameraArea.Visibility = Visibility.Collapsed;
+                studentCameraArea_1.Visibility = Visibility.Collapsed;
+                studentVLC_2.Visibility = Visibility.Collapsed;
+                studentCameraArea_3.Visibility = Visibility.Collapsed;
+                studentCameraArea_4.Visibility = Visibility.Collapsed;
+                studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 2;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+            else if (selfCamera == 3)
+            {
+                teacherCameraArea.Visibility = Visibility.Collapsed;
+                studentCameraArea_1.Visibility = Visibility.Collapsed;
+                studentCameraArea_2.Visibility = Visibility.Collapsed;
+                studentVLC_3.Visibility = Visibility.Collapsed;
+                studentCameraArea_4.Visibility = Visibility.Collapsed;
+                studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 3;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+            else if (selfCamera == 4)
+            {
+                teacherCameraArea.Visibility = Visibility.Collapsed;
+                studentCameraArea_1.Visibility = Visibility.Collapsed;
+                studentCameraArea_2.Visibility = Visibility.Collapsed;
+                studentCameraArea_3.Visibility = Visibility.Collapsed;
+                studentVLC_4.Visibility = Visibility.Collapsed;
+                studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 4;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+            else if (selfCamera == 5)
+            {
+                teacherCameraArea.Visibility = Visibility.Collapsed;
+                studentCameraArea_1.Visibility = Visibility.Collapsed;
+                studentCameraArea_2.Visibility = Visibility.Collapsed;
+                studentCameraArea_3.Visibility = Visibility.Collapsed;
+                studentCameraArea_4.Visibility = Visibility.Collapsed;
+                studentVLC_5.Visibility = Visibility.Collapsed;
+
+                cameraPosition = 5;
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+            }
+
+        }
+
+        /// <summary>
+        /// 将摄像头内容显示到窗口上的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Capture_ImageGrabbed(object sender, EventArgs e)
+        {
+            //新建一个Mat
+            Mat frame = new Mat();
+            //将得到的图像检索到frame中
+            capture.Retrieve(frame, 0);
+            //将图像赋值到IBShow的Image中完成显示
+            switch (cameraPosition) {
+                case 0:
+                    teacherCamera.Image = frame;
+                    break;
+                case 1:
+                    studentCamera_1.Image = frame;
+                    break;
+                case 2:
+                    studentCamera_2.Image = frame;
+                    break;
+                case 3:
+                    studentCamera_3.Image = frame;
+                    break;
+                case 4:
+                    studentCamera_4.Image = frame;
+                    break;
+                case 5:
+                    studentCamera_5.Image = frame;
+                    break;
+            }
+        }
+
+
+        /// <summary>
+        /// 鼠标按下事件，此按钮用于移交控制权。点击确认变量数值：十位表征序号，个位为 0 表征是控制权按钮。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComputerIcon_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (isStudent == true)
+                return;
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             mouseClickedTag = tagHead * 10;
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于移交控制权
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComputerIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (isStudent == true)
+                return;
             Image image = sender as Image;
             if (image != null) {
                 //用tag表示不同按钮
@@ -73,14 +272,28 @@ namespace OnlineCourse
             }        
         }
 
+        /// <summary>
+        /// 鼠标按下事件，此按钮用于静音。点击确认变量数值：十位表征序号，个位为 1 表征是控制权按钮。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RecordIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (isStudent == true)
+                return;
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             mouseClickedTag = tagHead * 10 + 1;
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于静音
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RecordIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (isStudent == true)
+                return;
             Image image = sender as Image;
             if (image != null)
             {
@@ -112,15 +325,28 @@ namespace OnlineCourse
             }
         }
 
+        /// <summary>
+        /// 鼠标落下事件，此事件用于控制初始化画图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintCanvas_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (canControl == false)
+                return;
             startPoint = e.GetPosition(printCanvas);
             pointList.Add(startPoint);
             isDrawing = true;
         }
 
+        /// <summary>
+        /// 鼠标移动事件，此事件用于绘图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-
+            if (canControl == false)
+                return;
             if (e.LeftButton == MouseButtonState.Pressed && isDrawing == true) {
                 
                 Point point = e.GetPosition(printCanvas);
@@ -147,23 +373,51 @@ namespace OnlineCourse
             }
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此事件用于终止画图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (canControl == false)
+                return;
             isDrawing = false;
         }
 
+        /// <summary>
+        /// 鼠标移动出Canvas事件，此事件用于终止画图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void printCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
+            if (canControl == false)
+                return;
             isDrawing = false;
         }
 
+        /// <summary>
+        /// 鼠标按下事件，此按钮用于清楚Canvas。点击确认变量数值： 1 表征是删除按钮。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (canControl == false)
+                return;
             mouseClickedTag = 1;
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于清除Canvas
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            if (canControl == false)
+                return;
             if (mouseClickedTag != 1) {
                 mouseClickedTag = 0;
                 return;
@@ -172,11 +426,21 @@ namespace OnlineCourse
             mouseClickedTag = 0;
         }
 
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于关闭此窗口。点击确认变量数值： 100 表征是关闭按钮。 
+        /// /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseClickedTag = 100;
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于关闭此窗口。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ExitIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (mouseClickedTag != 100)
@@ -184,14 +448,25 @@ namespace OnlineCourse
                 mouseClickedTag = 0;
                 return;
             }
+            capture.Dispose();
             this.Close();
         }
 
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于终止或开始直播。点击确认变量数值： 90 表征是删除按钮。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
             mouseClickedTag = 90;
         }
 
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于终止或开始直播。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Starton_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (mouseClickedTag != 90)
@@ -202,10 +477,12 @@ namespace OnlineCourse
             Image img = sender as Image;
             if (int.Parse(img.Tag.ToString()) == 0)
             {
+                capture.Start();
                 img.SetValue(Button.StyleProperty, Application.Current.Resources["StopIcon"]);
                 img.Tag = "1";
             }
             else {
+                capture.Stop();
                 img.SetValue(Button.StyleProperty, Application.Current.Resources["StartIcon"]);
                 img.Tag = "0";
             }

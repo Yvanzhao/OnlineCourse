@@ -3,15 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         xmlns:local="clr-namespace:OnlineCourse"
+        xmlns:ui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
+        xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         mc:Ignorable="d"
         Title="直播窗口" Height="750" Width="1300" ResizeMode="NoResize" Icon="Resource/logo.png" ShowInTaskbar="False">
 
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="17*"/>
         </Grid.ColumnDefinitions>
 
         <!--摄像头列表-->
@@ -25,8 +28,11 @@
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
 
-            <!--教师摄像头-->
-            <Canvas Grid.Row="0" Background="#FF2200FF" Margin="10,10,10,10"></Canvas>
+            <!--教师摄像头--><!--播放控件请直接替换VLC下面的Grid即可-->
+            <vlc:VlcControl x:Name="teacherVLC" Grid.Row="0" Background="#FF2200FF" Margin="10,10,10,10"></vlc:VlcControl>
+            <WinFormHost:WindowsFormsHost x:Name="teacherCameraArea" Grid.Row="0" Margin="10,10,10,10">
+                <ui:ImageBox x:Name="teacherCamera" FunctionalMode="Everything" SizeMode="Zoom"/>
+            </WinFormHost:WindowsFormsHost>
             <!--学生摄像头1号-->
             <Grid Grid.Row="1" Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>
@@ -34,14 +40,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Canvas Grid.Column="0" Background="#FFFC0606"/>
+                <vlc:VlcControl x:Name="studentVLC_1" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_1" Grid.Column="0">
+                    <ui:ImageBox x:Name="studentCamera_1" FunctionalMode="Everything" SizeMode="Zoom"/>
+                </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Tag="10" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image Tag="10" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
+                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头2号-->
@@ -51,14 +60,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Canvas Grid.Column="0" Background="#FFFC0606"/>
+                <vlc:VlcControl x:Name="studentVLC_2" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_2" Grid.Column="0">
+                    <ui:ImageBox x:Name="studentCamera_2" FunctionalMode="Everything" SizeMode="Zoom"/>
+                </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Tag="20" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image Tag="20" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
+                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头3号-->
@@ -68,14 +80,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Canvas Grid.Column="0" Background="#FFFC0606"/>
+                <vlc:VlcControl x:Name="studentVLC_3" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_3" Grid.Column="0">
+                    <ui:ImageBox x:Name="studentCamera_3" FunctionalMode="Everything" SizeMode="Zoom"/>
+                </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Tag="30" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image Tag="30" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
+                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头4号-->
@@ -85,14 +100,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Canvas Grid.Column="0" Background="#FFFC0606"/>
+                <vlc:VlcControl x:Name="studentVLC_4" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_4" Grid.Column="0">
+                    <ui:ImageBox x:Name="studentCamera_4" FunctionalMode="Everything" SizeMode="Zoom"/>
+                </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Tag="40" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image Tag="40" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
+                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头5号-->
@@ -102,14 +120,17 @@
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
 
-                <Canvas Grid.Column="0" Background="#FFFC0606"/>
+                <vlc:VlcControl x:Name="studentVLC_5" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_5" Grid.Column="0">
+                    <ui:ImageBox x:Name="studentCamera_5" FunctionalMode="Everything" SizeMode="Zoom"/>
+                </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Image Tag="50" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image Tag="50" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
+                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
                 </Grid>
             </Grid>
         </Grid>
@@ -126,10 +147,11 @@
             </Grid.RowDefinitions>
             <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
             <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross"/>
+            <vlc:VlcControl x:Name="canvasVLC" Grid.Row ="1" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
             <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
-                <Image DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
+                <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
             </DockPanel>
-            <Image Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource StartIcon}" Cursor="Hand" MouseLeftButtonDown="StartIcon_MouseDown" MouseLeftButtonUp="Starton_MouseUp"/>
+            <Image x:Name="startOrStopIcon" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource StartIcon}" Cursor="Hand" MouseLeftButtonDown="StartIcon_MouseDown" MouseLeftButtonUp="Starton_MouseUp"/>
         </Grid>
     </Grid>
 </Window>
