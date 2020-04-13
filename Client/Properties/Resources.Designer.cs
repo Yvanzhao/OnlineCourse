@@ -63,6 +63,46 @@ namespace OnlineCourse.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap btn_add_friend_normal {
+            get {
+                object obj = ResourceManager.GetObject("btn_add_friend_normal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_del_search_normal_gray {
+            get {
+                object obj = ResourceManager.GetObject("btn_del_search_normal_gray", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_wnd_white_close_hovered {
+            get {
+                object obj = ResourceManager.GetObject("btn_wnd_white_close_hovered", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap btn_wnd_white_close_pushed {
+            get {
+                object obj = ResourceManager.GetObject("btn_wnd_white_close_pushed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap computer {
             get {
                 object obj = ResourceManager.GetObject("computer", resourceCulture);
@@ -96,6 +136,16 @@ namespace OnlineCourse.Properties {
         internal static System.Drawing.Bitmap computer_highlight {
             get {
                 object obj = ResourceManager.GetObject("computer_highlight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap create_team {
+            get {
+                object obj = ResourceManager.GetObject("create_team", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -146,6 +196,26 @@ namespace OnlineCourse.Properties {
         internal static System.Drawing.Bitmap logo {
             get {
                 object obj = ResourceManager.GetObject("logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap password_1 {
+            get {
+                object obj = ResourceManager.GetObject("password_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap password_2 {
+            get {
+                object obj = ResourceManager.GetObject("password_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -236,6 +306,26 @@ namespace OnlineCourse.Properties {
         internal static System.Drawing.Bitmap Stop_highlight {
             get {
                 object obj = ResourceManager.GetObject("Stop_highlight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap user_1 {
+            get {
+                object obj = ResourceManager.GetObject("user_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Bitmap user_2 {
+            get {
+                object obj = ResourceManager.GetObject("user_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

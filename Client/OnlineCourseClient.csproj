@@ -40,24 +40,22 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AForge.dll</HintPath>
+      <HintPath>packages\AForge.2.2.5\lib\AForge.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AForge.Controls.dll</HintPath>
+      <HintPath>packages\AForge.Controls.2.2.5\lib\AForge.Controls.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Imaging, Version=2.2.5.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AForge.Imaging.dll</HintPath>
+      <HintPath>packages\AForge.Imaging.2.2.5\lib\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math, Version=2.2.5.0, Culture=neutral, PublicKeyToken=abba2e25397ee8c9, processorArchitecture=MSIL">
+      <HintPath>packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AForge.Video.dll</HintPath>
+      <HintPath>packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
     </Reference>
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\AForge.Video.DirectShow.dll</HintPath>
+      <HintPath>packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV.UI, Version=3.1.0.2282, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>packages\EmguCV.3.1.0.1\lib\net30\Emgu.CV.UI.dll</HintPath>
@@ -109,7 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Page\CourseDetail.xaml">
+    <Compile Include="RoomControlWindow.xaml.cs">
+      <DependentUpon>RoomControlWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,25 +118,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LiveCapture.cs" />
-    <Compile Include="Page\CourseDetail.xaml.cs">
-      <DependentUpon>CourseDetail.xaml</DependentUpon>
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="LiveWindow.xaml.cs">
       <DependentUpon>LiveWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="RoomControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Style\BaseStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +142,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\Color.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Style\CommonStyleDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +250,36 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Stop_highlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\password_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\password_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\user_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\user_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\btn_del_search_normal_gray.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\btn_wnd_white_close_hovered.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\btn_wnd_white_close_pushed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\btn_add_friend_normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\create_team.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets" Condition="Exists('packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets')" />

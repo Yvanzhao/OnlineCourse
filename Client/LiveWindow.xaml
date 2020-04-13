@@ -28,7 +28,8 @@
                 <RowDefinition Height="10*"/>
             </Grid.RowDefinitions>
 
-            <!--教师摄像头--><!--播放控件请直接替换VLC下面的Grid即可-->
+            <!--教师摄像头-->
+            <!--播放控件请直接替换VLC下面的Grid即可-->
             <vlc:VlcControl x:Name="teacherVLC" Grid.Row="0" Background="#FF2200FF" Margin="10,10,10,10"></vlc:VlcControl>
             <WinFormHost:WindowsFormsHost x:Name="teacherCameraArea" Grid.Row="0" Margin="10,10,10,10">
                 <ui:ImageBox x:Name="teacherCamera" FunctionalMode="Everything" SizeMode="Zoom"/>
@@ -145,12 +146,18 @@
                 <RowDefinition Height="8*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
+            <!--退出按钮-->
             <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
+            <!--画板-->
             <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross"/>
-            <vlc:VlcControl x:Name="canvasVLC" Grid.Row ="1" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
+            <!--画板控制区域-->
             <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
+                <!--颜色选择按钮-->
+                <Ellipse x:Name="colorChooser" DockPanel.Dock="Left" Width="30" Height="30" Style="{StaticResource ColorChoser}" StrokeThickness="3" Margin="2,5,10,0" Cursor="Hand" MouseLeftButtonDown="ColorChooser_MouseDown" MouseLeftButtonUp="ColorChooser_MouseUp"/>
+                <!--清除按钮-->
                 <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
             </DockPanel>
+            <!--开始/停止直播按钮-->
             <Image x:Name="startOrStopIcon" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource StartIcon}" Cursor="Hand" MouseLeftButtonDown="StartIcon_MouseDown" MouseLeftButtonUp="Starton_MouseUp"/>
         </Grid>
     </Grid>

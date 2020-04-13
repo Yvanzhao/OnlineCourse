@@ -123,4 +123,19 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="ColorChoser" TargetType="{x:Type Ellipse}">
+        <Setter Property="Stroke" Value="LightSlateGray"/>
+        <Setter Property="Fill" Value="Black"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Stroke" Value="LightGreen"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ColorChoserDiabled" TargetType="{x:Type Ellipse}">
+        <Setter Property="Stroke" Value="LightSlateGray"/>
+        <Setter Property="Fill" Value="DimGray"/>
+    </Style>
 </ResourceDictionary>
