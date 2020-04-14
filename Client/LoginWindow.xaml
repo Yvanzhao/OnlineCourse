@@ -43,7 +43,7 @@
                     </Grid.RowDefinitions>
 
                     <!--注册按钮-->
-                    <Button Grid.Row="0" Content="注册" HorizontalAlignment="Right" Margin="0,0,4,0" VerticalAlignment="Top" FontSize="12" Style="{StaticResource LabelLink}"/>
+                    <Button Grid.Row="0" Content="注册" HorizontalAlignment="Right" Margin="0,0,4,0" VerticalAlignment="Top" FontSize="12" Style="{StaticResource LabelLink}" Click="SignupButtonClicked"/>
                     <!--用户名输入区域-->
                     <TextBox Grid.Row="1" x:Name="userNameBox" Margin="60,20,25,4" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Background="#FFF2F2F2"/>
                     <!--用于美化与提示的方框与内部的图标-->
@@ -59,7 +59,14 @@
                     </ContentControl>
                 </Grid>
                 <!--登录按钮-->
-                <Button Style="{DynamicResource btn-primary}" Grid.Row="2" Content="登录" Width="60" Height="30" FontSize="12" Click="LoginButtonClicked"/>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+                    <Label Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名或密码错误" FontSize="8" Visibility="Hidden"/>
+                    <Button Style="{DynamicResource btn-primary}" Grid.Row="2" Content="登录" Width="60" Height="26" FontSize="12" Click="LoginButtonClicked"/>
+                </Grid>
             </Grid>
         </ContentControl>
         <!--左上角的软件图标-->
