@@ -254,28 +254,60 @@ namespace OnlineCourse
             studentCameraArea_3.Visibility = Visibility.Collapsed;
             studentCameraArea_4.Visibility = Visibility.Collapsed;
             studentCameraArea_5.Visibility = Visibility.Collapsed;
+
+            //模拟学生接入视频
+            //VLC播放器的安装位置，我的VLC播放器安装在D:\Program Files (x86)\VideoLAN\VLC文件夹下。
+            string currentDirectory = @"D:\Program Files\VideoLAN\VLC";
+            var vlcLibDirectory = new System.IO.DirectoryInfo(currentDirectory);
+
+            var options = new string[]
+            {
+                "--file-logging", "-vvv", "--logfile=Logs.log"
+            };
+
             if (userPosition == 0) {
                 teacherCameraArea.Visibility = Visibility.Visible;
                 teacherVLC.Visibility = Visibility.Collapsed;
-                /*注意！此段为了测试界面，暂时被注释！
-                //模拟学生接入视频
-                //VLC播放器的安装位置，我的VLC播放器安装在D:\Program Files (x86)\VideoLAN\VLC文件夹下。
-                string currentDirectory = @"D:\Program Files\VideoLAN\VLC";
-                var vlcLibDirectory = new System.IO.DirectoryInfo(currentDirectory);
 
-                var options = new string[]
-                {
-                "--file-logging", "-vvv", "--logfile=Logs.log"
-                };
+                capture = new Capture();
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+                capture.Start();
+
+                string audio = "";
+                string video = "";//设备名称
+                getDeviceName(ref audio, ref video);
+                string offset_x = "40";//录屏的左上角坐标
+                string offset_y = "20";//
+                string videoSize = "175x175";//录屏的大小
+                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, roomId);
+
+
                 //初始化播放器
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://localhost:1935/live/home"));
-                */
+                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
+                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/stu1"));
+
             }
             else if (userPosition == 1)
             {
                 studentCameraArea_1.Visibility = Visibility.Visible;
                 studentVLC_1.Visibility = Visibility.Collapsed;
+
+                capture = new Capture();
+                capture.ImageGrabbed += Capture_ImageGrabbed;
+                capture.Start();
+
+                string audio = "";
+                string video = "";//设备名称
+                getDeviceName(ref audio, ref video);
+                string offset_x = "240";//录屏的左上角坐标
+                string offset_y = "220";//
+                string videoSize = "175x175";//录屏的大小
+                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "stu1");
+
+
+                //初始化播放器
+                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
+                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/"+roomId));
             }
             else if (userPosition == 2)
             {
@@ -299,8 +331,7 @@ namespace OnlineCourse
             }
 
         }
-
-        /*注意！此段为了测试界面，暂时被注释！
+        
         /// <summary>
         /// 将摄像头内容显示到窗口上的事件
         /// </summary>
@@ -334,7 +365,6 @@ namespace OnlineCourse
                     break;
             }
         }
-        */
 
 
         /// <summary>
@@ -658,69 +688,16 @@ namespace OnlineCourse
                 mouseClickedTag = 0;
                 return;
             }
-            /*注意！此段为了测试界面，暂时被注释！
             capture.Dispose();
-            */
             RoomControlWindow roomControl = new RoomControlWindow(userId);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
         }
 
-        /// <summary>
-        /// 鼠标落下事件，此按钮用于终止或开始直播。点击确认变量数值： 90 表征是终止按钮。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StartIcon_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            mouseClickedTag = 90;
-        }
-        /// <summary>
-        /// 鼠标抬起事件，此按钮用于终止或开始直播。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Starton_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (mouseClickedTag != 90)
-            {
-                mouseClickedTag = 0;
-                return;
-            }
-            Image img = sender as Image;
-            if (int.Parse(img.Tag.ToString()) == 0)
-            {
-                /*注意！此段为了测试界面，暂时被注释！额外提醒，此方法上面有一句话为了测试被注释，需要解除！
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
+        
 
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "40";//录屏的左上角坐标
-                string offset_y = "20";//
-                string videoSize = "175x175";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize);
-                */
-                //此段仅用于修改图标
-                img.SetValue(Button.StyleProperty, Application.Current.Resources["StopIcon"]);
-                    img.Tag = "1";
-            }
-            else {
-                /*注意！此段为了测试界面，暂时被注释！
-                capture.Stop();
-                LiveCapture.Quit();
-                */
-                //此段仅用于修改图标
-                img.SetValue(Button.StyleProperty, Application.Current.Resources["StartIcon"]);
-                img.Tag = "0";
-            }
-            mouseClickedTag = 0;
-        }
 
-        /*注意！此段为了测试界面，暂时被注释！
        private void getDeviceName(ref string audio, ref string video)
        {
            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -732,6 +709,6 @@ namespace OnlineCourse
            audio = audeoDevices[0].Name;
            video = videoDevices[0].Name;
        }
-       */
+       
     }
 }

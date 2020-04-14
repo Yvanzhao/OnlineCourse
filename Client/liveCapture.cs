@@ -25,7 +25,7 @@ namespace OnlineCourse
             cmdProcess.Start();
         }
 
-        public static void Start(string audioDevice, string videoDevice, string offset_x, string offset_y, string videoSize)
+        public static void Start(string audioDevice, string videoDevice, string offset_x, string offset_y, string videoSize, string address)
         {
             string time = DateTime.Now.ToString("yyyyMMddHHmmss");
             string[] fileName = new string[3];
@@ -44,7 +44,7 @@ namespace OnlineCourse
             string pushstream;
             pushstream = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y + "" +
                 " -video_size " + videoSize + " -i desktop -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -f flv " +
-                "rtmp://localhost:1935/live/home";
+                "rtmp://172.19.241.249:8082/"+address;
             CmdRun(ffmpeg, pushstream);
 
             // ffplay rtmp://localhost:1935/live/home

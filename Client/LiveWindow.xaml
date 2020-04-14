@@ -158,7 +158,6 @@
                 <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
             </DockPanel>
             <!--开始/停止直播按钮-->
-            <Image x:Name="startOrStopIcon" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource StartIcon}" Cursor="Hand" MouseLeftButtonDown="StartIcon_MouseDown" MouseLeftButtonUp="Starton_MouseUp"/>
         </Grid>
     </Grid>
 </Window>
