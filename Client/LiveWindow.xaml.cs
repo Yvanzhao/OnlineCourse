@@ -59,6 +59,7 @@ namespace OnlineCourse
             this.WindowState = System.Windows.WindowState.Maximized;
             roomId = roomIdIn;
             userId = userIDIn;
+            //Console.WriteLine(roomId);
             currentColor = new SolidColorBrush(Colors.Black);
             if (tag == 1)
             {
@@ -279,12 +280,12 @@ namespace OnlineCourse
                 string offset_x = "40";//录屏的左上角坐标
                 string offset_y = "20";//
                 string videoSize = "175x175";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, roomId);
+                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/room");
 
 
                 //初始化播放器
                 studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/stu1"));
+                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/room1"));
 
             }
             else if (userPosition == 1)
@@ -302,12 +303,12 @@ namespace OnlineCourse
                 string offset_x = "240";//录屏的左上角坐标
                 string offset_y = "220";//
                 string videoSize = "175x175";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "stu1");
+                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/room1");
 
 
                 //初始化播放器
                 teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/"+roomId));
+                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/room"));
             }
             else if (userPosition == 2)
             {
