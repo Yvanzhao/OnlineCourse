@@ -1,0 +1,92 @@
+﻿<Window x:Class="OnlineCourse.SignupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineCourse"
+        mc:Ignorable="d"
+        Title="SignupWindow" Height="360" Width="315" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="{x:Null}" WindowStyle="None" AllowsTransparency="True">
+    <Grid Height="285" Margin="45,0,45,0.33" VerticalAlignment="Bottom" Background="{x:Null}">
+        <ContentControl Style="{StaticResource panel-default}" BorderBrush="Aqua">
+            <Grid Background="#FFF2F2F2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="29*"/>
+                    <RowDefinition Height="12*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Foreground="#FF014CFC" Content="请输入用户名:" Grid.Row="0" FontSize="8" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <!--用户名输入区域-->
+                        <TextBox Grid.Row="1" x:Name="userNameBox" Margin="45,8,25,4" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Background="#FFF2F2F2"/>
+                        <!--用于美化与提示的方框与内部的图标-->
+                        <ContentControl Style="{StaticResource panel-primary}" Grid.Row="1" Margin="16,2,16,5">
+                            <Image Source="Resource/user_1.png" Margin="4,5,155,5"/>
+                        </ContentControl>
+                    </Grid>
+
+
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Foreground="#FF014CFC" Content="请输入密码:" Grid.Row="0" FontSize="8" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <!--密码输入区域-->
+                        <PasswordBox  Grid.Row="1" x:Name="passwordBox" Margin="45,6,25,6" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Background="#FFF2F2F2"/>
+                        <!--用于美化与提示的方框与内部的图标-->
+                        <ContentControl Style="{StaticResource panel-primary}" Grid.Row="1" Margin="16,2,16,5">
+                            <Image Source="Resource/password_1.png" Margin="4,5,155,5"/>
+                        </ContentControl>
+                    </Grid>
+
+
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4*"/>
+                            <RowDefinition Height="6*"/>
+                        </Grid.RowDefinitions>
+                        <Label Foreground="#FF014CFC" Content="请再次输入密码:" Grid.Row="0" FontSize="8" Margin="10,0,0,0" FontWeight="Bold"/>
+                        <!--密码确认区域-->
+                        <PasswordBox  Grid.Row="1" x:Name="passwordCheckBox" Margin="45,6,25,6" BorderBrush="{x:Null}" BorderThickness="0" FontSize="15" Background="#FFF2F2F2"/>
+                        <!--用于美化与提示的方框与内部的图标-->
+                        <ContentControl Style="{StaticResource panel-primary}" Grid.Row="1" Margin="16,2,16,5">
+                            <Image Source="Resource/password_1.png" Margin="4,5,155,5"/>
+                        </ContentControl>
+                    </Grid>
+                </Grid>
+                <!--登录按钮-->
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
+                    </Grid.RowDefinitions>
+                    <Label Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名已存在" FontSize="9" Visibility="Hidden"/>
+                    <Button Style="{DynamicResource btn-primary}" Grid.Row="1" Content="注册新用户" Width="120" Height="30" FontSize="12" Click="SignupButtonClicked"/>
+                </Grid>
+                
+            </Grid>
+        </ContentControl>
+        <!--左上角的软件图标-->
+        <Ellipse Margin="-40,-30,175,0" Height="90" VerticalAlignment="Top" Fill="White" Stroke="#FF2AFAFA"/>
+        <Ellipse Margin="-35,-25,180,0" Height="80" VerticalAlignment="Top" >
+            <Ellipse.Fill>
+                <ImageBrush ImageSource="Resource/logo.png"/>
+            </Ellipse.Fill>
+        </Ellipse>
+        <!--右上角的关闭图标-->
+        <Image Margin="211,-10,-10,0" Height="24" VerticalAlignment="Top" Grid.ColumnSpan="2" Style="{StaticResource ExitButton}" Clip="{StaticResource ClipGeometry}" MouseLeftButtonDown="ExitButtonMouseDown"  MouseLeftButtonUp="ExitButtonMouseUp"/>
+
+    </Grid>
+</Window>

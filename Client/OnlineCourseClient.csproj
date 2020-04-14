@@ -110,6 +110,9 @@
     <Compile Include="RoomControlWindow.xaml.cs">
       <DependentUpon>RoomControlWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SignupWindow.xaml.cs">
+      <DependentUpon>SignupWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -130,6 +133,10 @@
       <DependentUpon>LiveWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="RoomControlWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

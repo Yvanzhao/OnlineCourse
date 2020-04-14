@@ -15,15 +15,14 @@ using System.Windows.Shapes;
 namespace OnlineCourse
 {
     /// <summary>
-    /// LoginWindow.xaml 的交互逻辑
+    /// SignupWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class SignupWindow : Window
     {
         int whichButtonClicked;
-        public LoginWindow()
+        public SignupWindow()
         {
             InitializeComponent();
-            whichButtonClicked = 0;
         }
 
         /// <summary>
@@ -31,49 +30,43 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ExitButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void ExitButtonMouseDown(object sender, MouseButtonEventArgs e)
+        {
             whichButtonClicked = 1;
         }
 
         /// <summary>
-        /// 用于关闭程序
+        /// 用于关闭本窗口并返回登录窗口
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ExitButtonMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (whichButtonClicked == 1)
-                Application.Current.Shutdown();
+            if (whichButtonClicked == 1) {
+                LoginWindow roomControl = new LoginWindow();
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                roomControl.Show();
+            }
             else
                 whichButtonClicked = 0;
         }
 
         /// <summary>
-        /// 点击注册后调用的方法。
+        /// 点击登录后调用的方法。暂时为连接服务器
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SignupButtonClicked(object sender, RoutedEventArgs e)
         {
-           SignupWindow signup = new SignupWindow();
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.Close();
-            signup.Show();
-        }
-
-        /// <summary>
-        /// 点击登录后调用的方法。暂时未连接服务器
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoginButtonClicked(object sender, RoutedEventArgs e) {
-            successLogin();
+            successSignup();
         }
 
         /// <summary>
         /// 成功登陆后调用的方法，用于调出房间管理窗口并关闭本窗口
         /// </summary>
-        private void successLogin() {
+        private void successSignup()
+        {
             RoomControlWindow roomControl = new RoomControlWindow(0);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
