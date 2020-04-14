@@ -35,10 +35,10 @@
                 <ui:ImageBox x:Name="teacherCamera" FunctionalMode="Everything" SizeMode="Zoom"/>
             </WinFormHost:WindowsFormsHost>
             <!--学生摄像头1号-->
-            <Grid Grid.Row="1" Margin="10,10,10,10">
+            <Grid Grid.Row="1" Margin="10,10,10,10" Tag="1" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <vlc:VlcControl x:Name="studentVLC_1" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
@@ -47,18 +47,18 @@
                 </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头2号-->
-            <Grid Grid.Row="2" Margin="10,10,10,10">
+            <Grid Grid.Row="2" Margin="10,10,10,10" Tag="2" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <vlc:VlcControl x:Name="studentVLC_2" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
@@ -67,18 +67,18 @@
                 </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头3号-->
-            <Grid Grid.Row="3" Margin="10,10,10,10">
+            <Grid Grid.Row="3" Margin="10,10,10,10" Tag="3" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <vlc:VlcControl x:Name="studentVLC_3" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
@@ -87,18 +87,18 @@
                 </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头4号-->
-            <Grid Grid.Row="4" Margin="10,10,10,10">
+            <Grid Grid.Row="4" Margin="10,10,10,10" Tag="4" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <vlc:VlcControl x:Name="studentVLC_4" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
@@ -107,18 +107,18 @@
                 </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                 </Grid>
             </Grid>
             <!--学生摄像头5号-->
-            <Grid Grid.Row="5" Margin="10,10,10,10">
+            <Grid Grid.Row="5" Margin="10,10,10,10" Tag="5" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="9*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
                 <vlc:VlcControl x:Name="studentVLC_5" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
@@ -127,11 +127,11 @@
                 </WinFormHost:WindowsFormsHost>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="12,12,12,12" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp"></Image>
-                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="12,12,12,12" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp"></Image>
+                    <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                 </Grid>
             </Grid>
         </Grid>
@@ -157,7 +157,8 @@
                 <!--清除按钮-->
                 <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
             </DockPanel>
-            <!--开始/停止直播按钮-->
+            <!--开始/停止直播按钮，暂时被判定为无用-->
+            <!--<Image x:Name="startOrStopIcon" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource StartIcon}" Cursor="Hand" MouseLeftButtonDown="StartIcon_MouseDown" MouseLeftButtonUp="Starton_MouseUp"/>-->
         </Grid>
     </Grid>
 </Window>

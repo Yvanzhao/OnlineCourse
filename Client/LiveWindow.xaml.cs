@@ -413,12 +413,15 @@ namespace OnlineCourse
                     //根据状态不同进行切换
                     if (tagTail == 0)
                     {
-                        image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
-                        image.Tag = tagHead + "" + 1;
-                        canControl = false;
-                        DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
-                        DeactivateCanvasIcons();
-                        //此处添加老师移交控制权的方法
+                        if (canControl == true)
+                        {
+                            image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
+                            image.Tag = tagHead + "" + 1;
+                            canControl = false;
+                            DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
+                            DeactivateCanvasIcons();
+                            //此处添加老师移交控制权的方法
+                        }
                     }
                     else
                     {
@@ -471,7 +474,7 @@ namespace OnlineCourse
                      mouseClickedTag = 0;
                      return;
                 }
-                if (tagHead == 0)
+                if (isStudent == false)
                 {
                      //此处添加禁用远端某学生录音的方法
                 }
@@ -709,6 +712,139 @@ namespace OnlineCourse
            audio = audeoDevices[0].Name;
            video = videoDevices[0].Name;
        }
-       
+
+        /*暂时被判定为无用
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于终止或开始直播。点击确认变量数值： 90 表征是终止按钮。 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StartIcon_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            mouseClickedTag = 90;
+        }
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于终止或开始直播。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Starton_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (mouseClickedTag != 90)
+            {
+                mouseClickedTag = 0;
+                return;
+            }
+            Image img = sender as Image;
+            if (int.Parse(img.Tag.ToString()) == 0)
+            {
+                //此段仅用于修改图标
+                img.SetValue(Button.StyleProperty, Application.Current.Resources["StopIcon"]);
+                img.Tag = "1";
+            }
+            else
+            {
+                //此段仅用于修改图标
+                img.SetValue(Button.StyleProperty, Application.Current.Resources["StartIcon"]);
+                img.Tag = "0";
+            }
+            mouseClickedTag = 0;
+        }
+        */
+
+        /// <summary>
+        /// 鼠标移入镜头区域的函数，用于使隐藏的两个按钮展示出来
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CameraMouseEnter(object sender, MouseEventArgs e)
+        {
+            int tag = int.Parse((sender as Grid).Tag.ToString());
+            SetButtonsVisibility(tag, true);
+        }
+
+        /// <summary>
+        /// 鼠标移处镜头区域的函数，用于隐藏两个按钮。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CameraMouseLeave(object sender, MouseEventArgs e)
+        {
+            int tag = int.Parse((sender as Grid).Tag.ToString());
+            SetButtonsVisibility(tag, false);
+
+        }
+
+        /// <summary>
+        /// 进行隐藏或展示的实际逻辑。隐藏时对于已经激活的按钮不进行隐藏
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="setVisible"></param>
+        private void SetButtonsVisibility(int tag, Boolean setVisible)
+        {
+            if (setVisible)
+            {
+                switch (tag)
+                {
+                    case 1:
+                        computerIcon_1.Visibility = Visibility.Visible;
+                        recordIcon_1.Visibility = Visibility.Visible;
+                        break;
+                    case 2:
+                        computerIcon_2.Visibility = Visibility.Visible;
+                        recordIcon_2.Visibility = Visibility.Visible;
+                        break;
+                    case 3:
+                        computerIcon_3.Visibility = Visibility.Visible;
+                        recordIcon_3.Visibility = Visibility.Visible;
+                        break;
+                    case 4:
+                        computerIcon_4.Visibility = Visibility.Visible;
+                        recordIcon_4.Visibility = Visibility.Visible;
+                        break;
+                    case 5:
+                        computerIcon_5.Visibility = Visibility.Visible;
+                        recordIcon_5.Visibility = Visibility.Visible;
+                        break;
+                }
+            }
+            else
+            {
+                switch (tag)
+                {
+                    case 1:
+                        if (int.Parse(computerIcon_1.Tag.ToString()) % 10 == 0)
+                            computerIcon_1.Visibility = Visibility.Hidden;
+                        if (int.Parse(recordIcon_1.Tag.ToString()) % 10 == 0)
+                            recordIcon_1.Visibility = Visibility.Hidden;
+                        break;
+                    case 2:
+                        if (int.Parse(computerIcon_2.Tag.ToString()) % 10 == 0)
+                            computerIcon_2.Visibility = Visibility.Hidden;
+                        if (int.Parse(recordIcon_2.Tag.ToString()) % 10 == 0)
+                            recordIcon_2.Visibility = Visibility.Hidden;
+                        break;
+                    case 3:
+                        if (int.Parse(computerIcon_3.Tag.ToString()) % 10 == 0)
+                            computerIcon_3.Visibility = Visibility.Hidden;
+                        if (int.Parse(recordIcon_3.Tag.ToString()) % 10 == 0)
+                            recordIcon_3.Visibility = Visibility.Hidden;
+                        break;
+                    case 4:
+                        if (int.Parse(computerIcon_4.Tag.ToString()) % 10 == 0)
+                            computerIcon_4.Visibility = Visibility.Hidden;
+                        if (int.Parse(recordIcon_4.Tag.ToString()) % 10 == 0)
+                            recordIcon_4.Visibility = Visibility.Hidden;
+                        break;
+                    case 5:
+                        if (int.Parse(computerIcon_5.Tag.ToString()) % 10 == 0)
+                            computerIcon_5.Visibility = Visibility.Hidden;
+                        if (int.Parse(recordIcon_5.Tag.ToString()) % 10 == 0)
+                            recordIcon_5.Visibility = Visibility.Hidden;
+                        break;
+                }
+            }
+        }
+
     }
 }
