@@ -83,7 +83,7 @@ namespace OnlineCourse
                 CreateWarningLabel.Visibility = Visibility.Visible;
                 return;
             }
-            if (server.createOrEnterRoom(roomId))
+            if (server.createOrEnterRoom(roomId) == 0)
             {
                 LiveWindow liveWindow = new LiveWindow(0, roomId, user);
                 Window thisWindow = Window.GetWindow(this);
@@ -109,16 +109,21 @@ namespace OnlineCourse
                 CreateWarningLabel.Visibility = Visibility.Visible;
                 return;
             }
-            if (server.createOrEnterRoom(roomId) == false)
+            if (server.createOrEnterRoom(roomId) == 1)
             {
                 LiveWindow liveWindow = new LiveWindow(1, roomId, user);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();
             }
-            else
+            else if(server.createOrEnterRoom(roomId) == 0)
             {
                 CreateWarningLabel.Content = "该房间号不存在";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
+            else if (server.createOrEnterRoom(roomId) == 2)
+            {
+                CreateWarningLabel.Content = "房间已满";
                 CreateWarningLabel.Visibility = Visibility.Visible;
             }
         }

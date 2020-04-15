@@ -59,15 +59,35 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void SignupButtonClicked(object sender, RoutedEventArgs e)
         {
-            successSignup();
+            if (passwordBox.Password.Equals(passwordCheckBox.Password) == false) {
+                WarningLabel.Content = "两次输入密码不一致";
+                WarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            Server.ServerService server = ServerConnecter.connectToServer();
+            if (server == null) {
+                WarningLabel.Content = "请检查您的网络连接";
+                WarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            int userId = server.createUser(userNameBox.Text, passwordBox.Password);
+            if (userId == -1) {
+                WarningLabel.Content = "用户名已存在";
+                WarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            successSignup(userId);
         }
 
         /// <summary>
         /// 成功登陆后调用的方法，用于调出房间管理窗口并关闭本窗口
         /// </summary>
-        private void successSignup()
+        private void successSignup(int userId)
         {
-            RoomControlWindow roomControl = new RoomControlWindow(0);
+            user user;
+            user.userId = userId;
+            user.userName = userNameBox.Text;
+            RoomControlWindow roomControl = new RoomControlWindow(user);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
