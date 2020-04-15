@@ -21,12 +21,12 @@ namespace OnlineCourse
     {
         //用于记录鼠标落下时的位置，避免落下与抬起位置不同造成的bug
         int whichButtonClicked;
-        //当前用户ID
-        int userId;
-        public RoomControlWindow(int userIdIn)
+        //当前用户
+        user user;
+        public RoomControlWindow(user userIn)
         {
             InitializeComponent();
-            userId = userIdIn;
+            user = userIn;
             whichButtonClicked = 0;
         }
 
@@ -77,10 +77,24 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="roomId"></param>
         private void createRoom(string roomId) {
-            LiveWindow liveWindow = new LiveWindow(0,roomId,0);
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.Close();
-            liveWindow.Show();
+            Server.ServerService server = ServerConnecter.connectToServer();
+            if (server == null) {
+                CreateWarningLabel.Content = "请检查您的网络连接";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            if (server.createOrEnterRoom(roomId))
+            {
+                LiveWindow liveWindow = new LiveWindow(0, roomId, user);
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                liveWindow.Show();
+            }
+            else {
+                CreateWarningLabel.Content = "该房间号已存在";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
+            
         }
         /// <summary>
         /// 加入房间操作，并关闭本窗口
@@ -88,10 +102,25 @@ namespace OnlineCourse
         /// <param name="roomId"></param>
         private void enterRoom(string roomId)
         {
-            LiveWindow liveWindow = new LiveWindow(1, roomId,1);
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.Close();
-            liveWindow.Show();
+            Server.ServerService server = ServerConnecter.connectToServer();
+            if (server == null)
+            {
+                CreateWarningLabel.Content = "请检查您的网络连接";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            if (server.createOrEnterRoom(roomId) == false)
+            {
+                LiveWindow liveWindow = new LiveWindow(1, roomId, user);
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                liveWindow.Show();
+            }
+            else
+            {
+                CreateWarningLabel.Content = "该房间号不存在";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
         }
     }
 }

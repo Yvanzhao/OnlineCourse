@@ -64,7 +64,8 @@
                         <RowDefinition Height="4*"/>
                         <RowDefinition Height="6*"/>
                     </Grid.RowDefinitions>
-                    <Label Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名或密码错误" FontSize="8" Visibility="Hidden"/>
+                    <!--警示-->
+                    <Label x:Name="WarningLabel" Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名或密码错误" FontSize="8" Visibility="Hidden"/>
                     <Button Style="{DynamicResource btn-primary}" Grid.Row="2" Content="登录" Width="60" Height="26" FontSize="12" Click="LoginButtonClicked"/>
                 </Grid>
             </Grid>
