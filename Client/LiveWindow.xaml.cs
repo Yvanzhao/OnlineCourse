@@ -291,9 +291,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "25.6";//录屏的左上角坐标
-                string offset_y = "9.6";//
-                string videoSize = "185x140";//录屏的大小
+                string offset_x = "25";//录屏的左上角坐标
+                string offset_y = "38";//
+                string videoSize = "234x182";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "tea");
 
 
@@ -326,9 +326,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "172";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "247";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu1");
 
 
@@ -360,9 +360,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "308";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "408";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu2");
 
 
@@ -394,9 +394,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "444";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "584";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu3");
 
 
@@ -428,9 +428,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "578";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "753";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu4");
 
 
@@ -462,9 +462,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "714";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "914";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu5");
 
 
@@ -859,6 +859,9 @@ namespace OnlineCourse
                 return;
             }
             capture.Dispose();
+
+            LiveCapture.Quit();
+
             RoomControlWindow roomControl = new RoomControlWindow(user);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
