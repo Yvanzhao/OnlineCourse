@@ -20,6 +20,7 @@ namespace OnlineCourse
     public partial class SignupWindow : Window
     {
         int whichButtonClicked;
+        Server.ServerService server;
         public SignupWindow()
         {
             InitializeComponent();
@@ -57,6 +58,7 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        [Obsolete]
         private void SignupButtonClicked(object sender, RoutedEventArgs e)
         {
             if (passwordBox.Password.Equals(passwordCheckBox.Password) == false)
@@ -65,14 +67,14 @@ namespace OnlineCourse
                 WarningLabel.Visibility = Visibility.Visible;
                 return;
             }
-            Server.ServerService server = ServerConnecter.connectToServer();
-            if (server == null)
+            this.server = ServerConnecter.connectToServer();
+            if (this.server == null)
             {
                 WarningLabel.Content = "请检查您的网络连接";
                 WarningLabel.Visibility = Visibility.Visible;
                 return;
             }
-            int userId = server.createUser(userNameBox.Text, passwordBox.Password);
+            int userId = this.server.createUser(userNameBox.Text, passwordBox.Password);
             if (userId == -1)
             {
                 WarningLabel.Content = "用户名已存在";
@@ -90,7 +92,7 @@ namespace OnlineCourse
             user user;
             user.userId = userId;
             user.userName = userNameBox.Text;
-            RoomControlWindow roomControl = new RoomControlWindow(user);
+            RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();

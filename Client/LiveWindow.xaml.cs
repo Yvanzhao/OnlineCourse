@@ -54,11 +54,11 @@ namespace OnlineCourse
         /// 暂时利用Tag分辨老师与学生
         /// </summary>
         /// <param name="tag"></param>
-        public LiveWindow(int tag,string roomIdIn,user userIn)
+        public LiveWindow(int tag,string roomIdIn,user userIn, Server.ServerService server)
         {
-            server = ServerConnecter.connectToServer();
+            this.server = server;
             if (server == null) {
-                RoomControlWindow roomControl = new RoomControlWindow(userIn);
+                RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 roomControl.Show();
@@ -862,7 +862,7 @@ namespace OnlineCourse
 
             LiveCapture.Quit();
 
-            RoomControlWindow roomControl = new RoomControlWindow(user);
+            RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();

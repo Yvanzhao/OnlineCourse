@@ -13,6 +13,7 @@ namespace OnlineCourse
 {
     class ServerConnecter
     {
+        [Obsolete]
         public static Server.ServerService connectToServer() {
             TcpChannel chan = new TcpChannel();
             ChannelServices.RegisterChannel(chan);

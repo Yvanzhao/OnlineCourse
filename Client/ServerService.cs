@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace Server
 {
-    class ServerService : MarshalByRefObject
+    public class ServerService : MarshalByRefObject
     {
         /// <summary>
         /// 登录函数，返回userID，返回-1表示用户名或密码不正确
