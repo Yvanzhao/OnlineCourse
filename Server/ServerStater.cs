@@ -14,10 +14,11 @@ namespace Server
 {
     class ServerStater
     {
+        [Obsolete]
         static int Main(string[] args)
         {
             //注册通道
-            TcpChannel chan = new TcpChannel(8085);
+            TcpChannel chan = new TcpChannel(8086);
             ChannelServices.RegisterChannel(chan);
             string sshan = chan.ChannelName;
             System.Console.WriteLine(sshan);

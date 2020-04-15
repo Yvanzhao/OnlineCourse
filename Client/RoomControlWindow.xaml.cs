@@ -100,29 +100,22 @@ namespace OnlineCourse
         /// <param name="roomId"></param>
         private void enterRoom(string roomId)
         {
-            Server.ServerService server = ServerConnecter.connectToServer();
-            if (server == null)
-            {
-                CreateWarningLabel.Content = "请检查您的网络连接";
-                CreateWarningLabel.Visibility = Visibility.Visible;
-                return;
-            }
-            if (server.createOrEnterRoom(roomId) == 1)
+            if (this.server.createOrEnterRoom(roomId) == 1)
             {
                 LiveWindow liveWindow = new LiveWindow(1, roomId, user,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();
             }
-            else if (server.createOrEnterRoom(roomId) == 0)
+            else if (this.server.createOrEnterRoom(roomId) == 0)
             {
-                CreateWarningLabel.Content = "该房间号不存在";
-                CreateWarningLabel.Visibility = Visibility.Visible;
+                JoinWarningLabel.Content = "该房间号不存在";
+                JoinWarningLabel.Visibility = Visibility.Visible;
             }
-            else if (server.createOrEnterRoom(roomId) == 2)
+            else if (this.server.createOrEnterRoom(roomId) == 2)
             {
-                CreateWarningLabel.Content = "房间已满";
-                CreateWarningLabel.Visibility = Visibility.Visible;
+                JoinWarningLabel.Content = "房间已满";
+                JoinWarningLabel.Visibility = Visibility.Visible;
             }
         }
     }
