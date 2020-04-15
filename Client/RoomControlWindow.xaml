@@ -38,7 +38,7 @@
                         <Button Content="创建房间" Style="{StaticResource btn-success}" Margin="8,14,2,13" HorizontalAlignment="Center" FontSize="8" Tag="0" Click="RoomButtonClick"/>
                     </StackPanel>
                     <!--报错提示信息区域-->
-                    <Label Foreground="Red" Content="该房间号已存在" Grid.Row="2" FontSize="8" Visibility="Hidden"/>
+                    <Label  x:Name="CreateWarningLabel" Foreground="Red" Content="该房间号已存在" Grid.Row="2" FontSize="8" Visibility="Hidden"/>
                 </Grid>
 
                 <!--加入房间区域-->
@@ -60,7 +60,7 @@
                         <Button Content="加入房间" Style="{StaticResource btn-primary}" Margin="8,14,2,13" HorizontalAlignment="Center" FontSize="8" Tag="1" Click="RoomButtonClick"/>
                     </StackPanel>
                     <!--报错提示信息区域-->
-                    <Label Foreground="Red" Content="该房间号不存在" Grid.Row="2" FontSize="8" Visibility="Hidden"/>
+                    <Label  x:Name="JoinWarningLabel" Foreground="Red" Content="该房间号不存在" Grid.Row="2" FontSize="8" Visibility="Hidden"/>
                 </Grid>
                 <!--左上角的软件图标-->
                 <Ellipse Margin="-40,-40,190,0" Height="90" VerticalAlignment="Top" Fill="White" Stroke="#FF2AFAFA"/>

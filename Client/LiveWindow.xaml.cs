@@ -42,8 +42,8 @@ namespace OnlineCourse
         Capture capture;
         //房间ID
         string roomId;
-        //当前用户ID
-        int userId;
+        //当前用户
+        user user;
         //当前用户摄像头位置。cameraPosition已经被整合进该变量，如果去除注释后报错请自行替换
         int userPosition;
         //当前画笔颜色
@@ -53,12 +53,12 @@ namespace OnlineCourse
         /// 暂时利用Tag分辨老师与学生
         /// </summary>
         /// <param name="tag"></param>
-        public LiveWindow(int tag,string roomIdIn,int userIDIn)
+        public LiveWindow(int tag,string roomIdIn,user userIn)
         {
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
             roomId = roomIdIn;
-            userId = userIDIn;
+            user = userIn;
             //Console.WriteLine(roomId);
             currentColor = new SolidColorBrush(Colors.Black);
             if (tag == 1)
@@ -693,7 +693,7 @@ namespace OnlineCourse
                 return;
             }
             capture.Dispose();
-            RoomControlWindow roomControl = new RoomControlWindow(userId);
+            RoomControlWindow roomControl = new RoomControlWindow(user);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
