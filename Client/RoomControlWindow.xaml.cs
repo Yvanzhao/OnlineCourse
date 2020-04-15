@@ -23,8 +23,15 @@ namespace OnlineCourse
         int whichButtonClicked;
         //当前用户
         user user;
-        public RoomControlWindow(user userIn)
+        //服务器端调用
+        Server.ServerService server;
+        public RoomControlWindow(user userIn, Server.ServerService server)
         {
+            this.server = server;
+            if (server == null)
+            {
+                Application.Current.Shutdown();
+            }
             InitializeComponent();
             user = userIn;
             whichButtonClicked = 0;
@@ -49,10 +56,7 @@ namespace OnlineCourse
         {
             if (whichButtonClicked == 1)
             {
-                LoginWindow roomControl = new LoginWindow();
-                Window thisWindow = Window.GetWindow(this);
-                thisWindow.Close();
-                roomControl.Show();
+                Application.Current.Shutdown();
             }
             else
                 whichButtonClicked = 0;
@@ -77,15 +81,9 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="roomId"></param>
         private void createRoom(string roomId) {
-            Server.ServerService server = ServerConnecter.connectToServer();
-            if (server == null) {
-                CreateWarningLabel.Content = "请检查您的网络连接";
-                CreateWarningLabel.Visibility = Visibility.Visible;
-                return;
-            }
-            if (server.createOrEnterRoom(roomId) == 0)
+            if (this.server.createOrEnterRoom(roomId) == 0)
             {
-                LiveWindow liveWindow = new LiveWindow(0, roomId, user);
+                LiveWindow liveWindow = new LiveWindow(0, roomId, user,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();
@@ -111,7 +109,7 @@ namespace OnlineCourse
             }
             if (server.createOrEnterRoom(roomId) == 1)
             {
-                LiveWindow liveWindow = new LiveWindow(1, roomId, user);
+                LiveWindow liveWindow = new LiveWindow(1, roomId, user,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();

@@ -24,14 +24,13 @@ namespace OnlineCourse
     {
         //用于记录鼠标落下时的位置，避免落下与抬起位置不同造成的bug
         int mouseClickedTag = 0;
-        //起始位置
-        Point startPoint;
         //整张图的线集合
-        List<List<Point>> lineList;
+        List<List<double[]>> linesList;
         //某条线的点集合
-        List<Point> pointList;
+        List<double[]> pointsList;
         //整张图的线的颜色集合
-        List<SolidColorBrush> colorList;
+        List<byte[]> colorList;
+        //List<int[]> colorList;
         // 绘画状态
         Boolean isDrawing = false;
         //区分老师与学生
@@ -47,24 +46,38 @@ namespace OnlineCourse
         //当前用户摄像头位置。cameraPosition已经被整合进该变量，如果去除注释后报错请自行替换
         int userPosition;
         //当前画笔颜色
-        SolidColorBrush currentColor;
+        byte[] currentColor;
+        //连接服务器
+        Server.ServerService server;
 
         /// <summary>
         /// 暂时利用Tag分辨老师与学生
         /// </summary>
         /// <param name="tag"></param>
-        public LiveWindow(int tag,string roomIdIn,user userIn)
+        public LiveWindow(int tag,string roomIdIn,user userIn, Server.ServerService server)
         {
+            this.server = server;
+            if (server == null) {
+                RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                roomControl.Show();
+            }
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
             
             roomId = roomIdIn;
             user = userIn;
-            //Console.WriteLine(roomId);
-            currentColor = new SolidColorBrush(Colors.Black);
+
+            currentColor = new byte[4];
+            currentColor[0] = 0xFF;
+            currentColor[1] = 0x00;
+            currentColor[2] = 0x00;
+            currentColor[3] = 0x00;
+
             if (tag == 1)
             {
-                userPosition = 1;//需要去服务器获取
+                server.getUserPosition(roomId, user.userId);
                 StudentInitialization();
             }
             else {
@@ -79,8 +92,8 @@ namespace OnlineCourse
         /// 作为老师初始化窗口
         /// </summary>
         private void TeacherInitialization() {
-            lineList = new List<List<Point>>();
-            colorList = new List<SolidColorBrush>();
+            linesList = new List<List<double[]>>();
+            colorList = new List<byte[]>();
             isStudent = false;
             canControl = true;
 
@@ -165,7 +178,7 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 批量禁用移交控制权按钮。0时为学生初始化，1~5为将控制权转交到对应学生时的教师端
+        /// 批量禁用静音按钮。1~5表示各个学生自己永远允许静音自己
         /// </summary>
         /// <param name="position"></param>
         private void DeactivateRecordIcons(int position)
@@ -229,7 +242,7 @@ namespace OnlineCourse
             deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
             deleteIcon.Cursor = Cursors.Hand;
             colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoser"]);
-            colorChooser.Fill = currentColor;
+            colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
             colorChooser.Cursor = Cursors.Hand;
         }
         /// <summary>
@@ -278,9 +291,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "25.6";//录屏的左上角坐标
-                string offset_y = "9.6";//
-                string videoSize = "185x140";//录屏的大小
+                string offset_x = "25";//录屏的左上角坐标
+                string offset_y = "38";//
+                string videoSize = "234x182";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "tea");
 
 
@@ -313,9 +326,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "172";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "247";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu1");
 
 
@@ -347,9 +360,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "308";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "408";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu2");
 
 
@@ -381,9 +394,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "444";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "584";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu3");
 
 
@@ -415,9 +428,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "578";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "753";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu4");
 
 
@@ -449,9 +462,9 @@ namespace OnlineCourse
                 string audio = "";
                 string video = "";//设备名称
                 getDeviceName(ref audio, ref video);
-                string offset_x = "11.2";//录屏的左上角坐标
-                string offset_y = "714";//
-                string videoSize = "167x115";//录屏的大小
+                string offset_x = "16.2";//录屏的左上角坐标
+                string offset_y = "914";//
+                string videoSize = "200x145";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu5");
 
 
@@ -651,10 +664,14 @@ namespace OnlineCourse
         private void PrintCanvas_MouseDown(object sender, MouseButtonEventArgs e) {
             if (canControl == false)
                 return;
-            startPoint = e.GetPosition(printCanvas);
-            pointList = new List<Point>();
-            pointList.Add(startPoint);
-            lineList.Add(pointList);
+            Point startPoint = e.GetPosition(printCanvas);
+            pointsList = new List<double[]>();
+            double[] startPointPosition = new double[2];
+            startPointPosition[0] = startPoint.X;
+            startPointPosition[1] = startPoint.Y;
+            pointsList.Add(startPointPosition);
+
+            linesList.Add(pointsList);
             colorList.Add(currentColor);
             isDrawing = true;
         }
@@ -671,20 +688,23 @@ namespace OnlineCourse
             if (e.LeftButton == MouseButtonState.Pressed && isDrawing == true) {
 
                 Point point = e.GetPosition(printCanvas);
-                int count = pointList.Count(); // 总点数            
+                int count = pointsList.Count(); // 总点数  
+                double[] pointPosition = new double[2];
+                pointPosition[0] = point.X;
+                pointPosition[1] = point.Y;
 
                 // 去重复点
                 if (count > 0) {
-                    if (point.X - pointList[count - 1].X != 0 || point.Y - pointList[count - 1].Y != 0) {
-                        pointList.Add(point);
+                    if (point.X - pointsList[count - 1][0] != 0 || point.Y - pointsList[count - 1][1] != 0) {
+                        pointsList.Add(pointPosition);
 
                         var l = new Line();
-                        l.Stroke = currentColor;
+                        l.Stroke = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
                         l.StrokeThickness = 1;
                         if (count < 1)
                             return;
-                        l.X1 = pointList[count - 1].X;  // count-2  保证 line的起始点为点集合中的倒数第二个点。
-                        l.Y1 = pointList[count - 1].Y;
+                        l.X1 = pointsList[count - 1][0];  // count-2  保证 line的起始点为点集合中的倒数第二个点。
+                        l.Y1 = pointsList[count - 1][1];
                         // 终点X,Y 为当前point的X,Y
                         l.X2 = point.X;
                         l.Y2 = point.Y;
@@ -699,18 +719,19 @@ namespace OnlineCourse
         /// </summary>
         private void Redraw()
         {
-            if (lineList.Count > 0) {
-                for (int numberOfLines = 0; numberOfLines < lineList.Count; numberOfLines++) {
-                    if (lineList[numberOfLines].Count > 1) {
-                        for (int numberOfPoints = 1; numberOfPoints < lineList[numberOfLines].Count; numberOfPoints++) {
+            if (linesList.Count > 0) {
+                for (int numberOfLines = 0; numberOfLines < linesList.Count; numberOfLines++) {
+                    if (linesList[numberOfLines].Count > 1) {
+                        for (int numberOfPoints = 1; numberOfPoints < linesList[numberOfLines].Count; numberOfPoints++) {
                             var l = new Line();
-                            l.Stroke = colorList[numberOfLines];
+                            l.Stroke = new SolidColorBrush(Color.FromArgb(colorList[numberOfLines][0], colorList[numberOfLines][1], colorList[numberOfLines][2], colorList[numberOfLines][3])); 
                             l.StrokeThickness = 1;
-                            l.X1 = (lineList[numberOfLines])[numberOfPoints - 1].X;  // count-2  保证 line的起始点为点集合中的倒数第二个点。
-                            l.Y1 = (lineList[numberOfLines])[numberOfPoints - 1].Y;
+                            // count-1  保证 line的起始点为点集合中的倒数第二个点。
+                            l.X1 = (linesList[numberOfLines])[numberOfPoints - 1][0];  
+                            l.Y1 = (linesList[numberOfLines])[numberOfPoints - 1][1];
                             // 终点X,Y 为当前point的X,Y
-                            l.X2 = (lineList[numberOfLines])[numberOfPoints].X;
-                            l.Y2 = (lineList[numberOfLines])[numberOfPoints].Y;
+                            l.X2 = (linesList[numberOfLines])[numberOfPoints][0];
+                            l.Y2 = (linesList[numberOfLines])[numberOfPoints][1];
                             printCanvas.Children.Add(l);
                         }
                     }
@@ -766,8 +787,8 @@ namespace OnlineCourse
                 return;
             }
             printCanvas.Children.Clear();
-            colorList = new List<SolidColorBrush>();
-            lineList = new List<List<Point>>();
+            colorList = new List<byte[]>();
+            linesList = new List<List<double[]>>();
             mouseClickedTag = 0;
         }
 
@@ -806,8 +827,12 @@ namespace OnlineCourse
 
             //当用户在ColorDialog对话框中点击"确定"按钮  
             if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                currentColor = new SolidColorBrush(Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B));
-                colorChooser.Fill = currentColor;
+                currentColor = new byte[4];
+                currentColor[0] = colorDialog.Color.A;
+                currentColor[1] = colorDialog.Color.R;
+                currentColor[2] = colorDialog.Color.G;
+                currentColor[3] = colorDialog.Color.B;
+                colorChooser.Fill = new SolidColorBrush(Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B));
             }
             mouseClickedTag = 0;
         }
@@ -834,7 +859,10 @@ namespace OnlineCourse
                 return;
             }
             capture.Dispose();
-            RoomControlWindow roomControl = new RoomControlWindow(user);
+
+            LiveCapture.Quit();
+
+            RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();

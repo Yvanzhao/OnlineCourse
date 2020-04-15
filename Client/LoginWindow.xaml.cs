@@ -20,6 +20,7 @@ namespace OnlineCourse
     public partial class LoginWindow : Window
     {
         int whichButtonClicked;
+        Server.ServerService server;
         public LoginWindow()
         {
             InitializeComponent();
@@ -55,26 +56,27 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void SignupButtonClicked(object sender, RoutedEventArgs e)
         {
-           SignupWindow signup = new SignupWindow();
+            SignupWindow signup = new SignupWindow();
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             signup.Show();
         }
 
+        [Obsolete]
         /// <summary>
         /// 点击登录后调用的方法。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LoginButtonClicked(object sender, RoutedEventArgs e) {
-            Server.ServerService server = ServerConnecter.connectToServer();
+            this.server = ServerConnecter.connectToServer();
             if (server == null) {
                 networkFailure();
                 return;
             }
             string userName = userNameBox.Text;
             string password = passwordBox.Password;
-            int userId = server.logIn(userName,password);
+            int userId = this.server.logIn(userName,password);
             if (userId != -1)
                 successLogin(userId);
             else
@@ -88,7 +90,7 @@ namespace OnlineCourse
             user user;
             user.userId = userId;
             user.userName = userNameBox.Text;
-            RoomControlWindow roomControl = new RoomControlWindow(user);
+            RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
