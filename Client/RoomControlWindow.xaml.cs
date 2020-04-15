@@ -83,7 +83,7 @@ namespace OnlineCourse
         private void createRoom(string roomId) {
             if (this.server.createOrEnterRoom(roomId) == 0)
             {
-                LiveWindow liveWindow = new LiveWindow(0, roomId, user,this.server);
+                LiveWindow liveWindow = new LiveWindow(0, "room", user,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();
@@ -102,7 +102,7 @@ namespace OnlineCourse
         {
             if (this.server.createOrEnterRoom(roomId) == 1)
             {
-                LiveWindow liveWindow = new LiveWindow(1, roomId, user,this.server);
+                LiveWindow liveWindow = new LiveWindow(1, "room", user,this.server);
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
                 liveWindow.Show();

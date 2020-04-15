@@ -77,7 +77,8 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
-                server.getUserPosition(roomId, user.userId);
+                //server.getUserPosition(roomId, user.userId);
+                userPosition = 4;
                 StudentInitialization();
             }
             else {
@@ -293,7 +294,7 @@ namespace OnlineCourse
                 getDeviceName(ref audio, ref video);
                 string offset_x = "25";//录屏的左上角坐标
                 string offset_y = "38";//
-                string videoSize = "234x182";//录屏的大小
+                string videoSize = "160x113";//录屏的大小
                 LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "tea");
 
 
