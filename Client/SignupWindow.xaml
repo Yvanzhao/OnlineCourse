@@ -72,7 +72,7 @@
                         <RowDefinition Height="3*"/>
                         <RowDefinition Height="7*"/>
                     </Grid.RowDefinitions>
-                    <Label x:Name="WarningLabel" Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名已存在" FontSize="9" Visibility="Hidden"/>
+                    <Label Foreground="Red" Grid.Row="0" HorizontalContentAlignment="Center" Content="用户名已存在" FontSize="9" Visibility="Hidden"/>
                     <Button Style="{DynamicResource btn-primary}" Grid.Row="1" Content="注册新用户" Width="120" Height="30" FontSize="12" Click="SignupButtonClicked"/>
                 </Grid>
                 
