@@ -66,10 +66,10 @@ namespace OnlineCourse
         private void RoomButtonClick(object sender, RoutedEventArgs e) {
             if (int.Parse((sender as Button).Tag.ToString()) == 0)
             {
-                createRoom("");
+                createRoom(roomIdOfCreate.Text);
             }
             else if (int.Parse((sender as Button).Tag.ToString()) == 1) {
-                enterRoom("");
+                enterRoom(roomIdOfEnter.Text);
             }
         }
         /// <summary>
