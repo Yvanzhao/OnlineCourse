@@ -17,7 +17,7 @@ namespace Server
         static int Main(string[] args)
         {
             //注册通道
-            TcpChannel chan = new TcpChannel(8086);
+            TcpChannel chan = new TcpChannel(8085);
             ChannelServices.RegisterChannel(chan);
             string sshan = chan.ChannelName;
             System.Console.WriteLine(sshan);

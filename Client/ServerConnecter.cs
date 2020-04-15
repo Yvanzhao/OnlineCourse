@@ -17,7 +17,7 @@ namespace OnlineCourse
         public static Server.ServerService connectToServer() {
             TcpChannel chan = new TcpChannel();
             ChannelServices.RegisterChannel(chan);
-            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp://localhost:8086/OnlineCourseServer");
+            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp://localhost:8085/OnlineCourseServer");
             if (server == null)
             {
                 System.Console.WriteLine("Could not connect to server");
