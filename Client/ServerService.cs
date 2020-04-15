@@ -24,7 +24,7 @@ namespace Server
         /// <param name="roomId"></param>
         /// <returns></returns>
         public int createOrEnterRoom(string roomId) { return 0; }
-        /*一下是新添加的函数*/
+        /*以下是新添加的函数*/
         /// <summary>
         /// 创建用户函数，返回userID，返回-1表示用户名已存在
         /// </summary>
@@ -32,6 +32,14 @@ namespace Server
         /// <param name="password"></param>
         /// <returns></returns>
         public int createUser(string userName, string password) { return -1; }
+        /*以下是新添加的函数第二弹*/
+        /// <summary>
+        /// 获取用户摄像头的排序，1~5
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public int getUserPosition(string roomId,int userId) { return 1; }
         
     }
 }
