@@ -99,7 +99,9 @@ namespace OnlineCourse
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             liveWindow.Show();
-
+            
+          
+            
         }
         /// <summary>
         /// 加入房间操作，并关闭本窗口
@@ -130,6 +132,7 @@ namespace OnlineCourse
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             liveWindow.Show();
+           
         }
     }
 }
