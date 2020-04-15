@@ -77,7 +77,8 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
-                server.getUserPosition(roomId, user.userId);
+                //server.getUserPosition(roomId, user.userId);
+                userPosition = 2;
                 StudentInitialization();
             }
             else {
