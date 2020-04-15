@@ -41,9 +41,9 @@ namespace OnlineCourse
             //CmdRun(ffmpeg, arguments);
 
             string pushstream;
-            pushstream = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y +
+            pushstream = "-f gdigrab -framerate 30 -thread_queue_size 512 -offset_x " + offset_x + " -offset_y " + offset_y +
                 " -video_size " + videoSize + " -i desktop -f dshow -i audio=\"" + audioDevice +
-                "\" -vcodec libx264 -acodec aac -tune zerolatency -f flv " +
+                "\" -vcodec libx264 -acodec aac -f flv " +
                 "rtmp://172.19.241.249:8082/" + address;
             CmdRun(ffmpeg, pushstream);
 
