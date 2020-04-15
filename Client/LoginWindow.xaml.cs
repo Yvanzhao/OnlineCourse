@@ -74,11 +74,12 @@ namespace OnlineCourse
             }
             string userName = userNameBox.Text;
             string password = passwordBox.Password;
-            int userId = server.logIn(userName,password);
-            if (userId != -1)
-                successLogin(userId);
-            else
-                loginFailure();
+            //int userId = server.logIn(userName,password);
+            //if (userId != -1)
+            //    successLogin(userId);
+            //else
+            //    loginFailure();
+            successLogin(1);
         }
 
         /// <summary>

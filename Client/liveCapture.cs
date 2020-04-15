@@ -11,10 +11,12 @@ namespace OnlineCourse
 
         private static void CmdRun(string fileName, string arguments)
         {
+            
             if (cmdProcess == null)
             {
                 cmdProcess = new Process();
             }
+            
             cmdProcess.StartInfo.FileName = fileName;
             cmdProcess.StartInfo.UseShellExecute = false;
             cmdProcess.StartInfo.RedirectStandardInput = true;
@@ -22,17 +24,14 @@ namespace OnlineCourse
             cmdProcess.StartInfo.RedirectStandardError = false;
             cmdProcess.StartInfo.CreateNoWindow = true;
             cmdProcess.StartInfo.Arguments = arguments;
+            Console.WriteLine(arguments);
+            cmdProcess.StartInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
+
             cmdProcess.Start();
         }
 
         public static void Start(string audioDevice, string videoDevice, string offset_x, string offset_y, string videoSize, string address)
         {
-            string time = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string[] fileName = new string[3];
-            fileName[0] = "screen" + time + ".mp4";
-            fileName[1] = "camera" + time + ".mp4";
-            fileName[2] = "microwave" + time + ".wav";
-
             //string arguments;
             //arguments = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y + "" +
             //    " -video_size " + videoSize + " -i desktop -f dshow -i video=\"" + videoDevice + "\" -f dshow -i audio=\"" +
@@ -42,9 +41,10 @@ namespace OnlineCourse
             //CmdRun(ffmpeg, arguments);
 
             string pushstream;
-            pushstream = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y + "" +
-                " -video_size " + videoSize + " -i desktop -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -f flv " +
-                "rtmp://172.19.241.249:8082/"+address;
+            pushstream = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y +
+                " -video_size " + videoSize + " -i desktop -f dshow -i audio=\"" + audioDevice +
+                "\" -vcodec libx264 -acodec aac -tune zerolatency -f flv " +
+                "rtmp://172.19.241.249:8082/" + address;
             CmdRun(ffmpeg, pushstream);
 
             // ffplay rtmp://localhost:1935/live/home

@@ -300,9 +300,6 @@ namespace OnlineCourse
                 studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
                 studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "/stu5"));
 
-                Console.WriteLine(this.studentCamera_1.PointToScreen(this.studentCamera_1.Location));
-                Console.WriteLine(this.studentCamera_1.Size);
-
             }
             else if (userPosition == 1)
             {

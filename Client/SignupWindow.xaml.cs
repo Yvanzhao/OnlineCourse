@@ -67,7 +67,10 @@ namespace OnlineCourse
         /// </summary>
         private void successSignup()
         {
-            RoomControlWindow roomControl = new RoomControlWindow(0);
+            user u;
+            u.userId = 0;
+            u.userName = "kkk";
+           RoomControlWindow roomControl = new RoomControlWindow(u);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
