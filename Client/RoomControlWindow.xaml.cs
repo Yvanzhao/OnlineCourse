@@ -77,28 +77,23 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="roomId"></param>
         private void createRoom(string roomId) {
-            //Server.ServerService server = ServerConnecter.connectToServer();
-            //if (server == null) {
-            //    CreateWarningLabel.Content = "请检查您的网络连接";
-            //    CreateWarningLabel.Visibility = Visibility.Visible;
-            //    return;
-            //}
-            //if (server.createOrEnterRoom(roomId))
-            //{
-            //    LiveWindow liveWindow = new LiveWindow(0, roomId, user);
-            //    Window thisWindow = Window.GetWindow(this);
-            //    thisWindow.Close();
-            //    liveWindow.Show();
-            //}
-            //else {
-            //    CreateWarningLabel.Content = "该房间号已存在";
-            //    CreateWarningLabel.Visibility = Visibility.Visible;
-            //}
-
-            LiveWindow liveWindow = new LiveWindow(0, roomId, user);
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.Close();
-            liveWindow.Show();
+            Server.ServerService server = ServerConnecter.connectToServer();
+            if (server == null) {
+                CreateWarningLabel.Content = "请检查您的网络连接";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            if (server.createOrEnterRoom(roomId) == 0)
+            {
+                LiveWindow liveWindow = new LiveWindow(0, roomId, user);
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                liveWindow.Show();
+            }
+            else {
+                CreateWarningLabel.Content = "该房间号已存在";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
 
         }
         /// <summary>
@@ -107,29 +102,30 @@ namespace OnlineCourse
         /// <param name="roomId"></param>
         private void enterRoom(string roomId)
         {
-            //Server.ServerService server = ServerConnecter.connectToServer();
-            //if (server == null)
-            //{
-            //    CreateWarningLabel.Content = "请检查您的网络连接";
-            //    CreateWarningLabel.Visibility = Visibility.Visible;
-            //    return;
-            //}
-            //if (server.createOrEnterRoom(roomId) == false)
-            //{
-            //    LiveWindow liveWindow = new LiveWindow(1, roomId, user);
-            //    Window thisWindow = Window.GetWindow(this);
-            //    thisWindow.Close();
-            //    liveWindow.Show();
-            //}
-            //else
-            //{
-            //    CreateWarningLabel.Content = "该房间号不存在";
-            //    CreateWarningLabel.Visibility = Visibility.Visible;
-            //}
-            LiveWindow liveWindow = new LiveWindow(1, roomId, user);
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.Close();
-            liveWindow.Show();
+            Server.ServerService server = ServerConnecter.connectToServer();
+            if (server == null)
+            {
+                CreateWarningLabel.Content = "请检查您的网络连接";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+                return;
+            }
+            if (server.createOrEnterRoom(roomId) == 1)
+            {
+                LiveWindow liveWindow = new LiveWindow(1, roomId, user);
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+                liveWindow.Show();
+            }
+            else if (server.createOrEnterRoom(roomId) == 0)
+            {
+                CreateWarningLabel.Content = "该房间号不存在";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
+            else if (server.createOrEnterRoom(roomId) == 2)
+            {
+                CreateWarningLabel.Content = "房间已满";
+                CreateWarningLabel.Visibility = Visibility.Visible;
+            }
         }
     }
 }
