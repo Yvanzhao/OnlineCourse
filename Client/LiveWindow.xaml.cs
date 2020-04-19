@@ -625,40 +625,35 @@ namespace OnlineCourse
                      mouseClickedTag = 0;
                      return;
                 }
-                
+                if (isStudent == false)
+                {
+                    //此处添加禁用远端某学生录音的方法
+                    if (tagTail == 0)
+                        mute(tagHead);
+                    else
+                        unMute(tagHead);
+                }
+                else if (tagHead == userPosition)
+                {
+                    //此处添加学生禁用自己录音的方法
+                    if (tagTail == 0)
+                        mute(tagHead);
+                    else
+                        unMute(tagHead);
+                }
+                else
+                {
+                    return;
+                }
                     
                 //根据状态不同进行切换，此处仅负责按钮的样式
                 if (tagTail == 0)
                 {
-                    if (isStudent == false)
-                    {
-                        mute(tagHead);
-                    }
-                    else if (tagHead == userPosition)
-                    {
-                        mute(tagHead);
-                    }
-                    else
-                    {
-                        return;
-                    }
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
                     image.Tag = tagHead + "" + 1;
                 }
                 else
                 {
-                    if (isStudent == false)
-                    {
-                        unMute(tagHead);
-                    }
-                    else if (tagHead == userPosition)
-                    {
-                        unMute(tagHead);
-                    }
-                    else
-                    {
-                        return;
-                    }
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
                     image.Tag = tagHead + "" + 0;
                 }
