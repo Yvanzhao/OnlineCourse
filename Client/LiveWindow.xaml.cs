@@ -488,21 +488,21 @@ namespace OnlineCourse
         // 静音自己
         private void mute_MediaOpening(object sender, MediaOpeningEventArgs e)
         {
-            switch (userPosition)
-            {
-                case 0:
-                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { }; break;
-                case 1:
-                    try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
-                case 2:
-                    try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0; }); } catch (Exception ex) { }; break;
-                case 3:
-                    try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0; }); } catch (Exception ex) { }; break;
-                case 4:
-                    try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0; }); } catch (Exception ex) { }; break;
-                case 5:
-                    try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
-            }
+            //switch (userPosition)
+            //{
+            //    case 0:
+            //        try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { };break;
+            //    case 1:
+            //        try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
+            //    case 2:
+            //        try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0; }); } catch (Exception ex) { }; break;
+            //    case 3:
+            //        try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0; }); } catch (Exception ex) { }; break;
+            //    case 4:
+            //        try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0; }); } catch (Exception ex) { }; break;
+            //    case 5:
+            //        try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
+            //}
 
         }
 
@@ -630,13 +630,35 @@ namespace OnlineCourse
                 //根据状态不同进行切换，此处仅负责按钮的样式
                 if (tagTail == 0)
                 {
-                    mute(tagHead);
+                    if (isStudent == false)
+                    {
+                        mute(tagHead);
+                    }
+                    else if (tagHead == userPosition)
+                    {
+                        mute(tagHead);
+                    }
+                    else
+                    {
+                        return;
+                    }
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
                     image.Tag = tagHead + "" + 1;
                 }
                 else
                 {
-                    unMute(tagHead);
+                    if (isStudent == false)
+                    {
+                        unMute(tagHead);
+                    }
+                    else if (tagHead == userPosition)
+                    {
+                        unMute(tagHead);
+                    }
+                    else
+                    {
+                        return;
+                    }
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
                     image.Tag = tagHead + "" + 0;
                 }
@@ -646,7 +668,7 @@ namespace OnlineCourse
             }
         }
 
-        // 静音第number号播放器
+        // 静音第number号
         private void mute(int number)
         {
             switch (number)
@@ -666,7 +688,7 @@ namespace OnlineCourse
             }
         }
 
-        // 恢复第number号声音
+        // 恢复第number号
         private void unMute(int number)
         {
             switch (number)
