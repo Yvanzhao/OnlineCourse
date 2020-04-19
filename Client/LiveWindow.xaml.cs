@@ -1,5 +1,4 @@
-﻿using Emgu.CV;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using AForge.Video.DirectShow;
 using System.IO;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unosquare.FFME.Common;
 
 namespace OnlineCourse
 {
@@ -37,8 +37,6 @@ namespace OnlineCourse
         Boolean isStudent = false;
         //判断是否有权控制画板
         Boolean canControl = true;
-        //摄像头
-        Capture capture;
         //房间ID
         string roomId;
         //当前用户
@@ -49,6 +47,8 @@ namespace OnlineCourse
         byte[] currentColor;
         //连接服务器
         Server.ServerService server;
+        //推流工具
+        LiveCapture pushTool;
 
         /// <summary>
         /// 暂时利用Tag分辨老师与学生
@@ -56,6 +56,9 @@ namespace OnlineCourse
         /// <param name="tag"></param>
         public LiveWindow(int tag,string roomIdIn,user userIn, Server.ServerService server)
         {
+
+            pushTool = new LiveCapture();
+
             this.server = server;
             if (server == null) {
                 RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
@@ -74,6 +77,10 @@ namespace OnlineCourse
             currentColor[1] = 0x00;
             currentColor[2] = 0x00;
             currentColor[3] = 0x00;
+
+            // 开始推流  暂时只有老师的是对的
+             pushTool.StartCamera(""+userPosition);
+            // pushTool.StartDesktop("0", "0", "100x100", "" + userPosition);
 
             if (tag == 1)
             {
@@ -98,7 +105,7 @@ namespace OnlineCourse
             isStudent = false;
             canControl = true;
 
-            InitializeCameraArea();
+            initializeMedia();
         }
 
         /// <summary>
@@ -108,7 +115,7 @@ namespace OnlineCourse
             isStudent = true;
             canControl = false;
 
-            InitializeCameraArea();
+            initializeMedia();
 
             DeactivateComputerIcons(0);
             DeactivateRecordIcons(userPosition);
@@ -257,271 +264,78 @@ namespace OnlineCourse
             colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoserDiabled"]);
             colorChooser.Cursor = Cursors.Arrow;
         }
-        
-        /// <summary>
-        /// 初始化摄像头，根据参数设置不必要的控件隐藏
-        /// </summary>
-        /// <param name="selfCamera"></param>
-        private void InitializeCameraArea()
+
+        private void initializeMedia()
         {
-            teacherCameraArea.Visibility = Visibility.Collapsed;
-            studentCameraArea_1.Visibility = Visibility.Collapsed;
-            studentCameraArea_2.Visibility = Visibility.Collapsed;
-            studentCameraArea_3.Visibility = Visibility.Collapsed;
-            studentCameraArea_4.Visibility = Visibility.Collapsed;
-            studentCameraArea_5.Visibility = Visibility.Collapsed;
-
-            //模拟学生接入视频
-            //VLC播放器的安装位置，我的VLC播放器安装在D:\Program Files\VideoLAN\VLC文件夹下。
-            string currentDirectory = @"D:\Program Files\VideoLAN\VLC";
-            var vlcLibDirectory = new System.IO.DirectoryInfo(currentDirectory);
-
-            var options = new string[]
+            Task.Run(async () =>
             {
-                "--file-logging", "-vvv", "--logfile=Logs.log"
-            };
-
-            if (userPosition == 0) {
-                teacherCameraArea.Visibility = Visibility.Visible;
-                teacherVLC.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-
-                string offset_x = teacherCamera.PointToScreen(new System.Drawing.Point(0, 0)).X + "";//录屏的左上角坐标
-                string offset_y = teacherCamera.PointToScreen(new System.Drawing.Point(0, 0)).Y + "";//
-                string videoSize = "234x182";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "tea");
-
-
-                //初始化播放器
-                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu1"));
-
-                studentVLC_2.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_2.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu2"));
-
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu3"));
-
-                studentVLC_4.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_4.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu4"));
-
-                studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu5"));
-
-            }
-            else if (userPosition == 1)
-            {
-                studentCameraArea_1.Visibility = Visibility.Visible;
-                studentVLC_1.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "16.2";//录屏的左上角坐标
-                string offset_y = "247";//
-                string videoSize = "200x145";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu1");
-
-
-                //初始化播放器
-                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "tea"));
-
-                studentVLC_2.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_2.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu2"));
-
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu3"));
-
-                studentVLC_4.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_4.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu4"));
-
-                studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu5"));
-            }
-            else if (userPosition == 2)
-            {
-                studentCameraArea_2.Visibility = Visibility.Visible;
-                studentVLC_2.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "16.2";//录屏的左上角坐标
-                string offset_y = "408";//
-                string videoSize = "200x145";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu2");
-
-
-                //初始化播放器
-                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "tea"));
-
-                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu1"));
-
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu3"));
-
-                studentVLC_4.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_4.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu4"));
-
-                studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu5"));
-            }
-            else if (userPosition == 3)
-            {
-                studentCameraArea_3.Visibility = Visibility.Visible;
-                studentVLC_3.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "16.2";//录屏的左上角坐标
-                string offset_y = "584";//
-                string videoSize = "200x145";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu3");
-
-
-                //初始化播放器
-                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "tea"));
-
-                studentVLC_2.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_2.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu2"));
-
-                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu1"));
-
-                studentVLC_4.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_4.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu4"));
-
-                studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu5"));
-            }
-            else if (userPosition == 4)
-            {
-                studentCameraArea_4.Visibility = Visibility.Visible;
-                studentVLC_4.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "16.2";//录屏的左上角坐标
-                string offset_y = "753";//
-                string videoSize = "200x145";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu4");
-
-
-                //初始化播放器
-                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "tea"));
-
-                studentVLC_2.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_2.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu2"));
-
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu3"));
-
-                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu1"));
-
-                studentVLC_5.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_5.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu5"));
-            }
-            else if (userPosition == 5)
-            {
-                studentCameraArea_5.Visibility = Visibility.Visible;
-                studentVLC_5.Visibility = Visibility.Collapsed;
-
-                capture = new Capture();
-                capture.ImageGrabbed += Capture_ImageGrabbed;
-                capture.Start();
-
-                string audio = "";
-                string video = "";//设备名称
-                getDeviceName(ref audio, ref video);
-                string offset_x = "16.2";//录屏的左上角坐标
-                string offset_y = "914";//
-                string videoSize = "200x145";//录屏的大小
-                LiveCapture.Start(audio, video, offset_x, offset_y, videoSize, "live/" + roomId + "stu5");
-
-
-                //初始化播放器
-                teacherVLC.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                teacherVLC.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "tea"));
-
-                studentVLC_2.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_2.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu2"));
-
-                studentVLC_3.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_3.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu3"));
-
-                studentVLC_4.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_4.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu4"));
-
-                studentVLC_1.SourceProvider.CreatePlayer(vlcLibDirectory, options);
-                studentVLC_1.SourceProvider.MediaPlayer.Play(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "stu1"));
-            }
-
+                try
+                {
+                    //teacherMedia.MediaInitializing += OnMediaInitializing;
+                    //Media.RendererOptions.VideoRefreshRateLimit = 10;
+                    await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/0"));
+                }
+                catch (Exception ex)
+                {
+                }
+            });
         }
         
         /// <summary>
-        /// 将摄像头内容显示到窗口上的事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Capture_ImageGrabbed(object sender, EventArgs e)
+        /// 初始化播放器并拉流
+        private async void teaMedia_Loaded(object sender, RoutedEventArgs e)
         {
-            //新建一个Mat
-            Mat frame = new Mat();
-            //将得到的图像检索到frame中
-            capture.Retrieve(frame, 0);
-            //将图像赋值到IBShow的Image中完成显示
-            switch (userPosition) {
-                case 0:
-                    teacherCamera.Image = frame;
-                    break;
-                case 1:
-                    studentCamera_1.Image = frame;
-                    break;
-                case 2:
-                    studentCamera_2.Image = frame;
-                    break;
-                case 3:
-                    studentCamera_3.Image = frame;
-                    break;
-                case 4:
-                    studentCamera_4.Image = frame;
-                    break;
-                case 5:
-                    studentCamera_5.Image = frame;
-                    break;
-            }
+            //teacherMedia.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/0"));
         }
+
+        private async void stu1Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            studentMedia1.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/1"));
+        }
+
+        private async void stu2Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            studentMedia2.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await studentMedia2.Open(new Uri("rtmp://172.19.241.249:8082/live/2"));
+        }
+
+        private async void stu3Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            studentMedia3.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await studentMedia3.Open(new Uri("rtmp://172.19.241.249:8082/live/3"));
+        }
+
+        private async void stu4Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            studentMedia4.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await studentMedia4.Open(new Uri("rtmp://172.19.241.249:8082/live/4"));
+        }
+
+        private async void stu5Media_Loaded(object sender, RoutedEventArgs e)
+        {
+            studentMedia5.MediaInitializing += OnMediaInitializing;
+            // 地址待修改
+            await studentMedia5.Open(new Uri("rtmp://172.19.241.249:8082/live/5"));
+        }
+
+        // 修改播放器缓冲
+        private void OnMediaInitializing(object sender, MediaInitializingEventArgs e)
+        {
+            e.Configuration.GlobalOptions.FlagNoBuffer = true;
+
+            //e.Configuration.PrivateOptions["flags"] = "low_delay";
+            //e.Configuration.PrivateOptions["crf"] = "0";
+            //e.Configuration.GlobalOptions.ProbeSize = 8192;
+            //e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.FromMilliseconds(500);
+        }
+
 
 
         /// <summary>
@@ -860,69 +674,15 @@ namespace OnlineCourse
                 mouseClickedTag = 0;
                 return;
             }
-            capture.Dispose();
 
-            LiveCapture.Quit();
+            pushTool.Quit();
 
             RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
             roomControl.Show();
         }
-
         
-
-
-       private void getDeviceName(ref string audio, ref string video)
-       {
-           FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
-           FilterInfoCollection audeoDevices = new FilterInfoCollection(FilterCategory.AudioInputDevice);
-           if (videoDevices.Count == 0)
-               throw new ApplicationException();
-           if (audeoDevices.Count == 0)
-               throw new ApplicationException();
-           audio = audeoDevices[0].Name;
-           video = videoDevices[0].Name;
-       }
-
-        /*暂时被判定为无用
-        /// <summary>
-        /// 鼠标落下事件，此按钮用于终止或开始直播。点击确认变量数值： 90 表征是终止按钮。 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StartIcon_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            mouseClickedTag = 90;
-        }
-        /// <summary>
-        /// 鼠标抬起事件，此按钮用于终止或开始直播。
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Starton_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            if (mouseClickedTag != 90)
-            {
-                mouseClickedTag = 0;
-                return;
-            }
-            Image img = sender as Image;
-            if (int.Parse(img.Tag.ToString()) == 0)
-            {
-                //此段仅用于修改图标
-                img.SetValue(Button.StyleProperty, Application.Current.Resources["StopIcon"]);
-                img.Tag = "1";
-            }
-            else
-            {
-                //此段仅用于修改图标
-                img.SetValue(Button.StyleProperty, Application.Current.Resources["StartIcon"]);
-                img.Tag = "0";
-            }
-            mouseClickedTag = 0;
-        }
-        */
 
         /// <summary>
         /// 鼠标移入镜头区域的函数，用于使隐藏的两个按钮展示出来
@@ -1017,6 +777,6 @@ namespace OnlineCourse
                 }
             }
         }
-
+        
     }
 }

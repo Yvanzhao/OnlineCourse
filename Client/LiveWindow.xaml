@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
+        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
         xmlns:local="clr-namespace:OnlineCourse"
-        xmlns:ui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
         xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         mc:Ignorable="d"
         Title="直播窗口" Height="750" Width="1300" ResizeMode="NoResize" Icon="Resource/logo.png" ShowInTaskbar="False">
@@ -30,10 +29,8 @@
 
             <!--教师摄像头-->
             <!--播放控件请直接替换VLC下面的Grid即可-->
-            <vlc:VlcControl x:Name="teacherVLC" Grid.Row="0" Background="#FF2200FF" Margin="10,10,10,10"></vlc:VlcControl>
-            <WinFormHost:WindowsFormsHost x:Name="teacherCameraArea" Grid.Row="0" Margin="10,10,10,10">
-                <ui:ImageBox x:Name="teacherCamera" FunctionalMode="Everything" SizeMode="Zoom"/>
-            </WinFormHost:WindowsFormsHost>
+            <ffme:MediaElement x:Name="teacherMedia" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="teaMedia_Loaded"/>
+            
             <!--学生摄像头1号-->
             <Grid Grid.Row="1" Margin="10,10,10,10" Tag="1" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
@@ -41,10 +38,8 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <vlc:VlcControl x:Name="studentVLC_1" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
-                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_1" Grid.Column="0">
-                    <ui:ImageBox x:Name="studentCamera_1" FunctionalMode="Everything" SizeMode="Zoom"/>
-                </WinFormHost:WindowsFormsHost>
+
+                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -61,10 +56,8 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <vlc:VlcControl x:Name="studentVLC_2" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
-                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_2" Grid.Column="0">
-                    <ui:ImageBox x:Name="studentCamera_2" FunctionalMode="Everything" SizeMode="Zoom"/>
-                </WinFormHost:WindowsFormsHost>
+
+                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu2Media_Loaded"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -81,10 +74,8 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <vlc:VlcControl x:Name="studentVLC_3" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
-                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_3" Grid.Column="0">
-                    <ui:ImageBox x:Name="studentCamera_3" FunctionalMode="Everything" SizeMode="Zoom"/>
-                </WinFormHost:WindowsFormsHost>
+
+                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu3Media_Loaded"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -101,10 +92,8 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <vlc:VlcControl x:Name="studentVLC_4" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
-                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_4" Grid.Column="0">
-                    <ui:ImageBox x:Name="studentCamera_4" FunctionalMode="Everything" SizeMode="Zoom"/>
-                </WinFormHost:WindowsFormsHost>
+
+                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu4Media_Loaded"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -121,10 +110,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <vlc:VlcControl x:Name="studentVLC_5" Grid.Column="0" Background="#FF2200FF"></vlc:VlcControl>
-                <WinFormHost:WindowsFormsHost x:Name="studentCameraArea_5" Grid.Column="0">
-                    <ui:ImageBox x:Name="studentCamera_5" FunctionalMode="Everything" SizeMode="Zoom"/>
-                </WinFormHost:WindowsFormsHost>
+                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu5Media_Loaded"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
