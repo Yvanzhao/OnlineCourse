@@ -29,7 +29,7 @@
 
             <!--教师摄像头-->
             <!--播放控件请直接替换VLC下面的Grid即可-->
-            <ffme:MediaElement x:Name="teacherMedia" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="teaMedia_Loaded"/>
+            <ffme:MediaElement x:Name="teacherMedia" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="teaMedia_Loaded" MediaOpening="mute_MediaOpening"/>
             
             <!--学生摄像头1号-->
             <Grid Grid.Row="1" Margin="10,10,10,10" Tag="1" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
@@ -39,7 +39,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded"/>
+                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded" MediaOpening="mute_MediaOpening"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -57,7 +57,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu2Media_Loaded"/>
+                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0"  Loaded="stu2Media_Loaded" MediaOpening="mute_MediaOpening"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -75,7 +75,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu3Media_Loaded"/>
+                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu3Media_Loaded" MediaOpening="mute_MediaOpening"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -93,7 +93,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu4Media_Loaded"/>
+                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu4Media_Loaded" MediaOpening="mute_MediaOpening"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -110,7 +110,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu5Media_Loaded"/>
+                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu5Media_Loaded" MediaOpening="mute_MediaOpening"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>

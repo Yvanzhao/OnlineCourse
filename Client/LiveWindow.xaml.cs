@@ -78,9 +78,7 @@ namespace OnlineCourse
             currentColor[2] = 0x00;
             currentColor[3] = 0x00;
 
-            // 开始推流  暂时只有老师的是对的
-             pushTool.StartCamera(""+userPosition);
-            // pushTool.StartDesktop("0", "0", "100x100", "" + userPosition);
+            
 
             if (tag == 1)
             {
@@ -92,7 +90,10 @@ namespace OnlineCourse
                 userPosition = 0;
                 TeacherInitialization();
             }
-                
+
+            // 开始推流  暂时只有老师的是对的
+            pushTool.StartCamera("" + userPosition);
+            // pushTool.StartDesktop("0", "0", "100x100", "" + userPosition);
 
         }
 
@@ -104,8 +105,6 @@ namespace OnlineCourse
             colorList = new List<byte[]>();
             isStudent = false;
             canControl = true;
-
-            initializeMedia();
         }
 
         /// <summary>
@@ -114,8 +113,6 @@ namespace OnlineCourse
         private void StudentInitialization() {
             isStudent = true;
             canControl = false;
-
-            initializeMedia();
 
             DeactivateComputerIcons(0);
             DeactivateRecordIcons(userPosition);
@@ -265,27 +262,12 @@ namespace OnlineCourse
             colorChooser.Cursor = Cursors.Arrow;
         }
 
-        private void initializeMedia()
-        {
-            Task.Run(async () =>
-            {
-                try
-                {
-                    //teacherMedia.MediaInitializing += OnMediaInitializing;
-                    //Media.RendererOptions.VideoRefreshRateLimit = 10;
-                    await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/0"));
-                }
-                catch (Exception ex)
-                {
-                }
-            });
-        }
         
         /// <summary>
         /// 初始化播放器并拉流
         private async void teaMedia_Loaded(object sender, RoutedEventArgs e)
         {
-            //teacherMedia.MediaInitializing += OnMediaInitializing;
+            teacherMedia.MediaInitializing += OnMediaInitializing;
             // 地址待修改
             await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/0"));
         }
@@ -329,14 +311,25 @@ namespace OnlineCourse
         private void OnMediaInitializing(object sender, MediaInitializingEventArgs e)
         {
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
-
             //e.Configuration.PrivateOptions["flags"] = "low_delay";
             //e.Configuration.PrivateOptions["crf"] = "0";
             //e.Configuration.GlobalOptions.ProbeSize = 8192;
             //e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.FromMilliseconds(500);
         }
 
-
+        // 静音自己
+        private void mute_MediaOpening(object sender, MediaOpeningEventArgs e)
+        {
+            switch (userPosition)
+            {
+                case 0: teacherMedia.Volume = 0;  break;
+                case 1: studentMedia1.Volume = 0; break;
+                case 2: studentMedia2.Volume = 0; break;
+                case 3: studentMedia3.Volume = 0; break;
+                case 4: studentMedia4.Volume = 0; break;
+                case 5: studentMedia5.Volume = 0; break;
+            }
+        }
 
         /// <summary>
         /// 鼠标按下事件，此按钮用于移交控制权。点击确认变量数值：十位表征序号，个位为 0 表征是控制权按钮。
@@ -777,6 +770,7 @@ namespace OnlineCourse
                 }
             }
         }
+
         
     }
 }

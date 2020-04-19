@@ -18,7 +18,7 @@ namespace OnlineCourse
         protected override void OnStartup(StartupEventArgs e)
         {
             Library.FFmpegDirectory = Directory.GetCurrentDirectory() + "/ffmpeg";
-            //Library.LoadFFmpeg();
+            Library.LoadFFmpeg();
             MediaElement.FFmpegMessageLogged += (s, ev) =>
             {
                 System.Diagnostics.Debug.WriteLine(ev.Message);
