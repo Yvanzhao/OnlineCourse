@@ -97,5 +97,80 @@ namespace Server
         /// <param name="userId"></param>
         /// <returns></returns>
         public int getUserPosition(string roomId, int userId) { return 1; }
+
+        /// <summary>
+        /// 用户在板上绘图，更新画板信息。
+        /// point是double[2]，按顺序是点的X值与Y值
+        /// color是byte[4]，按顺序对应 A R G B
+        /// updateType取不同值的情况： 
+        /// "0"表示传进来一个新的点。此时color是null 
+        /// "1"表示传进来一个新的点，且这个点是一条新的线的初始点。此时color会有具体数值。 
+        /// "2"表示清除整个画板。此时point与color都是null
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="color"></param>
+        /// <param name="updateType"></param>
+        public void updateCanvas(double[] point, byte[] color, int updateType) { }
+
+        /// <summary>
+        /// 根据传进来的ID获取该房间是否有学生。按照userPosition排列
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public Boolean[] checkStudent(string roomId)
+        {
+            Boolean[] hasStudent = new Boolean[5];
+            for (int position = 0; position < 5; position++)
+            {
+                hasStudent[position] = true;
+            }
+            return hasStudent;
+        }
+
+        /// <summary>
+        /// 根据传进来的roomID获取该房间学生是否具有控制权。按照userPosition排列
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Boolean[] checkControl(string roomId)
+        {
+            Boolean[] hasControl = new Boolean[5];
+            for (int position = 0; position < 5; position++)
+            {
+                hasControl[position] = false;
+            }
+            hasControl[2] = true;
+            return hasControl;
+        }
+
+        /// <summary>
+        /// 根据传进来的roomID获取该房间学生是否被静音。按照userPosition排列
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public Boolean[] checkSilenced(string roomId)
+        {
+            Boolean[] silenced = new Boolean[5];
+            for (int position = 0; position < 5; position++)
+            {
+                silenced[position] = false;
+            }
+            silenced[3] = true;
+            return silenced;
+        }
+
+        /// <summary>
+        /// 根据roomID获得所有线、所有点
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public List<List<double[]>> getLines(string roomId) { return null; }
+
+        /// <summary>
+        /// 根据roomID获得所有颜色
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        public List<byte[]> getColors(string roomId) { return null; }
     }
 }

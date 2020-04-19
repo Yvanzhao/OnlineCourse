@@ -69,7 +69,10 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LoginButtonClicked(object sender, RoutedEventArgs e) {
-            this.server = ServerConnecter.connectToServer();
+            if (server == null)
+            {
+                this.server = ServerConnecter.connectToServer();
+            }          
             if (server == null) {
                 networkFailure();
                 return;

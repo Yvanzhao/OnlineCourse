@@ -61,19 +61,25 @@ namespace OnlineCourse
         [Obsolete]
         private void SignupButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (passwordBox.Password.Equals(passwordCheckBox.Password) == false)
+            //连接服务器
+            if (server == null)
             {
-                WarningLabel.Content = "两次输入密码不一致";
-                WarningLabel.Visibility = Visibility.Visible;
-                return;
+                this.server = ServerConnecter.connectToServer();
             }
-            this.server = ServerConnecter.connectToServer();
             if (this.server == null)
             {
                 WarningLabel.Content = "请检查您的网络连接";
                 WarningLabel.Visibility = Visibility.Visible;
                 return;
             }
+
+            if (passwordBox.Password.Equals(passwordCheckBox.Password) == false)
+            {
+                WarningLabel.Content = "两次输入密码不一致";
+                WarningLabel.Visibility = Visibility.Visible;
+                return;
+            }          
+
             int userId = this.server.createUser(userNameBox.Text, passwordBox.Password);
             if (userId == -1)
             {
