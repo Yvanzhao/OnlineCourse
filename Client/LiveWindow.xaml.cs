@@ -86,6 +86,10 @@ namespace OnlineCourse
             {
                 userPosition = this.server.getUserPosition(roomId, user.userId);
                 StudentInitialization();
+
+                checkControl();
+                checkSilenced();
+
             }
             else {
                 userPosition = 0;
@@ -136,11 +140,7 @@ namespace OnlineCourse
             isStudent = true;
             canControl = false;
 
-            hasStudent = new Boolean[5];
-            for (int position = 0; position < 5; position++)
-            {
-                hasStudent[position] = true;
-            }
+            hasStudent = server.checkStudent(roomId);
 
             DeactivateComputerIcons(0);
             DeactivateRecordIcons();
@@ -173,7 +173,9 @@ namespace OnlineCourse
         /// </summary>
         private void ActivateComputerIcons() {
             for (int position = 1; position < 6; position++) {
-                if(hasStudent[position - 1])
+                getComputerIcon(position).Tag = (int)((userPosition * 10) + 0);
+                getComputerIcon(position).Visibility = Visibility.Hidden;
+                if (hasStudent[position - 1])
                     ActivateComputerIcon(position, false);
             }
         }
@@ -183,8 +185,12 @@ namespace OnlineCourse
         /// <param name="position"></param>
         private void DeactivateComputerIcons(int position) {
             for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++) {
-                if (deactivatePosition != userPosition)
+                if (deactivatePosition != position) { 
                     DeactivateComputerIcon(deactivatePosition);
+                    getComputerIcon(deactivatePosition).Tag = (int)((userPosition * 10) + 0);
+                    getComputerIcon(deactivatePosition).Visibility = Visibility.Hidden;
+                }
+                    
                 else {
                     if (position > 0) {
                         if (hasStudent[position - 1])
@@ -239,6 +245,8 @@ namespace OnlineCourse
                             canControl = true;
                             DeactivateComputerIcons(userPosition);
                             ActivateCanvasIcons();
+                            getComputerIcon(userPosition).Tag = (int)((userPosition * 10) + 1);
+                            getComputerIcon(userPosition).Visibility = Visibility.Visible;
                         }                      
                         return;
                     }
@@ -246,6 +254,8 @@ namespace OnlineCourse
                         //其他学生获得控制权
                         DeactivateComputerIcons(0);
                         getComputerIcon(position + 1).SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                        getComputerIcon(position + 1).Tag = (int)((userPosition * 10) + 1);
+                        getComputerIcon(position + 1).Visibility = Visibility.Visible;
                         return;
                     }
                 }
@@ -319,11 +329,11 @@ namespace OnlineCourse
                 return;
             if (notSilenced)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
             }
             else
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
             }
 
             button.Cursor = Cursors.Hand;

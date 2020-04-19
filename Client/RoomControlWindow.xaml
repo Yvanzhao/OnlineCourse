@@ -34,7 +34,7 @@
                     <!--输入房间ID区域-->
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Label Content="房间ID:" HorizontalAlignment="Left" Margin="-2,12,0,6" FontSize="8" Foreground="#FF666666"/>
-                        <TextBox x:Name="roomIdOfCreate" Margin="-2,14,0,13" FontSize="8" Background="#FFF2F2F2" Width="120"/>
+                        <TextBox x:Name="roomIdOfCreate" Margin="-2,12,0,15" FontSize="15" Background="#FFF2F2F2" Width="120" VerticalAlignment="Center"/>
                         <Button Content="创建房间" Style="{StaticResource btn-success}" Margin="8,14,2,13" HorizontalAlignment="Center" FontSize="8" Tag="0" Click="RoomButtonClick"/>
                     </StackPanel>
                     <!--报错提示信息区域-->
@@ -56,7 +56,7 @@
                     <!--输入房间ID区域-->
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Label Content="房间ID:" HorizontalAlignment="Left" Margin="-2,12,0,6" FontSize="8" Foreground="#FF666666"/>
-                        <TextBox x:Name="roomIdOfEnter" Margin="-2,14,0,13" FontSize="8" Background="#FFF2F2F2" Width="120"/>
+                        <TextBox x:Name="roomIdOfEnter" Margin="-2,12,0,15" FontSize="15" Background="#FFF2F2F2" Width="120" VerticalAlignment="Center"/>
                         <Button Content="加入房间" Style="{StaticResource btn-primary}" Margin="8,14,2,13" HorizontalAlignment="Center" FontSize="8" Tag="1" Click="RoomButtonClick"/>
                     </StackPanel>
                     <!--报错提示信息区域-->
