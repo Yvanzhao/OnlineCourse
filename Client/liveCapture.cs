@@ -36,7 +36,7 @@ namespace OnlineCourse
 
             //ffmpeg - f dshow - i video = "Integrated Camera" - vcodec libx264 - acodec copy - preset:v ultrafast -tune:v zerolatency -f flv rtmp://eguid.cc:1935/rtmp/eguid
             string pushstream;
-            pushstream = "-thread_queue_size 128 -start_time_realtime 0 -f dshow -i video=\""+videoName+"\""+":audio=\"" + audioName +
+            pushstream = "-rtbufsize 6082560*2 -thread_queue_size 128 -start_time_realtime 0 -f dshow -i video=\"" + videoName+"\""+":audio=\"" + audioName +
                 "\" -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -threads 1 -b:v 200k -g 10 -acodec aac -f flv " +
                 "rtmp://172.19.241.249:8082/live/" + address;
             CmdRun(ffmpeg, pushstream);
