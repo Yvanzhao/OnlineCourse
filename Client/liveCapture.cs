@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AForge.Video.DirectShow;
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -7,16 +8,73 @@ namespace OnlineCourse
     class LiveCapture
     {
         public static string ffmpeg = Directory.GetCurrentDirectory() + "/ffmpeg/ffmpeg.exe";
-        public static Process cmdProcess;
+        private Process cmdProcess;
+        private String videoName;
+        private String audioName;
 
-        private static void CmdRun(string fileName, string arguments)
+        public LiveCapture()
         {
+            getDeviceName();
+        }
+
+        // 录制桌面+麦克风
+        public void StartDesktop(string offset_x, string offset_y, string videoSize, string address)
+        {
+
+            string pushstream;
+            pushstream = "-thread_queue_size 128 -rtbufsize 10K -start_time_realtime 0 -f gdigrab -offset_x " + offset_x + " -offset_y " + offset_y +
+                " -video_size " + videoSize + " -i desktop -f dshow -i audio=\"" + audioName +
+                "\" -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -threads 1 -b:v 200k -g 10 -acodec aac -f flv " +
+                "rtmp://172.19.241.249:8082/live/" + address;
+            CmdRun(ffmpeg, pushstream);
             
+        }
+
+        // 录制摄像头+麦克风
+        public void StartCamera(string address)
+        {
+
+            //ffmpeg - f dshow - i video = "Integrated Camera" - vcodec libx264 - acodec copy - preset:v ultrafast -tune:v zerolatency -f flv rtmp://eguid.cc:1935/rtmp/eguid
+            string pushstream;
+            pushstream = "-thread_queue_size 128 -start_time_realtime 0 -f dshow -i video=\""+videoName+"\""+":audio=\"" + audioName +
+                "\" -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -threads 1 -b:v 200k -g 10 -acodec aac -f flv " +
+                "rtmp://172.19.241.249:8082/live/" + address;
+            CmdRun(ffmpeg, pushstream);
+
+        }
+
+        public void Quit()
+        {
+
+            cmdProcess.StandardInput.WriteLine((char)113);
+            cmdProcess.StandardInput.Flush();
+
+            if (cmdProcess.WaitForExit(3000)) cmdProcess.Close();
+            else cmdProcess.Kill();
+
+            cmdProcess = null;
+        }
+
+        private void getDeviceName()
+        {
+            FilterInfoCollection videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            FilterInfoCollection audeoDevices = new FilterInfoCollection(FilterCategory.AudioInputDevice);
+            if (videoDevices.Count == 0)
+                throw new ApplicationException();
+            if (audeoDevices.Count == 0)
+                throw new ApplicationException();
+            audioName = audeoDevices[0].Name;
+            videoName = videoDevices[0].Name;
+        }
+
+        private void CmdRun(string fileName, string arguments)
+        {
+
             if (cmdProcess == null)
             {
                 cmdProcess = new Process();
             }
-            
+
             cmdProcess.StartInfo.FileName = fileName;
             cmdProcess.StartInfo.UseShellExecute = false;
             cmdProcess.StartInfo.RedirectStandardInput = true;
@@ -28,37 +86,6 @@ namespace OnlineCourse
             cmdProcess.StartInfo.StandardOutputEncoding = System.Text.Encoding.UTF8;
 
             cmdProcess.Start();
-        }
-
-        public static void Start(string audioDevice, string videoDevice, string offset_x, string offset_y, string videoSize, string address)
-        {
-            //string arguments;
-            //arguments = "-f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y + "" +
-            //    " -video_size " + videoSize + " -i desktop -f dshow -i video=\"" + videoDevice + "\" -f dshow -i audio=\"" +
-            //    audioDevice + "\" -vcodec libx264 -acodec acc -strict -2 -map 0:0 " + fileName[0]
-            //    + " -map 1:0 " + fileName[1] + " -map 2:0 " + fileName[2];
-            //Console.WriteLine(arguments);
-            //CmdRun(ffmpeg, arguments);
-
-            string pushstream;
-            pushstream = "-thread_queue_size 256 -f gdigrab -framerate 30 -offset_x " + offset_x + " -offset_y " + offset_y +
-                " -video_size " + videoSize + " -i desktop -f dshow -i audio=\"" + audioDevice +
-                "\" -vcodec libx264 -acodec aac -f flv " +
-                "rtmp://172.19.241.249:8082/" + address;
-            CmdRun(ffmpeg, pushstream);
-
-            // ffplay rtmp://localhost:1935/live/home
-        }
-        public static void Quit()
-        {
-
-            cmdProcess.StandardInput.WriteLine((char)113);
-            cmdProcess.StandardInput.Flush();
-
-            if (cmdProcess.WaitForExit(3000)) cmdProcess.Close();
-            else cmdProcess.Kill();
-
-            cmdProcess = null;
         }
     }
 }
