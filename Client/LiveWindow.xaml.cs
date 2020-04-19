@@ -97,7 +97,7 @@ namespace OnlineCourse
             }
 
             // 开始推流  暂时只有老师的是对的
-            pushTool.StartCamera("" + userPosition);
+            pushTool.StartCamera(roomId + userPosition);
             // pushTool.StartDesktop("0", "0", "100x100", "" + userPosition);
 
         }
@@ -446,43 +446,37 @@ namespace OnlineCourse
         private async void teaMedia_Loaded(object sender, RoutedEventArgs e)
         {
             teacherMedia.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/0"));
+            await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
         }
 
         private async void stu1Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia1.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/1"));
+            await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
         }
 
         private async void stu2Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia2.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await studentMedia2.Open(new Uri("rtmp://172.19.241.249:8082/live/2"));
+            await studentMedia2.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "2"));
         }
 
         private async void stu3Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia3.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await studentMedia3.Open(new Uri("rtmp://172.19.241.249:8082/live/3"));
+            await studentMedia3.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "3"));
         }
 
         private async void stu4Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia4.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await studentMedia4.Open(new Uri("rtmp://172.19.241.249:8082/live/4"));
+            await studentMedia4.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "4"));
         }
 
         private async void stu5Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia5.MediaInitializing += OnMediaInitializing;
-            // 地址待修改
-            await studentMedia5.Open(new Uri("rtmp://172.19.241.249:8082/live/5"));
+            await studentMedia5.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "5"));
         }
 
         // 修改播放器缓冲
@@ -877,6 +871,7 @@ namespace OnlineCourse
             }
 
             pushTool.Quit();
+            server.setEmptyPosition(roomId,userPosition);
 
             RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
