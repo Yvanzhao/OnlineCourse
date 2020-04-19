@@ -49,6 +49,8 @@ namespace OnlineCourse
         Server.ServerService server;
         //推流工具
         LiveCapture pushTool;
+        //对应位置是否有学生
+        Boolean[] hasStudent;
 
         /// <summary>
         /// 暂时利用Tag分辨老师与学生
@@ -82,8 +84,7 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
-                //userPosition = this.server.getUserPosition(roomId, user.userId);
-                userPosition = 1;
+                userPosition = this.server.getUserPosition(roomId, user.userId);
                 StudentInitialization();
             }
             else {
@@ -104,7 +105,28 @@ namespace OnlineCourse
             linesList = new List<List<double[]>>();
             colorList = new List<byte[]>();
             isStudent = false;
+            hasStudent = server.checkStudent(roomId);
             canControl = true;
+        }
+
+        /// <summary>
+        /// 确认特定位置是否有学生。
+        /// </summary>
+        private void checkStudent() {
+            Boolean[] newHasStudent = server.checkStudent(roomId);
+            for (int position = 0; position < 5; position++) {
+                if (newHasStudent[position] != hasStudent[position]) {
+                    if (newHasStudent[position])
+                    {
+                        ActivateComputerIcon(position + 1, false);
+                        ActivateRecordIcon(position + 1, true);
+                    }
+                    else {
+                        DeactivateComputerIcon(position + 1);
+                        DeactivateRecordIcon(position + 1, true);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -114,55 +136,73 @@ namespace OnlineCourse
             isStudent = true;
             canControl = false;
 
+            hasStudent = new Boolean[5];
+            for (int position = 0; position < 5; position++)
+            {
+                hasStudent[position] = true;
+            }
+
             DeactivateComputerIcons(0);
-            DeactivateRecordIcons(userPosition);
+            DeactivateRecordIcons();
 
             DeactivateCanvasIcons();
+        }
+
+        /// <summary>
+        /// 根据userPosition获取对应的控制权按钮
+        /// </summary>
+        /// <param name="userPosition"></param>
+        /// <returns></returns>
+        private Image getComputerIcon(int position) {
+            switch (position) {
+                case 1:
+                    return computerIcon_1;
+                case 2:
+                    return computerIcon_2;
+                case 3:
+                    return computerIcon_3;
+                case 4:
+                    return computerIcon_4;
+                case 5:
+                    return computerIcon_5;
+            }
+            return null;
         }
         /// <summary>
         /// 启用全部的控制权移交按钮
         /// </summary>
         private void ActivateComputerIcons() {
-            ActivateComputerIcon(computerIcon_1,false);
-            ActivateComputerIcon(computerIcon_2, false);
-            ActivateComputerIcon(computerIcon_3, false);
-            ActivateComputerIcon(computerIcon_4, false);
-            ActivateComputerIcon(computerIcon_5, false);
+            for (int position = 1; position < 6; position++) {
+                if(hasStudent[position - 1])
+                    ActivateComputerIcon(position, false);
+            }
         }
         /// <summary>
         /// 批量禁用移交控制权按钮。0时为学生初始化，1~5为将控制权转交到对应学生时的教师端
         /// </summary>
         /// <param name="position"></param>
         private void DeactivateComputerIcons(int position) {
-            DeactivateComputerIcon(computerIcon_1);
-            DeactivateComputerIcon(computerIcon_2);
-            DeactivateComputerIcon(computerIcon_3);
-            DeactivateComputerIcon(computerIcon_4);
-            DeactivateComputerIcon(computerIcon_5);
-            switch (position) {
-                case 1:
-                    ActivateComputerIcon(computerIcon_1, true);
-                    break;
-                case 2:
-                    ActivateComputerIcon(computerIcon_2, true);
-                    break;
-                case 3:
-                    ActivateComputerIcon(computerIcon_3, true);
-                    break;
-                case 4:
-                    ActivateComputerIcon(computerIcon_4, true);
-                    break;
-                case 5:
-                    ActivateComputerIcon(computerIcon_5, true);
-                    break;
+            for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++) {
+                if (deactivatePosition != userPosition)
+                    DeactivateComputerIcon(deactivatePosition);
+                else {
+                    if (position > 0) {
+                        if (hasStudent[position - 1])
+                            ActivateComputerIcon(deactivatePosition, true);
+                    }
+                }
+                    
             }
         }
         /// <summary>
-        /// 启用移交控制权按钮，isActivated表示启用时按钮的状态是否为已激活
+        /// 启用移交控制权按钮，isActivated表示启用时按钮的状态是否为已获得控制权
         /// </summary>
         /// <param name="button"></param>
         /// <param name="isActivated"></param>
-        private void ActivateComputerIcon(Image button,Boolean isActivated) {
+        private void ActivateComputerIcon(int position,Boolean isActivated) {
+            Image button = getComputerIcon(position);
+            if (button == null)
+                return;
             if (isActivated)
             {
                 button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
@@ -177,49 +217,107 @@ namespace OnlineCourse
         /// 禁用移交控制权按钮
         /// </summary>
         /// <param name="button"></param>
-        private void DeactivateComputerIcon(Image button) { 
+        private void DeactivateComputerIcon(int position) {
+            Image button = getComputerIcon(position);
+            if (button == null)
+                return;
             button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]);
             button.Cursor = Cursors.Arrow;
         }
 
         /// <summary>
-        /// 批量禁用静音按钮。1~5表示各个学生自己永远允许静音自己
+        /// 检查是否具有控制权。
+        /// </summary>
+        private void checkControl() {
+            Boolean[] hasControl = server.checkControl(roomId);
+            for (int position = 0; position < 5; position++) {
+                if (hasControl[position]) {
+                    if (userPosition == position + 1)
+                    {
+                        //该学生自己获得控制权
+                        if (canControl == false) {
+                            canControl = true;
+                            DeactivateComputerIcons(userPosition);
+                            ActivateCanvasIcons();
+                        }                      
+                        return;
+                    }
+                    else {
+                        //其他学生获得控制权
+                        DeactivateComputerIcons(0);
+                        getComputerIcon(position + 1).SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                        return;
+                    }
+                }
+            }
+            if (isStudent) {
+                //教师强制取回控制权
+                DeactivateComputerIcons(0);
+                if (canControl == true) {
+                    canControl = false;
+                    isDrawing = false;
+                    DeactivateCanvasIcons();
+                }              
+            }
+                
+            else {
+                //教师端学生主动交还控制权
+                if (canControl == false)
+                {
+                    canControl = true;
+                    ActivateComputerIcons();
+                    ActivateCanvasIcons();
+                }
+            }
+                
+        }
+
+        /// <summary>
+        /// 根据position获得对应静音按钮
         /// </summary>
         /// <param name="position"></param>
-        private void DeactivateRecordIcons(int position)
-        {
-            DeactivateRecordIcon(recordIcon_1);
-            DeactivateRecordIcon(recordIcon_2);
-            DeactivateRecordIcon(recordIcon_3);
-            DeactivateRecordIcon(recordIcon_4);
-            DeactivateRecordIcon(recordIcon_5);
+        /// <returns></returns>
+        private Image getRecordIcon(int position) {
             switch (position)
             {
                 case 1:
-                    ActivateRecordIcon(recordIcon_1, true);
-                    break;
+                    return recordIcon_1;
                 case 2:
-                    ActivateRecordIcon(recordIcon_2, true);
-                    break;
+                    return recordIcon_2;
                 case 3:
-                    ActivateRecordIcon(recordIcon_3, true);
-                    break;
+                    return recordIcon_3;
                 case 4:
-                    ActivateRecordIcon(recordIcon_4, true);
-                    break;
+                    return recordIcon_4;
                 case 5:
-                    ActivateRecordIcon(recordIcon_5, true);
-                    break;
+                    return recordIcon_5;
+            }
+            return null;
+        }
+        /// <summary>
+        /// 批量禁用静音按钮。1~5表示各个学生自己永远允许静音自己
+        /// </summary>
+        /// <param name="position"></param>
+        private void DeactivateRecordIcons()
+        {
+            for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++)
+            {
+                if (deactivatePosition != userPosition)
+                    DeactivateRecordIcon(deactivatePosition,true);
+                else
+                    ActivateRecordIcon(deactivatePosition, true);
             }
         }
         /// <summary>
-        /// 启用禁音按钮，isActivated表示启用时按钮的状态是否为已激活
+        /// 启用禁音按钮，notSilenced表示启用时按钮的状态是否为已经被静音
         /// </summary>
         /// <param name="button"></param>
         /// <param name="isActivated"></param>
-        private void ActivateRecordIcon(Image button, Boolean isActivated)
+        private void ActivateRecordIcon(int position, Boolean notSilenced)
         {
-            if (isActivated)
+            Image button = getRecordIcon(position);
+            if (button == null)
+                return;
+            if (notSilenced)
             {
                 button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
             }
@@ -231,13 +329,83 @@ namespace OnlineCourse
             button.Cursor = Cursors.Hand;
         }
         /// <summary>
-        /// 禁用静音按钮
+        /// 禁用静音按钮，notSilenced表示启用时按钮的状态是否为已经被静音
         /// </summary>
         /// <param name="button"></param>
-        private void DeactivateRecordIcon(Image button) {
-            button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+        private void DeactivateRecordIcon(int position, Boolean notSilenced) {
+            Image button = getRecordIcon(position);
+            if (button == null)
+                return;
+            if (notSilenced)
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+            }
+            else
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
+            }
             button.Cursor = Cursors.Arrow;
         }
+        /// <summary>
+        /// 将某一位置的按钮变为被静音状态。isActivated表示静音时该按钮是否可用
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="isActivated"></param>
+        private void BanRecord(int position,Boolean isActivated) {
+            Image button = getRecordIcon(position);
+            if (button == null)
+                return;
+            if (isActivated)
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+            }
+            else
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
+            }
+        }
+        /// <summary>
+        /// 将某一位置的按钮取消被静音状态。isActivated表示静音时该按钮是否可用
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="isActivated"></param>
+        private void EnableRecord(int position, Boolean isActivated)
+        {
+            Image button = getRecordIcon(position);
+            if (button == null)
+                return;
+            if (isActivated)
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+            }
+            else
+            {
+                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+            }
+        }
+
+        /// <summary>
+        /// 检查房间静音情况
+        /// </summary>
+        private void checkSilenced() {
+            Boolean[] silenced = server.checkSilenced(roomId);
+            for (int position = 0; position < 5; position++) {
+                if (silenced[position])
+                {
+                    if (isStudent == false  || userPosition == position + 1)
+                        BanRecord(position + 1, true);
+                    else
+                        BanRecord(position + 1, false);
+                }
+                else {
+                    if (isStudent == false || userPosition == position + 1)
+                        EnableRecord(position + 1, true);
+                    else
+                        EnableRecord(position + 1, false);
+                }
+            }
+        }
+
         /// <summary>
         /// 启用画布相关按钮
         /// </summary>
@@ -344,11 +512,16 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ComputerIcon_MouseDown(object sender, MouseButtonEventArgs e) {
-           if (isStudent == true)
-               return;
-           int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
-           mouseClickedTag = tagHead * 10;
-       }
+            int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
+            if (isStudent == false)
+            {
+                if (hasStudent[tagHead - 1] == false)//该学生不存在
+                    return;
+            }
+            else if (canControl == false)//是学生并且不具备控制权
+                return;
+            mouseClickedTag = tagHead * 10;
+        }
 
        /// <summary>
        /// 鼠标抬起事件，此按钮用于移交控制权
@@ -417,9 +590,15 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void RecordIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (isStudent == true)
-                return;
+            
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
+            if (isStudent == false)
+            {
+                if (hasStudent[tagHead - 1] == false)//该学生不存在
+                    return;
+            }
+            else if (tagHead != userPosition)//是学生并且点击的不是自己的按钮
+                return;
             mouseClickedTag = tagHead * 10 + 1;
         }
 
@@ -440,6 +619,7 @@ namespace OnlineCourse
                 //tagHead表示序号
                 int tagHead = tag / 10;
                 //检测鼠标落下与抬起是否相同。十位表征序号，个位为 1 表征是录音按钮。
+                Console.WriteLine(tag + ":" + tagHead + ":" + tagTail);
                 if (mouseClickedTag != tagHead * 10 + 1)
                 {
                      mouseClickedTag = 0;
@@ -447,14 +627,17 @@ namespace OnlineCourse
                 }
                 if (isStudent == false)
                 {
-                     //此处添加禁用远端某学生录音的方法
+                    //此处添加禁用远端某学生录音的方法
                 }
                 else if (tagHead == userPosition)
                 {
                     //此处添加学生禁用自己录音的方法
                 }
                 else
+                {
                     return;
+                }
+                    
                 //根据状态不同进行切换，此处仅负责按钮的样式
                 if (tagTail == 0)
                 {
@@ -490,6 +673,9 @@ namespace OnlineCourse
             linesList.Add(pointsList);
             colorList.Add(currentColor);
             isDrawing = true;
+
+            //以下是将画板变化更新到服务器上
+            server.updateCanvas(startPointPosition, currentColor, 1);
         }
 
        /// <summary>
@@ -525,6 +711,8 @@ namespace OnlineCourse
                         l.X2 = point.X;
                         l.Y2 = point.Y;
                         printCanvas.Children.Add(l);
+                        //以下是将画板变化更新到服务器上
+                        server.updateCanvas(pointPosition, null, 0);
                     }
                 }
             }
@@ -606,6 +794,9 @@ namespace OnlineCourse
             colorList = new List<byte[]>();
             linesList = new List<List<double[]>>();
             mouseClickedTag = 0;
+
+            //以下是将画板变化更新到服务器上
+            server.updateCanvas(null, null, 2);
         }
 
         /// <summary>

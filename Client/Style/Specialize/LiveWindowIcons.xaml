@@ -32,6 +32,12 @@
         <Setter Property="Source" Value="{StaticResource computer_enter}"/>
         <Setter Property="OpacityMask" Value="{x:Null}"/>
     </Style>
+    <!--控制权不可用时被启用图标-->
+    <Style x:Key="ComputerActivatedWhenInactiveIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource computer_active}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
+    </Style>
     <!--话筒默认图标-->
     <BitmapImage x:Key="record" UriSource="/OnlineCourse;component/Resource/record.png"/>
     <BitmapImage x:Key="record_enter" UriSource="/OnlineCourse;component/Resource/record_highlight.png"/>
@@ -63,6 +69,12 @@
     <Style x:Key="RecordInactiveIcon" TargetType="{x:Type Image}">
         <Setter Property="FlowDirection" Value="LeftToRight"/>
         <Setter Property="Source" Value="{StaticResource record_inactive}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
+    </Style>
+    <!--话筒被静音且不可用时的图标-->
+    <Style x:Key="RecordBannedWhenInactiveIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource record_banned}"/>
         <Setter Property="OpacityMask" Value="{x:Null}"/>
     </Style>
     <!--删除图标-->
