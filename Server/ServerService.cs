@@ -96,7 +96,7 @@ namespace Server
         /// <param name="roomId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public int getUserPosition(string roomId, int userId) { return 1; }
+        public int getUserPosition(string roomId, int userId) { return 3; }
 
         /// <summary>
         /// 用户在板上绘图，更新画板信息。
