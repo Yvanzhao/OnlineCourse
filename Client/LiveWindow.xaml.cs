@@ -491,7 +491,7 @@ namespace OnlineCourse
             switch (userPosition)
             {
                 case 0:
-                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { };break;
+                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 1:
                     try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 2:
@@ -625,27 +625,18 @@ namespace OnlineCourse
                      mouseClickedTag = 0;
                      return;
                 }
-                if (isStudent == false)
-                {
-                    //此处添加禁用远端某学生录音的方法
-                }
-                else if (tagHead == userPosition)
-                {
-                    //此处添加学生禁用自己录音的方法
-                }
-                else
-                {
-                    return;
-                }
+                
                     
                 //根据状态不同进行切换，此处仅负责按钮的样式
                 if (tagTail == 0)
                 {
+                    mute(tagHead);
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
                     image.Tag = tagHead + "" + 1;
                 }
                 else
                 {
+                    unMute(tagHead);
                     image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
                     image.Tag = tagHead + "" + 0;
                 }
@@ -655,11 +646,51 @@ namespace OnlineCourse
             }
         }
 
-       /// <summary>
-       /// 鼠标落下事件，此事件用于控制初始化画图
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        // 静音第number号播放器
+        private void mute(int number)
+        {
+            switch (number)
+            {
+                case 0:
+                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { }; break;
+                case 1:
+                    try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
+                case 2:
+                    try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0; }); } catch (Exception ex) { }; break;
+                case 3:
+                    try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0; }); } catch (Exception ex) { }; break;
+                case 4:
+                    try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0; }); } catch (Exception ex) { }; break;
+                case 5:
+                    try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
+            }
+        }
+
+        // 恢复第number号声音
+        private void unMute(int number)
+        {
+            switch (number)
+            {
+                case 0:
+                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                case 1:
+                    try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                case 2:
+                    try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                case 3:
+                    try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                case 4:
+                    try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                case 5:
+                    try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0.7; }); } catch (Exception ex) { }; break;
+            }
+        }
+
+        /// <summary>
+        /// 鼠标落下事件，此事件用于控制初始化画图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PrintCanvas_MouseDown(object sender, MouseButtonEventArgs e) {
             if (canControl == false)
                 return;
