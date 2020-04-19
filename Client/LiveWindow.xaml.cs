@@ -86,10 +86,6 @@ namespace OnlineCourse
             {
                 userPosition = this.server.getUserPosition(roomId, user.userId);
                 StudentInitialization();
-
-                checkControl();
-                checkSilenced();
-
             }
             else {
                 userPosition = 0;
