@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Unosquare.FFME.Common;
+using System.Threading;
 
 namespace OnlineCourse
 {
@@ -86,10 +87,12 @@ namespace OnlineCourse
             {
                 userPosition = this.server.getUserPosition(roomId, user.userId);
                 StudentInitialization();
+                startStudentThread();
             }
             else {
                 userPosition = 0;
                 TeacherInitialization();
+                startTeacherThread();
             }
 
             // 开始推流  暂时只有老师的是对的
@@ -273,6 +276,7 @@ namespace OnlineCourse
                     canControl = true;
                     ActivateComputerIcons();
                     ActivateCanvasIcons();
+                    startTeacherThread();
                 }
             }
                 
@@ -551,6 +555,7 @@ namespace OnlineCourse
                     DeactivateCanvasIcons();
                     canControl = false;
                     //此处添加学生交还控制权的方法
+                    server.changeControl(roomId, userPosition, false);
                 }
                 else {
                     //老师手动拿回控制权的时候
@@ -565,6 +570,8 @@ namespace OnlineCourse
                             DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
                             DeactivateCanvasIcons();
                             //此处添加老师移交控制权的方法
+                            server.changeControl(roomId, tagHead, true);
+                            startStudentThread();
                         }
                     }
                     else
@@ -575,6 +582,8 @@ namespace OnlineCourse
                         ActivateComputerIcons();
                         ActivateCanvasIcons();
                         //此处添加老师拿回控制权的方法
+                        server.changeControl(roomId, tagHead, false);
+                        startTeacherThread();
                     }
                 }
                
@@ -629,9 +638,9 @@ namespace OnlineCourse
                 {
                     //此处添加禁用远端某学生录音的方法
                     if (tagTail == 0)
-                        mute(tagHead);
+                        server.silenceStudent(tagHead, true);
                     else
-                        unMute(tagHead);
+                        server.silenceStudent(tagHead, false);
                 }
                 else if (tagHead == userPosition)
                 {
@@ -1018,6 +1027,52 @@ namespace OnlineCourse
             }
         }
 
+        /// <summary>
+        /// 开启学生端线程
+        /// </summary>
+        private void startStudentThread()
+        {
+            Thread studentThread = new Thread(new ThreadStart(this.studentThread));
+            studentThread.Start();
+        }
+        /// <summary>
+        /// 未获得画板控制权时的线程，学生端即使获得画板控制权依然使用本线程
+        /// </summary>
+        private void studentThread() {
+            while (true) {
+                if (canControl == false)
+                {
+                    linesList = server.getLines(roomId);
+                    colorList = server.getColors(roomId);
+                    Redraw();
+                }
+                checkControl();
+                checkSilenced();
+                if (canControl && (isStudent == false))
+                    break;
+                Thread.Sleep(250);
+            }
+            
+        }
+
+        /// <summary>
+        /// 开启老师端已控制线程
+        /// </summary>
+        private void startTeacherThread() {
+            Thread teacherThread = new Thread(new ThreadStart(this.teacherThread));
+            teacherThread.Start();
+        }
+        /// <summary>
+        /// 教师端拥有画板控制权时的线程
+        /// </summary>
+        private void teacherThread() {
+            while (true) {
+                checkSilenced();
+                if (canControl == false)
+                    break;
+                Thread.Sleep(250);
+            }
+        }
         
     }
 }

@@ -99,6 +99,13 @@ namespace Server
         public int getUserPosition(string roomId, int userId) { return 3; }
 
         /// <summary>
+        /// 将该房间的第position号位置设置为空，如果position为0，则删除该房间
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="position"></param>
+        public void setEmptyPosition(string roomId, int position) { }
+
+        /// <summary>
         /// 用户在板上绘图，更新画板信息。
         /// point是double[2]，按顺序是点的X值与Y值
         /// color是byte[4]，按顺序对应 A R G B
@@ -128,7 +135,7 @@ namespace Server
         }
 
         /// <summary>
-        /// 根据传进来的roomID获取该房间学生是否具有控制权。按照userPosition排列
+        /// 根据传进来的roomID获取该房间学生是否具有控制权。按照userPosition排列。拥有画板控制权为true
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
@@ -144,7 +151,7 @@ namespace Server
         }
 
         /// <summary>
-        /// 根据传进来的roomID获取该房间学生是否被静音。按照userPosition排列
+        /// 根据传进来的roomID获取该房间学生是否被静音。按照userPosition排列。被静音为true
         /// </summary>
         /// <param name="roomId"></param>
         /// <returns></returns>
@@ -172,5 +179,19 @@ namespace Server
         /// <param name="roomId"></param>
         /// <returns></returns>
         public List<byte[]> getColors(string roomId) { return null; }
+
+        /// <summary>
+        /// 根据userId禁音或者解除静音某个学生。silence = true表示静音该学生，false表示解除静音
+        /// </summary>
+        /// <param name="userId"></param>
+        public void silenceStudent(int userId, Boolean silence) { }
+
+        /// <summary>
+        /// 根据传进来的学生位置，roomId更改控制权。studentControl = true 表示使得学生获得控制权，老师失去控制权；反之则为学生失去控制权，老师获得控制权
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <param name="userPosition"></param>
+        /// <param name="studentControl"></param>
+        public void changeControl(string roomId, int userPosition, Boolean studentControl) { }
     }
 }
