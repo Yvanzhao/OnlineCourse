@@ -363,6 +363,7 @@ namespace OnlineCourse
         /// <param name="isActivated"></param>
         private void BanRecord(int position,Boolean isActivated) {
             Image button = getRecordIcon(position);
+            mute(position);
             if (button == null)
                 return;
             if (isActivated)
@@ -382,6 +383,7 @@ namespace OnlineCourse
         private void EnableRecord(int position, Boolean isActivated)
         {
             Image button = getRecordIcon(position);
+            unMute(position);
             if (button == null)
                 return;
             if (isActivated)
@@ -638,9 +640,16 @@ namespace OnlineCourse
                 {
                     //此处添加禁用远端某学生录音的方法
                     if (tagTail == 0)
+                    {
+                        mute(tagHead);
                         server.silenceStudent(tagHead, true);
-                    else
+                    }
+
+                    else {
+                        unMute(tagHead);
                         server.silenceStudent(tagHead, false);
+                    }
+                        
                 }
                 else if (tagHead == userPosition)
                 {
