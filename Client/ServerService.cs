@@ -21,7 +21,7 @@ namespace Server
         /// <param name="roomId"></param>
         /// <param name="position"></param>
         public void setEmptyPosition(string roomId, int position) { }
-        public void updateCanvas(double[] point, byte[] color, int updateType) { }
+        public void updateCanvas(string roomId,double[] point, byte[] color, int pointId) { }
         public Boolean[] checkStudent(string roomId)
         {
             Boolean[] hasStudent = new bool[5];

@@ -733,7 +733,7 @@ namespace OnlineCourse
             isDrawing = true;
 
             //以下是将画板变化更新到服务器上
-            server.updateCanvas(startPointPosition, currentColor, 0);
+            server.updateCanvas(roomId, startPointPosition, currentColor, 0);
         }
 
        /// <summary>
@@ -770,7 +770,7 @@ namespace OnlineCourse
                         l.Y2 = point.Y;
                         printCanvas.Children.Add(l);
                         //以下是将画板变化更新到服务器上
-                        server.updateCanvas(pointPosition, null, count);
+                        server.updateCanvas(roomId, pointPosition, null, count);
                     }
                 }
             }
@@ -854,7 +854,7 @@ namespace OnlineCourse
             mouseClickedTag = 0;
 
             //以下是将画板变化更新到服务器上
-            server.updateCanvas(null, null, -1);
+            server.updateCanvas(roomId,null, null, -1);
         }
 
         /// <summary>
