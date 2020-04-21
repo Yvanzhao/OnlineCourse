@@ -636,28 +636,20 @@ namespace OnlineCourse
                      mouseClickedTag = 0;
                      return;
                 }
-                if (isStudent == false)
+                if (isStudent == false || tagHead == userPosition)
                 {
                     //此处添加禁用远端某学生录音的方法
                     if (tagTail == 0)
                     {
                         mute(tagHead);
-                        server.silenceStudent(tagHead, true);
+                        server.silenceStudent(roomId,tagHead, true);
                     }
 
                     else {
                         unMute(tagHead);
-                        server.silenceStudent(tagHead, false);
+                        server.silenceStudent(roomId,tagHead, false);
                     }
                         
-                }
-                else if (tagHead == userPosition)
-                {
-                    //此处添加学生禁用自己录音的方法
-                    if (tagTail == 0)
-                        mute(tagHead);
-                    else
-                        unMute(tagHead);
                 }
                 else
                 {

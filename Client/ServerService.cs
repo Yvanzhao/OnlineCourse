@@ -48,7 +48,7 @@ namespace Server
         }
         public List<List<double[]>> getLines(string roomId){return null;}
         public List<byte[]> getColors(string roomId) { return null; }
-        public void silenceStudent(int userId,Boolean silence) { }
+        public void silenceStudent(string roomId, int userPosition, Boolean silence) { }
         public void changeControl(string roomId, int userPosition, Boolean studentControl) { }
         
     }

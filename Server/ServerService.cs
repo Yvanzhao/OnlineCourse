@@ -181,10 +181,10 @@ namespace Server
         public List<byte[]> getColors(string roomId) { return null; }
 
         /// <summary>
-        /// 根据userId禁音或者解除静音某个学生。silence = true表示静音该学生，false表示解除静音
+        /// 根据传进来的学生位置，roomId禁音或者解除静音某个学生。silence = true表示静音该学生，false表示解除静音
         /// </summary>
         /// <param name="userId"></param>
-        public void silenceStudent(int userId, Boolean silence) { }
+        public void silenceStudent(string roomId, int userPosition, Boolean silence) { }
 
         /// <summary>
         /// 根据传进来的学生位置，roomId更改控制权。studentControl = true 表示使得学生获得控制权，老师失去控制权；反之则为学生失去控制权，老师获得控制权
