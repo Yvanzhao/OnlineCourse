@@ -109,15 +109,15 @@ namespace Server
         /// 用户在板上绘图，更新画板信息。
         /// point是double[2]，按顺序是点的X值与Y值
         /// color是byte[4]，按顺序对应 A R G B
-        /// updateType取不同值的情况： 
-        /// "0"表示传进来一个新的点。此时color是null 
-        /// "1"表示传进来一个新的点，且这个点是一条新的线的初始点。此时color会有具体数值。 
-        /// "2"表示清除整个画板。此时point与color都是null
+        /// pointId取不同值的情况： 
+        /// "0"表示传进来一个新的点,且这个点是一条新的线的初始点。此时color会有具体数值。 
+        /// "大于0"表示传进来一个新的点，pointId表示这是第几个点。此时color为null。 
+        /// "-1"表示清除整个画板。此时point与color都是null
         /// </summary>
         /// <param name="point"></param>
         /// <param name="color"></param>
         /// <param name="updateType"></param>
-        public void updateCanvas(double[] point, byte[] color, int updateType) { }
+        public void updateCanvas(double[] point, byte[] color, int pointId) { }
 
         /// <summary>
         /// 根据传进来的ID获取该房间是否有学生。按照userPosition排列
