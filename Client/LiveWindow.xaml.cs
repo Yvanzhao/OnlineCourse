@@ -53,6 +53,9 @@ namespace OnlineCourse
         //对应位置是否有学生
         Boolean[] hasStudent;
 
+        Thread teaThread;
+        Thread stuThread;
+
         /// <summary>
         /// 暂时利用Tag分辨老师与学生
         /// </summary>
@@ -210,10 +213,12 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]); }); } catch (Exception ex) { };
+                
             }
             else {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]); }); } catch (Exception ex) { };
+                
             }
             
             button.Cursor = Cursors.Hand;
@@ -226,7 +231,7 @@ namespace OnlineCourse
             Image button = getComputerIcon(position);
             if (button == null)
                 return;
-            button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]);
+            try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]); }); } catch (Exception ex) { };
             button.Cursor = Cursors.Arrow;
         }
 
@@ -252,7 +257,8 @@ namespace OnlineCourse
                     else {
                         //其他学生获得控制权
                         DeactivateComputerIcons(0);
-                        getComputerIcon(position + 1).SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                        Image button = getComputerIcon(position + 1);
+                        try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]); }); } catch (Exception ex) { };
                         getComputerIcon(position + 1).Tag = (int)((userPosition * 10) + 1);
                         getComputerIcon(position + 1).Visibility = Visibility.Visible;
                         return;
@@ -329,11 +335,13 @@ namespace OnlineCourse
                 return;
             if (notSilenced)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); }); } catch (Exception ex) { };
+                
             }
             else
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); }); } catch (Exception ex) { };
+                
             }
 
             button.Cursor = Cursors.Hand;
@@ -348,11 +356,13 @@ namespace OnlineCourse
                 return;
             if (notSilenced)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); }); } catch (Exception ex) { };
+                
             }
             else
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); }); } catch (Exception ex) { };
+                
             }
             button.Cursor = Cursors.Arrow;
         }
@@ -368,11 +378,13 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); }); } catch (Exception ex) { };
+                
             }
             else
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); }); } catch (Exception ex) { };
+                
             }
         }
         /// <summary>
@@ -388,11 +400,13 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); }); } catch (Exception ex) { };
+                
             }
             else
             {
-                button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); }); } catch (Exception ex) { };
+                
             }
         }
 
@@ -424,11 +438,24 @@ namespace OnlineCourse
         /// <param name="button"></param>
         private void ActivateCanvasIcons() {
             printCanvas.Cursor = Cursors.Cross;
-            deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
-            deleteIcon.Cursor = Cursors.Hand;
-            colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoser"]);
-            colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
-            colorChooser.Cursor = Cursors.Hand;
+            try
+            {
+                deleteIcon.Dispatcher.Invoke(() => {
+                    deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
+                    deleteIcon.Cursor = Cursors.Hand;
+                });
+            }
+            catch (Exception ex) { };
+            try
+            {
+                colorChooser.Dispatcher.Invoke(() => {
+                    colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoser"]);
+                    colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
+                    colorChooser.Cursor = Cursors.Hand;
+                });
+            }
+            catch (Exception ex) { };
+            
         }
         /// <summary>
         /// 禁用画布相关按钮
@@ -436,10 +463,19 @@ namespace OnlineCourse
         /// <param name="button"></param>
         private void DeactivateCanvasIcons() {
             printCanvas.Cursor = Cursors.Arrow;
-            deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
-            deleteIcon.Cursor = Cursors.Arrow;
-            colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoserDiabled"]);
-            colorChooser.Cursor = Cursors.Arrow;
+            try
+            {
+                deleteIcon.Dispatcher.Invoke(() => {
+                    deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
+                    deleteIcon.Cursor = Cursors.Arrow;
+                });
+                colorChooser.Dispatcher.Invoke(() => {
+                    colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoserDiabled"]);
+                    colorChooser.Cursor = Cursors.Arrow;
+                });
+            }
+            catch (Exception ex) { };
+            
         }
 
         
@@ -567,8 +603,14 @@ namespace OnlineCourse
                     {
                         if (canControl == true)
                         {
-                            image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
-                            image.Tag = tagHead + "" + 1;
+                            try
+                            {
+                                image.Dispatcher.Invoke(() => {
+                                    image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
+                                    image.Tag = tagHead + "" + 1;
+                                });
+                            }
+                            catch (Exception ex) { };
                             canControl = false;
                             DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
                             DeactivateCanvasIcons();
@@ -579,8 +621,14 @@ namespace OnlineCourse
                     }
                     else
                     {
-                        image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
-                        image.Tag = tagHead + "" + 0;
+                        try
+                        {
+                            image.Dispatcher.Invoke(() => {
+                                image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
+                                image.Tag = tagHead + "" + 0;
+                            });
+                        }
+                        catch (Exception ex) { };
                         canControl = true;
                         ActivateComputerIcons();
                         ActivateCanvasIcons();
@@ -660,13 +708,25 @@ namespace OnlineCourse
                 //根据状态不同进行切换，此处仅负责按钮的样式
                 if (tagTail == 0)
                 {
-                    image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
-                    image.Tag = tagHead + "" + 1;
+                    try
+                    {
+                        image.Dispatcher.Invoke(() => {
+                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                            image.Tag = tagHead + "" + 1;
+                        });
+                    }
+                    catch (Exception ex) { };
                 }
                 else
                 {
-                    image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
-                    image.Tag = tagHead + "" + 0;
+                    try
+                    {
+                        image.Dispatcher.Invoke(() => {
+                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                            image.Tag = tagHead + "" + 0;
+                        });
+                    }
+                    catch (Exception ex) { };
                 }
                 
                 //重置状态值避免bug
@@ -925,6 +985,10 @@ namespace OnlineCourse
                 return;
             }
 
+            if (teaThread != null)
+                teaThread.Abort();
+            if (stuThread != null)
+                stuThread.Abort();
             pushTool.Quit();
             server.setEmptyPosition(roomId,userPosition);
 
@@ -1034,8 +1098,9 @@ namespace OnlineCourse
         /// </summary>
         private void startStudentThread()
         {
-            Thread studentThread = new Thread(new ThreadStart(this.studentThread));
-            studentThread.Start();
+            stuThread = new Thread(new ThreadStart(this.studentThread));
+            stuThread.IsBackground = true;
+            stuThread.Start();
         }
         /// <summary>
         /// 未获得画板控制权时的线程，学生端即使获得画板控制权依然使用本线程
@@ -1061,8 +1126,9 @@ namespace OnlineCourse
         /// 开启老师端已控制线程
         /// </summary>
         private void startTeacherThread() {
-            Thread teacherThread = new Thread(new ThreadStart(this.teacherThread));
-            teacherThread.Start();
+            teaThread = new Thread(new ThreadStart(this.teacherThread));
+            teaThread.IsBackground = true;
+            teaThread.Start();
         }
         /// <summary>
         /// 教师端拥有画板控制权时的线程
