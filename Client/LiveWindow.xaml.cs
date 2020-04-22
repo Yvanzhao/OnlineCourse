@@ -497,7 +497,13 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="button"></param>
         private void DeactivateCanvasIcons() {
-            printCanvas.Cursor = Cursors.Arrow;
+            try
+            {
+                printCanvas.Dispatcher.Invoke(() => {
+                    printCanvas.Cursor = Cursors.Arrow;
+                });
+            }
+            catch (Exception ex) { };
             try
             {
                 deleteIcon.Dispatcher.Invoke(() => {
