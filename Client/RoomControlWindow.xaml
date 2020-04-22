@@ -16,7 +16,7 @@
                 </Grid.RowDefinitions>
                 <!--Header-->
                 <Grid Grid.Row="0" Background="#FFD2D2D2">
-                    <Label Content="欢迎,UserXXX" HorizontalAlignment="Left" Margin="40,15,9,0" FontSize="14" Grid.Row="0" Foreground="#FF5F67F7" FontWeight="Bold"/>
+                    <Label x:Name="welcomeLabel" Content="欢迎,UserXXX" HorizontalAlignment="Left" Margin="40,15,9,0" FontSize="14" Grid.Row="0" Foreground="#FF5F67F7" FontWeight="Bold"/>
                 </Grid>
 
                 <!--创建房间区域-->
