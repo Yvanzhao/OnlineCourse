@@ -113,6 +113,7 @@ namespace OnlineCourse
             isStudent = false;
             hasStudent = server.checkStudent(roomId);
             canControl = true;
+            checkStudent();
         }
 
         /// <summary>
@@ -133,6 +134,7 @@ namespace OnlineCourse
                     }
                 }
             }
+            hasStudent = newHasStudent;
         }
 
         /// <summary>
@@ -1167,6 +1169,7 @@ namespace OnlineCourse
         private void teacherThread() {
             while (true) {
                 checkSilenced();
+                checkStudent();
                 if (canControl == false)
                     break;
                 Thread.Sleep(250);
