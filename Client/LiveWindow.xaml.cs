@@ -525,16 +525,16 @@ namespace OnlineCourse
         
         /// <summary>
         /// 初始化播放器并拉流
-        private async void teaMedia_Loaded(object sender, RoutedEventArgs e)
+        private void teaMedia_Loaded(object sender, RoutedEventArgs e)
         {
             teacherMedia.MediaInitializing += OnMediaInitializing;
-            await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
+            //await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
         }
 
-        private async void stu1Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu1Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia1.MediaInitializing += OnMediaInitializing;
-            await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
+            //await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
         }
 
         private async void stu2Media_Loaded(object sender, RoutedEventArgs e)
@@ -1142,17 +1142,8 @@ namespace OnlineCourse
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (teacherMedia.IsLoaded == false)
-            {
-                Console.WriteLine("reload teacher media");
-                teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
-            }
-            if (studentMedia1.IsLoaded == false)
-            {
-                Console.WriteLine("reload student media");
-                studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
-            }
-                
+            teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
+            studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
         }
 
         /// <summary>
