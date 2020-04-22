@@ -22,35 +22,7 @@ namespace Server
         /// <param name="roomId"></param>
         /// <param name="position"></param>
         public void setEmptyPosition(string roomId, int position) { }
-        public void updateCanvas(string roomId,double[] point, byte[] color, int pointId) { }
-        public Boolean[] checkStudent(string roomId)
-        {
-            Boolean[] hasStudent = new bool[5];
-            for (int position = 0; position < 5; position++)
-            {
-                hasStudent[position] = true;
-            }
-            return hasStudent;
-        }
-        public Boolean[] checkControl(string roomId) {
-            Boolean[] hasControl = new bool[5];
-            for (int position = 0; position < 5; position++)
-            {
-                hasControl[position] = false;
-            }
-            return hasControl;
-        }
-        public Boolean[] checkSilenced(string roomId) {
-            Boolean[] silenced = new bool[5];
-            for (int position = 0; position < 5; position++) {
-                silenced[position] = false;
-            }
-            return silenced;
-        }
-        public List<List<double[]>> getLines(string roomId){return null;}
-        public List<byte[]> getColors(string roomId) { return null; }
-        public void silenceStudent(string roomId, int userPosition, Boolean silence) { }
-        public void changeControl(string roomId, int userPosition, Boolean studentControl) { }
+        
         
     }
 }
