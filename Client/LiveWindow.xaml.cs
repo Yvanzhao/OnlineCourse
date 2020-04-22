@@ -111,7 +111,7 @@ namespace OnlineCourse
             linesList = new List<List<double[]>>();
             colorList = new List<byte[]>();
             isStudent = false;
-            hasStudent = server.checkStudent(roomId);
+            hasStudent = new Boolean[5] { true, true, true, true, true};
             canControl = true;
             checkStudent();
         }
