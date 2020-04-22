@@ -12,7 +12,8 @@ namespace Server
     public class ServerService : MarshalByRefObject
     {
         public int logIn(string userName, string password) { return -1; }
-        public int createOrEnterRoom(string roomId) { return 0; }
+        public int createRoom(string roomId) { return 0; }
+        public int enterRoom(string roomId) { return 0; }
         public int createUser(string userName, string password) { return -1; }
         public int getUserPosition(string roomId, int userId) { return 1; }
         /// <summary>

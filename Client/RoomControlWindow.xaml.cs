@@ -82,7 +82,7 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="roomId"></param>
         private void createRoom(string roomId) {
-            if (this.server.createOrEnterRoom(roomId) == 0)
+            if (this.server.createRoom(roomId) == 0)
             {
 
                 LiveWindow liveWindow = new LiveWindow(0, roomId, user,this.server);
@@ -102,7 +102,8 @@ namespace OnlineCourse
         /// <param name="roomId"></param>
         private void enterRoom(string roomId)
         {
-            if (this.server.createOrEnterRoom(roomId) == 1)
+            int enterRoom = this.server.enterRoom(roomId);
+            if (enterRoom == 1)
             {
 
                 LiveWindow liveWindow = new LiveWindow(1, roomId, user,this.server);
@@ -110,12 +111,12 @@ namespace OnlineCourse
                 thisWindow.Close();
                 liveWindow.Show();
             }
-            else if (this.server.createOrEnterRoom(roomId) == 0)
+            else if (enterRoom == 0)
             {
                 JoinWarningLabel.Content = "该房间号不存在";
                 JoinWarningLabel.Visibility = Visibility.Visible;
             }
-            else if (this.server.createOrEnterRoom(roomId) == 2)
+            else if (enterRoom == 2)
             {
                 JoinWarningLabel.Content = "房间已满";
                 JoinWarningLabel.Visibility = Visibility.Visible;
