@@ -1142,10 +1142,17 @@ namespace OnlineCourse
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(teacherMedia.IsLoaded==false)
+            if (teacherMedia.IsLoaded == false)
+            {
+                Console.WriteLine("reload teacher media");
                 teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
+            }
             if (studentMedia1.IsLoaded == false)
+            {
+                Console.WriteLine("reload student media");
                 studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
+            }
+                
         }
 
         /// <summary>
