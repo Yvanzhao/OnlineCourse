@@ -175,8 +175,16 @@ namespace OnlineCourse
         /// </summary>
         private void ActivateComputerIcons() {
             for (int position = 1; position < 6; position++) {
-                getComputerIcon(position).Tag = (int)((userPosition * 10) + 0);
-                getComputerIcon(position).Visibility = Visibility.Hidden;
+                Image button = getComputerIcon(position);
+                try
+                {
+                    button.Dispatcher.Invoke(() => {
+                        button.Tag = (int)((userPosition * 10) + 0);
+                        button.Visibility = Visibility.Hidden;
+                    });
+                }
+                catch (Exception ex) { };
+                
                 if (hasStudent[position - 1])
                     ActivateComputerIcon(position, false);
             }
@@ -189,8 +197,16 @@ namespace OnlineCourse
             for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++) {
                 if (deactivatePosition != position) { 
                     DeactivateComputerIcon(deactivatePosition);
-                    getComputerIcon(deactivatePosition).Tag = (int)((userPosition * 10) + 0);
-                    getComputerIcon(deactivatePosition).Visibility = Visibility.Hidden;
+                    Image button = getComputerIcon(deactivatePosition);
+                    try
+                    {
+                        button.Dispatcher.Invoke(() => {
+                            button.Tag = (int)((userPosition * 10) + 0);
+                            button.Visibility = Visibility.Hidden;
+                        });
+                    }
+                    catch (Exception ex) { };
+                    
                 }
                     
                 else {
@@ -213,15 +229,15 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
                 
             }
             else {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
                 
             }
             
-            button.Cursor = Cursors.Hand;
+            
         }
         /// <summary>
         /// 禁用移交控制权按钮
@@ -231,8 +247,8 @@ namespace OnlineCourse
             Image button = getComputerIcon(position);
             if (button == null)
                 return;
-            try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]); }); } catch (Exception ex) { };
-            button.Cursor = Cursors.Arrow;
+            try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]); button.Cursor = Cursors.Arrow; }); } catch (Exception ex) { };
+            
         }
 
         /// <summary>
@@ -249,8 +265,16 @@ namespace OnlineCourse
                             canControl = true;
                             DeactivateComputerIcons(userPosition);
                             ActivateCanvasIcons();
-                            getComputerIcon(userPosition).Tag = (int)((userPosition * 10) + 1);
-                            getComputerIcon(userPosition).Visibility = Visibility.Visible;
+                            Image button = getComputerIcon(userPosition);
+                            try
+                            {
+                                button.Dispatcher.Invoke(() => {
+                                    button.Tag = (int)((userPosition * 10) + 1);
+                                    button.Visibility = Visibility.Visible;
+                                });
+                            }
+                            catch (Exception ex) { };
+                            
                         }                      
                         return;
                     }
@@ -258,9 +282,11 @@ namespace OnlineCourse
                         //其他学生获得控制权
                         DeactivateComputerIcons(0);
                         Image button = getComputerIcon(position + 1);
-                        try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]); }); } catch (Exception ex) { };
-                        getComputerIcon(position + 1).Tag = (int)((userPosition * 10) + 1);
-                        getComputerIcon(position + 1).Visibility = Visibility.Visible;
+                        try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                            button.Tag = (int)((userPosition * 10) + 1);
+                            button.Visibility = Visibility.Visible;
+                        }); } catch (Exception ex) { };
+                        
                         return;
                     }
                 }
@@ -335,16 +361,16 @@ namespace OnlineCourse
                 return;
             if (notSilenced)
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
                 
             }
             else
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
                 
             }
 
-            button.Cursor = Cursors.Hand;
+            
         }
         /// <summary>
         /// 禁用静音按钮，notSilenced表示启用时按钮的状态是否为已经被静音
@@ -356,15 +382,15 @@ namespace OnlineCourse
                 return;
             if (notSilenced)
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); button.Cursor = Cursors.Arrow; }); } catch (Exception ex) { };
                 
             }
             else
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); button.Cursor = Cursors.Arrow; }); } catch (Exception ex) { };
                 
             }
-            button.Cursor = Cursors.Arrow;
+            
         }
         /// <summary>
         /// 将某一位置的按钮变为被静音状态。isActivated表示静音时该按钮是否可用
@@ -437,7 +463,14 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="button"></param>
         private void ActivateCanvasIcons() {
-            printCanvas.Cursor = Cursors.Cross;
+            try
+            {
+                printCanvas.Dispatcher.Invoke(() => {
+                    printCanvas.Cursor = Cursors.Cross;
+                });
+            }
+            catch (Exception ex) { };
+            
             try
             {
                 deleteIcon.Dispatcher.Invoke(() => {
@@ -740,17 +773,17 @@ namespace OnlineCourse
             switch (number)
             {
                 case 0:
-                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { teacherMedia.Dispatcher.Invoke(() => { if(teacherMedia.Volume!=0) teacherMedia.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 1:
-                    try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { studentMedia1.Dispatcher.Invoke(() => { if (studentMedia1.Volume != 0) studentMedia1.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 2:
-                    try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume != 0) studentMedia2.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 3:
-                    try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume != 0) studentMedia3.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 4:
-                    try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume != 0) studentMedia4.Volume = 0; }); } catch (Exception ex) { }; break;
                 case 5:
-                    try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
+                    try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume != 0) studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
             }
         }
 
@@ -760,17 +793,17 @@ namespace OnlineCourse
             switch (number)
             {
                 case 0:
-                    try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { teacherMedia.Dispatcher.Invoke(() => { if (teacherMedia.Volume == 0) teacherMedia.Volume = 0.7; }); } catch (Exception ex) { }; break;
                 case 1:
-                    try { studentMedia1.Dispatcher.Invoke(() => { studentMedia1.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { studentMedia1.Dispatcher.Invoke(() => { if (studentMedia1.Volume == 0) studentMedia1.Volume = 0.7; }); } catch (Exception ex) { }; break;
                 case 2:
-                    try { studentMedia2.Dispatcher.Invoke(() => { studentMedia2.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume == 0) studentMedia2.Volume = 0.7; }); } catch (Exception ex) { }; break;
                 case 3:
-                    try { studentMedia3.Dispatcher.Invoke(() => { studentMedia3.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume == 0) studentMedia3.Volume = 0.7; }); } catch (Exception ex) { }; break;
                 case 4:
-                    try { studentMedia4.Dispatcher.Invoke(() => { studentMedia4.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume == 0) studentMedia4.Volume = 0.7; }); } catch (Exception ex) { }; break;
                 case 5:
-                    try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0.7; }); } catch (Exception ex) { }; break;
+                    try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume == 0) studentMedia5.Volume = 0.7; }); } catch (Exception ex) { }; break;
             }
         }
 
