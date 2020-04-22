@@ -564,7 +564,7 @@ namespace OnlineCourse
         // 修改播放器缓冲
         private void OnMediaInitializing(object sender, MediaInitializingEventArgs e)
         {
-            e.Configuration.GlobalOptions.FlagNoBuffer = true;
+            //e.Configuration.GlobalOptions.FlagNoBuffer = true;
             //e.Configuration.PrivateOptions["flags"] = "low_delay";
             //e.Configuration.PrivateOptions["crf"] = "0";
             //e.Configuration.GlobalOptions.ProbeSize = 8192;
