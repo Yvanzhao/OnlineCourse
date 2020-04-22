@@ -47,7 +47,7 @@ namespace OnlineCourse
         //当前画笔颜色
         byte[] currentColor;
         //连接服务器
-        Server.ServerService server;
+        //Server.ServerService server;
         //推流工具
         LiveCapture pushTool;
         //对应位置是否有学生
@@ -65,12 +65,12 @@ namespace OnlineCourse
 
             pushTool = new LiveCapture();
 
-            this.server = server;
+            //this.server = server;
             if (server == null) {
-                RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
-                Window thisWindow = Window.GetWindow(this);
-                thisWindow.Close();
-                roomControl.Show();
+                //RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
+                //Window thisWindow = Window.GetWindow(this);
+                //thisWindow.Close();
+                //roomControl.Show();
             }
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
@@ -88,14 +88,15 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
-                userPosition = this.server.getUserPosition(roomId, user.userId);
+                //userPosition = this.server.getUserPosition(roomId, user.userId);
+                userPosition = 1;
                 StudentInitialization();
-                startStudentThread();
+                //startStudentThread();
             }
             else {
                 userPosition = 0;
                 TeacherInitialization();
-                startTeacherThread();
+                //startTeacherThread();
             }
 
             // 开始推流  暂时只有老师的是对的
@@ -108,34 +109,36 @@ namespace OnlineCourse
         /// 作为老师初始化窗口
         /// </summary>
         private void TeacherInitialization() {
-            linesList = new List<List<double[]>>();
-            colorList = new List<byte[]>();
+
             isStudent = false;
-            hasStudent = new Boolean[5] { true, true, true, true, true};
             canControl = true;
-            checkStudent();
+
+            //linesList = new List<List<double[]>>();
+            //colorList = new List<byte[]>();
+            //hasStudent = new Boolean[5] { true, true, true, true, true};
+            //checkStudent();
         }
 
         /// <summary>
         /// 确认特定位置是否有学生。
         /// </summary>
-        private void checkStudent() {
-            Boolean[] newHasStudent = server.checkStudent(roomId);
-            for (int position = 0; position < 5; position++) {
-                if (newHasStudent[position] != hasStudent[position]) {
-                    if (newHasStudent[position])
-                    {
-                        ActivateComputerIcon(position + 1, false);
-                        ActivateRecordIcon(position + 1, true);
-                    }
-                    else {
-                        DeactivateComputerIcon(position + 1);
-                        DeactivateRecordIcon(position + 1, true);
-                    }
-                }
-            }
-            hasStudent = newHasStudent;
-        }
+        //private void checkStudent() {
+        //    Boolean[] newHasStudent = server.checkStudent(roomId);
+        //    for (int position = 0; position < 5; position++) {
+        //        if (newHasStudent[position] != hasStudent[position]) {
+        //            if (newHasStudent[position])
+        //            {
+        //                ActivateComputerIcon(position + 1, false);
+        //                ActivateRecordIcon(position + 1, true);
+        //            }
+        //            else {
+        //                DeactivateComputerIcon(position + 1);
+        //                DeactivateRecordIcon(position + 1, true);
+        //            }
+        //        }
+        //    }
+        //    hasStudent = newHasStudent;
+        //}
 
         /// <summary>
         /// 作为学生初始化窗口，主要包括大量禁用按钮
@@ -144,12 +147,12 @@ namespace OnlineCourse
             isStudent = true;
             canControl = false;
 
-            hasStudent = server.checkStudent(roomId);
+            //hasStudent = server.checkStudent(roomId);
 
-            DeactivateComputerIcons(0);
-            DeactivateRecordIcons();
+            //DeactivateComputerIcons(0);
+            //DeactivateRecordIcons();
 
-            DeactivateCanvasIcons();
+            //DeactivateCanvasIcons();
         }
 
         /// <summary>
@@ -256,65 +259,65 @@ namespace OnlineCourse
         /// <summary>
         /// 检查是否具有控制权。
         /// </summary>
-        private void checkControl() {
-            Boolean[] hasControl = server.checkControl(roomId);
-            for (int position = 0; position < 5; position++) {
-                if (hasControl[position]) {
-                    if (userPosition == position + 1)
-                    {
-                        //该学生自己获得控制权
-                        if (canControl == false) {
-                            canControl = true;
-                            DeactivateComputerIcons(userPosition);
-                            ActivateCanvasIcons();
-                            Image button = getComputerIcon(userPosition);
-                            try
-                            {
-                                button.Dispatcher.Invoke(() => {
-                                    button.Tag = (int)((userPosition * 10) + 1);
-                                    button.Visibility = Visibility.Visible;
-                                });
-                            }
-                            catch (Exception ex) { };
+        //private void checkControl() {
+        //    Boolean[] hasControl = server.checkControl(roomId);
+        //    for (int position = 0; position < 5; position++) {
+        //        if (hasControl[position]) {
+        //            if (userPosition == position + 1)
+        //            {
+        //                //该学生自己获得控制权
+        //                if (canControl == false) {
+        //                    canControl = true;
+        //                    DeactivateComputerIcons(userPosition);
+        //                    ActivateCanvasIcons();
+        //                    Image button = getComputerIcon(userPosition);
+        //                    try
+        //                    {
+        //                        button.Dispatcher.Invoke(() => {
+        //                            button.Tag = (int)((userPosition * 10) + 1);
+        //                            button.Visibility = Visibility.Visible;
+        //                        });
+        //                    }
+        //                    catch (Exception ex) { };
                             
-                        }                      
-                        return;
-                    }
-                    else {
-                        //其他学生获得控制权
-                        DeactivateComputerIcons(0);
-                        Image button = getComputerIcon(position + 1);
-                        try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
-                            button.Tag = (int)((userPosition * 10) + 1);
-                            button.Visibility = Visibility.Visible;
-                        }); } catch (Exception ex) { };
+        //                }                      
+        //                return;
+        //            }
+        //            else {
+        //                //其他学生获得控制权
+        //                DeactivateComputerIcons(0);
+        //                Image button = getComputerIcon(position + 1);
+        //                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+        //                    button.Tag = (int)((userPosition * 10) + 1);
+        //                    button.Visibility = Visibility.Visible;
+        //                }); } catch (Exception ex) { };
                         
-                        return;
-                    }
-                }
-            }
-            if (isStudent) {
-                //教师强制取回控制权
-                DeactivateComputerIcons(0);
-                if (canControl == true) {
-                    canControl = false;
-                    isDrawing = false;
-                    DeactivateCanvasIcons();
-                }              
-            }
+        //                return;
+        //            }
+        //        }
+        //    }
+        //    if (isStudent) {
+        //        //教师强制取回控制权
+        //        DeactivateComputerIcons(0);
+        //        if (canControl == true) {
+        //            canControl = false;
+        //            isDrawing = false;
+        //            DeactivateCanvasIcons();
+        //        }              
+        //    }
                 
-            else {
-                //教师端学生主动交还控制权
-                if (canControl == false)
-                {
-                    canControl = true;
-                    ActivateComputerIcons();
-                    ActivateCanvasIcons();
-                    startTeacherThread();
-                }
-            }
+        //    else {
+        //        //教师端学生主动交还控制权
+        //        if (canControl == false)
+        //        {
+        //            canControl = true;
+        //            ActivateComputerIcons();
+        //            ActivateCanvasIcons();
+        //            startTeacherThread();
+        //        }
+        //    }
                 
-        }
+        //}
 
         /// <summary>
         /// 根据position获得对应静音按钮
@@ -441,24 +444,24 @@ namespace OnlineCourse
         /// <summary>
         /// 检查房间静音情况
         /// </summary>
-        private void checkSilenced() {
-            Boolean[] silenced = server.checkSilenced(roomId);
-            for (int position = 0; position < 5; position++) {
-                if (silenced[position])
-                {
-                    if (isStudent == false  || userPosition == position + 1)
-                        BanRecord(position + 1, true);
-                    else
-                        BanRecord(position + 1, false);
-                }
-                else {
-                    if (isStudent == false || userPosition == position + 1)
-                        EnableRecord(position + 1, true);
-                    else
-                        EnableRecord(position + 1, false);
-                }
-            }
-        }
+        //private void checkSilenced() {
+        //    Boolean[] silenced = server.checkSilenced(roomId);
+        //    for (int position = 0; position < 5; position++) {
+        //        if (silenced[position])
+        //        {
+        //            if (isStudent == false  || userPosition == position + 1)
+        //                BanRecord(position + 1, true);
+        //            else
+        //                BanRecord(position + 1, false);
+        //        }
+        //        else {
+        //            if (isStudent == false || userPosition == position + 1)
+        //                EnableRecord(position + 1, true);
+        //            else
+        //                EnableRecord(position + 1, false);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 启用画布相关按钮
@@ -605,17 +608,18 @@ namespace OnlineCourse
             mouseClickedTag = tagHead * 10;
         }
 
-       /// <summary>
-       /// 鼠标抬起事件，此按钮用于移交控制权
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于移交控制权
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComputerIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (canControl == false && isStudent == true)
                 return;
             Image image = sender as Image;
-            if (image != null) {
+            if (image != null)
+            {
                 //用tag表示不同按钮
                 int tag = int.Parse(image.Tag.ToString());
                 //tagTail表示状态
@@ -623,7 +627,8 @@ namespace OnlineCourse
                 //tagHead表示序号
                 int tagHead = tag / 10;
                 //检测鼠标落下与抬起是否相同。十位表征序号，个位为 0 表征是控制权按钮。
-                if (mouseClickedTag != tagHead * 10) {
+                if (mouseClickedTag != tagHead * 10)
+                {
                     mouseClickedTag = 0;
                     return;
                 }
@@ -633,9 +638,10 @@ namespace OnlineCourse
                     DeactivateCanvasIcons();
                     canControl = false;
                     //此处添加学生交还控制权的方法
-                    server.changeControl(roomId, userPosition, false);
+                    //server.changeControl(roomId, userPosition, false);
                 }
-                else {
+                else
+                {
                     //老师手动拿回控制权的时候
                     //根据状态不同进行切换
                     if (tagTail == 0)
@@ -644,7 +650,8 @@ namespace OnlineCourse
                         {
                             try
                             {
-                                image.Dispatcher.Invoke(() => {
+                                image.Dispatcher.Invoke(() =>
+                                {
                                     image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
                                     image.Tag = tagHead + "" + 1;
                                 });
@@ -654,15 +661,16 @@ namespace OnlineCourse
                             DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
                             DeactivateCanvasIcons();
                             //此处添加老师移交控制权的方法
-                            server.changeControl(roomId, tagHead, true);
-                            startStudentThread();
+                            //server.changeControl(roomId, tagHead, true);
+                            //startStudentThread();
                         }
                     }
                     else
                     {
                         try
                         {
-                            image.Dispatcher.Invoke(() => {
+                            image.Dispatcher.Invoke(() =>
+                            {
                                 image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
                                 image.Tag = tagHead + "" + 0;
                             });
@@ -672,14 +680,14 @@ namespace OnlineCourse
                         ActivateComputerIcons();
                         ActivateCanvasIcons();
                         //此处添加老师拿回控制权的方法
-                        server.changeControl(roomId, tagHead, false);
-                        startTeacherThread();
+                        //server.changeControl(roomId, tagHead, false);
+                        //startTeacherThread();
                     }
                 }
-               
-               //重置状态值避免bug
-               mouseClickedTag = 0;
-            }        
+
+                //重置状态值避免bug
+                mouseClickedTag = 0;
+            }
         }
 
         /// <summary>
@@ -730,12 +738,12 @@ namespace OnlineCourse
                     if (tagTail == 0)
                     {
                         mute(tagHead);
-                        server.silenceStudent(roomId,tagHead, true);
+                        //server.silenceStudent(roomId,tagHead, true);
                     }
 
                     else {
                         unMute(tagHead);
-                        server.silenceStudent(roomId,tagHead, false);
+                        //server.silenceStudent(roomId,tagHead, false);
                     }
                         
                 }
@@ -833,7 +841,7 @@ namespace OnlineCourse
             isDrawing = true;
 
             //以下是将画板变化更新到服务器上
-            server.updateCanvas(roomId, startPointPosition, currentColor, 0);
+            //server.updateCanvas(roomId, startPointPosition, currentColor, 0);
         }
 
        /// <summary>
@@ -870,7 +878,7 @@ namespace OnlineCourse
                         l.Y2 = point.Y;
                         printCanvas.Children.Add(l);
                         //以下是将画板变化更新到服务器上
-                        server.updateCanvas(roomId, pointPosition, null, count);
+                        //server.updateCanvas(roomId, pointPosition, null, count);
                     }
                 }
             }
@@ -954,7 +962,7 @@ namespace OnlineCourse
             mouseClickedTag = 0;
 
             //以下是将画板变化更新到服务器上
-            server.updateCanvas(roomId,null, null, -1);
+            //server.updateCanvas(roomId,null, null, -1);
         }
 
         /// <summary>
@@ -1029,12 +1037,12 @@ namespace OnlineCourse
             if (stuThread != null)
                 stuThread.Abort();
             pushTool.Quit();
-            server.setEmptyPosition(roomId,userPosition);
+            //server.setEmptyPosition(roomId,userPosition);
 
-            RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
+            //RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
-            roomControl.Show();
+            //roomControl.Show();
         }
         
 
@@ -1135,52 +1143,52 @@ namespace OnlineCourse
         /// <summary>
         /// 开启学生端线程
         /// </summary>
-        private void startStudentThread()
-        {
-            stuThread = new Thread(new ThreadStart(this.studentThread));
-            stuThread.IsBackground = true;
-            stuThread.Start();
-        }
+        //private void startStudentThread()
+        //{
+        //    stuThread = new Thread(new ThreadStart(this.studentThread));
+        //    stuThread.IsBackground = true;
+        //    stuThread.Start();
+        //}
         /// <summary>
         /// 未获得画板控制权时的线程，学生端即使获得画板控制权依然使用本线程
         /// </summary>
-        private void studentThread() {
-            while (true) {
-                if (canControl == false)
-                {
-                    linesList = server.getLines(roomId);
-                    colorList = server.getColors(roomId);
-                    Redraw();
-                }
-                checkControl();
-                checkSilenced();
-                if (canControl && (isStudent == false))
-                    break;
-                Thread.Sleep(250);
-            }
+        //private void studentThread() {
+        //    while (true) {
+        //        if (canControl == false)
+        //        {
+        //            linesList = server.getLines(roomId);
+        //            colorList = server.getColors(roomId);
+        //            Redraw();
+        //        }
+        //        checkControl();
+        //        checkSilenced();
+        //        if (canControl && (isStudent == false))
+        //            break;
+        //        Thread.Sleep(250);
+        //    }
             
-        }
+        //}
 
         /// <summary>
         /// 开启老师端已控制线程
         /// </summary>
-        private void startTeacherThread() {
-            teaThread = new Thread(new ThreadStart(this.teacherThread));
-            teaThread.IsBackground = true;
-            teaThread.Start();
-        }
+        //private void startTeacherThread() {
+        //    teaThread = new Thread(new ThreadStart(this.teacherThread));
+        //    teaThread.IsBackground = true;
+        //    teaThread.Start();
+        //}
         /// <summary>
         /// 教师端拥有画板控制权时的线程
         /// </summary>
-        private void teacherThread() {
-            while (true) {
-                checkSilenced();
-                checkStudent();
-                if (canControl == false)
-                    break;
-                Thread.Sleep(250);
-            }
-        }
+        //private void teacherThread() {
+        //    while (true) {
+        //        checkSilenced();
+        //        checkStudent();
+        //        if (canControl == false)
+        //            break;
+        //        Thread.Sleep(250);
+        //    }
+        //}
         
     }
 }
