@@ -35,6 +35,7 @@ namespace OnlineCourse
             InitializeComponent();
             user = userIn;
             whichButtonClicked = 0;
+            welcomeLabel.Content = "欢迎，" + userIn.userName;
         }
 
         /// <summary>

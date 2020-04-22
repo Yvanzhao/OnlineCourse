@@ -1034,6 +1034,7 @@ namespace OnlineCourse
         private void startStudentThread()
         {
             Thread studentThread = new Thread(new ThreadStart(this.studentThread));
+            studentThread.IsBackground = true;
             studentThread.Start();
         }
         /// <summary>
@@ -1061,6 +1062,7 @@ namespace OnlineCourse
         /// </summary>
         private void startTeacherThread() {
             Thread teacherThread = new Thread(new ThreadStart(this.teacherThread));
+            teacherThread.IsBackground = true;
             teacherThread.Start();
         }
         /// <summary>
