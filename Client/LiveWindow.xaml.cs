@@ -509,7 +509,8 @@ namespace OnlineCourse
             //    case 5:
             //        try { studentMedia5.Dispatcher.Invoke(() => { studentMedia5.Volume = 0; }); } catch (Exception ex) { }; break;
             //}
-
+            if(userPosition==0)
+                try { teacherMedia.Dispatcher.Invoke(() => { teacherMedia.Volume = 0; }); } catch (Exception ex) { };
         }
 
         /// <summary>
