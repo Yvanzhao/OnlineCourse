@@ -1359,18 +1359,19 @@ namespace OnlineCourse
         private void socketTest() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToServer.Connect("172.19.241.249", 8085);
-            string str = "firstConnect@"+userPosition+"@"+roomId;
+            
+            string ip = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
+            string str = "firstConnect@"+userPosition+"@"+roomId+"@"+ip;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
             byte[] ipByte = new byte[1024];
             int count = connectToServer.Receive(ipByte);
-            string ip = System.Text.Encoding.UTF8.GetString(ipByte, 0, count);
+            string serverResponse = System.Text.Encoding.UTF8.GetString(ipByte, 0, count);
             connectToServer.Close();
-            ////改成自己的ip
-            //////
-            IPs[userPosition] = "172.29.40.173";
+            
+            IPs[userPosition] = ip;
             //测试socket连接
-            Console.WriteLine("Local IP is " + ip);
+            Console.WriteLine("Connect to server is " + serverResponse);
         }
 
         /// <summary>
@@ -1389,8 +1390,7 @@ namespace OnlineCourse
         {
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Console.WriteLine(IPs[userPosition]);
-            //IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
-            IPAddress ipAdr = IPAddress.Parse("172.29.40.173");
+            IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
@@ -1422,17 +1422,14 @@ namespace OnlineCourse
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
             }
-            //IPs[0] = teacherIP;
-            IPs[0] = "172.29.40.173";
+            IPs[0] = teacherIP;
             //与教师连接
             Console.WriteLine(IPs[0]);
             Socket connectToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToTeacher.Connect(IPs[0], 8085);
-            str = "ConnectToTeacher@" + userPosition;
+            str = "ConnectToTeacher@" + userPosition+"@"+IPs[userPosition];
             connectToTeacher.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToTeacher.Close();
-
-
 
             serverThread = new Thread(new ThreadStart(this.studentSocketThread));
             serverThread.IsBackground = true;
@@ -1600,15 +1597,14 @@ namespace OnlineCourse
                 }
 
             }
-            //学生连接教师命令 格式"ConnectToTeacher@'userPosition'"
+            //学生连接教师命令 格式"ConnectToTeacher@'userPosition'@'studentIP'"
             else if (order[0].Equals("ConnectToTeacher"))
             {
-                if (order.Length < 2)
+                if (order.Length < 3)
                     return;
-                string studentIP = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
+                string studentIP = order[2];
                 int studentPosition = int.Parse(order[1]);
-                //IPs[studentPosition] = studentIP;
-                IPs[studentPosition] = "172.29.40.233";
+                IPs[studentPosition] = studentIP;
                 socketOrder.Close();
                 string newOrder = "StudentIn@" + studentPosition;
                 broadcastOrder(newOrder, studentPosition);

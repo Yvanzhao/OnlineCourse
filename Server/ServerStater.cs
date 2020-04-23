@@ -66,14 +66,14 @@ namespace Server
             string orders = System.Text.Encoding.UTF8.GetString(readBuff, 0, count);
 
             string[] order = orders.Split('@');
-            //与服务器第一次建立连接 格式"firstConnect@'userPosition'@'roomId'"
+            //与服务器第一次建立连接 格式"firstConnect@'userPosition'@'roomId'@'userID'"
             if (order[0].Equals("firstConnect"))
             {
-                if (order.Length < 3)
+                if (order.Length < 4)
                     return;
-                string ip = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
+                string ip = order[3];
                 Console.WriteLine(ip);
-                socketOrder.Send(System.Text.Encoding.Default.GetBytes(ip));
+                socketOrder.Send(System.Text.Encoding.Default.GetBytes("Success"));
                 if (int.Parse(order[1]) == 0)
                 {
                     string[] IPandRoomId = new string[2];
