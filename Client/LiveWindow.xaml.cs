@@ -198,14 +198,6 @@ namespace OnlineCourse
         private void ActivateComputerIcons() {
             for (int position = 1; position < 6; position++) {
                 Image button = getComputerIcon(position);
-                try
-                {
-                    button.Dispatcher.Invoke(() => {
-                        button.Tag = (int)((userPosition * 10) + 0);
-                        button.Visibility = Visibility.Hidden;
-                    });
-                }
-                catch (Exception ex) { };
                 
                 if (IPs[position] != null)
                     ActivateComputerIcon(position, false);
@@ -221,14 +213,6 @@ namespace OnlineCourse
                 if (deactivatePosition != position) { 
                     DeactivateComputerIcon(deactivatePosition,false);
                     Image button = getComputerIcon(deactivatePosition);
-                    try
-                    {
-                        button.Dispatcher.Invoke(() => {
-                            button.Tag = (int)((userPosition * 10) + 0);
-                            button.Visibility = Visibility.Hidden;
-                        });
-                    }
-                    catch (Exception ex) { };
                     
                 }
                     
@@ -287,7 +271,7 @@ namespace OnlineCourse
                 try { 
                     button.Dispatcher.Invoke(() => { 
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]); 
-                        button.Cursor = Cursors.Hand; 
+                        button.Cursor = Cursors.Arrow; 
                     }); 
                 } 
                 catch (Exception ex) { };
@@ -298,7 +282,7 @@ namespace OnlineCourse
                 try { 
                     button.Dispatcher.Invoke(() => { 
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]); 
-                        button.Cursor = Cursors.Hand; 
+                        button.Cursor = Cursors.Arrow;
                     }); 
                 } 
                 catch (Exception ex) { };
@@ -562,10 +546,11 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ComputerIcon_MouseDown(object sender, MouseButtonEventArgs e) {
+            mouseClickedTag = 0;
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             if (isStudent == false)
             {
-                if (IPs[tagHead] == null)//该学生不存在
+                if (IPs[tagHead] == null || IPs[tagHead].Length <1)//该学生不存在
                     return;
             }
             else if (canControl == false)//是学生并且不具备控制权
@@ -846,18 +831,22 @@ namespace OnlineCourse
         /// <param name="newPoint"></param>
         /// <param name="count"></param>
         private void drawLines(Point newPoint,int count,int painterPosition) {
-            var l = new Line();
-            l.Stroke = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
-            l.StrokeThickness = 1;
-            if (count < 1)
-                return;
-            // count-1  保证 line的起始点为点集合中的倒数第二个点。
-            l.X1 = pointsList[count - 1][0];  
-            l.Y1 = pointsList[count - 1][1];
-            // 终点X,Y 为当前point的X,Y
-            l.X2 = newPoint.X;
-            l.Y2 = newPoint.Y;
-            printCanvas.Children.Add(l);
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                var l = new Line();
+                l.Stroke = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
+                l.StrokeThickness = 1;
+                if (count < 1)
+                    return;
+                // count-1  保证 line的起始点为点集合中的倒数第二个点。
+                l.X1 = pointsList[count - 1][0];
+                l.Y1 = pointsList[count - 1][1];
+                // 终点X,Y 为当前point的X,Y
+                l.X2 = newPoint.X;
+                l.Y2 = newPoint.Y;
+                printCanvas.Children.Add(l);
+            }));
+            
             //将点的坐标添加至List中
             double[] pointPosition = new double[2];
             pointPosition[0] = newPoint.X;
