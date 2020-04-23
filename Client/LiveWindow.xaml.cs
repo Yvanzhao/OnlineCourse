@@ -952,7 +952,11 @@ namespace OnlineCourse
         /// 实际清除Canvas的命令
         /// </summary>
         private void ClearCanvas(int painterPosition) {
-            printCanvas.Children.Clear();
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                printCanvas.Children.Clear();
+            }));
+            
             colorList = new List<byte[]>();
             linesList = new List<List<double[]>>();
 
