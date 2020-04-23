@@ -1609,6 +1609,9 @@ namespace OnlineCourse
                 string newOrder = "StudentIn@" + studentPosition;
                 broadcastOrder(newOrder, studentPosition);
 
+                ActivateComputerIcon(studentPosition, false);
+                ActivateRecordIcon(studentPosition, false);
+
                 switch (studentPosition)
                 {
                     case 1:
