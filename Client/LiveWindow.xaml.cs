@@ -60,6 +60,12 @@ namespace OnlineCourse
         Thread serverThread;
         //画图用的特殊Socket
         Socket[] drawSocket;
+        Uri teacherAddress;
+        Uri studentAddress1;
+        Uri studentAddress2;
+        Uri studentAddress3;
+        Uri studentAddress4;
+        Uri studentAddress5;
 
 
         /// <summary>
@@ -85,6 +91,14 @@ namespace OnlineCourse
             //变量赋值与初始化
             IPs = new string[6] { null, null, null, null, null, null };
             roomId = roomIdIn;
+            teacherAddress = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0");
+            studentAddress1 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1");
+            studentAddress2 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "2");
+            studentAddress3 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "3");
+            studentAddress4 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "4");
+            studentAddress5 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "5");
+
+
             user = userIn;
             this.userPosition = server.getUserPosition(roomIdIn,userIn.userId);
 
@@ -97,9 +111,6 @@ namespace OnlineCourse
             linesList = new List<List<double[]>>();
             colorList = new List<byte[]>();
 
-            mute(userPosition);
-
-            
             if (tag == 1)
             {
                 socketTest();
@@ -113,19 +124,37 @@ namespace OnlineCourse
                 teacherSocket();
             }
 
-            // 开始推流  暂时只有老师的是对的
+            // 开始推流
             pushTool.StartCamera(roomId + userPosition);
-            // pushTool.StartDesktop("0", "0", "100x100", "" + userPosition);
 
+
+            // 播放自己
+            switch (userPosition)
+            {
+                case 0:
+                    teacherMedia.Open(teacherAddress);break;
+                case 1:
+                    studentMedia1.Open(studentAddress1);break;
+                case 2:
+                    studentMedia2.Open(studentAddress2); break;
+                case 3:
+                    studentMedia3.Open(studentAddress3); break;
+                case 4:
+                    studentMedia4.Open(studentAddress4); break;
+                case 5:
+                    studentMedia5.Open(studentAddress5); break;
+            }
+            mute(userPosition);
         }
 
         /// <summary>
         /// 作为老师初始化窗口
         /// </summary>
         private void TeacherInitialization() {
+            
             DeactivateComputerIcons(0);
             DeactivateRecordIcons();
-
+            
             isStudent = false;
             canControl = true;
         }
@@ -140,7 +169,6 @@ namespace OnlineCourse
 
             DeactivateComputerIcons(0);
             DeactivateRecordIcons();
-
             DeactivateCanvasIcons();
         }
 
@@ -468,40 +496,34 @@ namespace OnlineCourse
         
         /// <summary>
         /// 初始化播放器并拉流
-        private async void teaMedia_Loaded(object sender, RoutedEventArgs e)
+        private void teaMedia_Loaded(object sender, RoutedEventArgs e)
         {
             teacherMedia.MediaInitializing += OnMediaInitializing;
-            await teacherMedia.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0"));
         }
 
-        private async void stu1Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu1Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia1.MediaInitializing += OnMediaInitializing;
-            await studentMedia1.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1"));
         }
 
-        private async void stu2Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu2Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia2.MediaInitializing += OnMediaInitializing;
-            await studentMedia2.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "2"));
         }
 
-        private async void stu3Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu3Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia3.MediaInitializing += OnMediaInitializing;
-            await studentMedia3.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "3"));
         }
 
-        private async void stu4Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu4Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia4.MediaInitializing += OnMediaInitializing;
-            await studentMedia4.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "4"));
         }
 
-        private async void stu5Media_Loaded(object sender, RoutedEventArgs e)
+        private void stu5Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia5.MediaInitializing += OnMediaInitializing;
-            await studentMedia5.Open(new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "5"));
         }
 
         // 修改播放器缓冲
@@ -1100,7 +1122,124 @@ namespace OnlineCourse
                     return;
                 }
                 //在此添加刷新代码（根据tagHead获得位置）
+                if (tagHead == 0)
+                {
+                    if (userPosition == 0)
+                    {
+                        teacherMedia.Open(teacherAddress);
+                        try { teacherMedia.Dispatcher.Invoke(() => { if (teacherMedia.Volume != 0) teacherMedia.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        teacherMedia.Open(teacherAddress);
+                    }
+                }
 
+                if (tagHead == 1)
+                {
+                    if (userPosition == 1)
+                    {
+                        studentMedia1.Open(studentAddress1);
+                        try { studentMedia1.Dispatcher.Invoke(() => { if (studentMedia1.Volume != 0) studentMedia1.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        // 检查1号位置有没有学生接入
+                        if (IPs[1] != null)
+                        {
+                            studentMedia1.Open(studentAddress1);
+                        }
+                        else
+                        {
+                            MessageBox.Show("该位置没有学生接入");
+                        }
+                    }
+                }
+
+                if (tagHead == 2)
+                {
+                    if (userPosition == 2)
+                    {
+                        studentMedia1.Open(studentAddress2);
+                        try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume != 0) studentMedia2.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        // 检查2号位置有没有学生接入
+                        if (IPs[2] != null)
+                        {
+                            studentMedia2.Open(studentAddress2);
+                        }
+                        else
+                        {
+                            MessageBox.Show("该位置没有学生接入");
+                        }
+                    }
+                }
+
+                if (tagHead == 3)
+                {
+                    if (userPosition == 3)
+                    {
+                        studentMedia1.Open(studentAddress3);
+                        try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume != 0) studentMedia3.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        // 检查3号位置有没有学生接入
+                        if (IPs[3] != null)
+                        {
+                            studentMedia3.Open(studentAddress3);
+                        }
+                        else
+                        {
+                            MessageBox.Show("该位置没有学生接入");
+                        }
+                    }
+                }
+
+                if (tagHead == 4)
+                {
+                    if (userPosition == 4)
+                    {
+                        studentMedia1.Open(studentAddress4);
+                        try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume != 0) studentMedia4.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        // 检查4号位置有没有学生接入
+                        if (IPs[4] != null)
+                        {
+                            studentMedia4.Open(studentAddress4);
+                        }
+                        else
+                        {
+                            MessageBox.Show("该位置没有学生接入");
+                        }
+                    }
+                }
+
+
+                if (tagHead == 5)
+                {
+                    if (userPosition == 5)
+                    {
+                        studentMedia1.Open(studentAddress5);
+                        try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume != 0) studentMedia5.Volume = 0; }); } catch (Exception ex) { };
+                    }
+                    else
+                    {
+                        // 检查5号位置有没有学生接入
+                        if (IPs[5] != null)
+                        {
+                            studentMedia5.Open(studentAddress5);
+                        }
+                        else
+                        {
+                            MessageBox.Show("该位置没有学生接入");
+                        }
+                    }
+                }
 
                 //重置状态值避免bug
                 mouseClickedTag = 0;
@@ -1455,11 +1594,54 @@ namespace OnlineCourse
 
             }
             //学生连接教师命令 格式"ConnectToTeacher@'userPosition'"
-            else if (order[0].Equals("ConnectToTeacher")) { 
+            else if (order[0].Equals("ConnectToTeacher"))
+            {
+                if (order.Length < 2)
+                    return;
                 string studentIP = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
-                IPs[userPosition] = studentIP;
+                int studentPosition = int.Parse(order[1]);
+                IPs[studentPosition] = studentIP;
                 socketOrder.Close();
+                string newOrder = "StudentIn@" + studentPosition;
+                broadcastOrder(newOrder, studentPosition);
+
+                switch (studentPosition)
+                {
+                    case 1:
+                        studentMedia1.Open(studentAddress1); break;
+                    case 2:
+                        studentMedia2.Open(studentAddress2); break;
+                    case 3:
+                        studentMedia3.Open(studentAddress3); break;
+                    case 4:
+                        studentMedia4.Open(studentAddress4); break;
+                    case 5:
+                        studentMedia5.Open(studentAddress5); break;
+                }
+
                 return;
+            }
+            //有学生连接进来后老师广播 格式"StudentIn@'newStudentPostion'"
+            else if (order[0].Equals("StudentIn"))
+            {
+                if (order.Length < 2)
+                    return;
+                int newStudentPostion = int.Parse(order[1]);
+                IPs[newStudentPostion] = "hasStudent";
+
+                switch (newStudentPostion)
+                {
+                    case 1:
+                        studentMedia1.Open(studentAddress1); break;
+                    case 2:
+                        studentMedia2.Open(studentAddress2); break;
+                    case 3:
+                        studentMedia3.Open(studentAddress3); break;
+                    case 4:
+                        studentMedia4.Open(studentAddress4); break;
+                    case 5:
+                        studentMedia5.Open(studentAddress5); break;
+                }
             }
 
             socketOrder.Close();
