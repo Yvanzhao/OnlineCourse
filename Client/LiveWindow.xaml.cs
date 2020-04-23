@@ -1250,7 +1250,7 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 鼠标移入镜头区域的函数，用于使隐藏的两个按钮展示出来
+        /// 鼠标移入镜头区域的函数，用于使隐藏的三个按钮展示出来
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1261,7 +1261,7 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 鼠标移处镜头区域的函数，用于隐藏两个按钮。
+        /// 鼠标移处镜头区域的函数，用于隐藏三个按钮。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

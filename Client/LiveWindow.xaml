@@ -49,7 +49,7 @@
                     <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
                     <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                     <!--刷新按钮-->
-                    <Image x:Name="refreshIcon_1" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="10" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                    <Image x:Name="refreshIcon_1" Grid.Row="2" Margin="-2,8,8,8" Tag="10" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头2号-->
@@ -70,7 +70,7 @@
                     <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
                     <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                     <!--刷新按钮-->
-                    <Image x:Name="refreshIcon_2" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="20" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                    <Image x:Name="refreshIcon_2" Grid.Row="2" Margin="-2,8,8,8" Tag="20" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头3号-->
@@ -91,7 +91,7 @@
                     <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
                     <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                     <!--刷新按钮-->
-                    <Image x:Name="refreshIcon_3" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="30" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                    <Image x:Name="refreshIcon_3" Grid.Row="2" Margin="-2,8,8,8" Tag="30" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头4号-->
@@ -112,7 +112,7 @@
                     <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
                     <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                     <!--刷新按钮-->
-                    <Image x:Name="refreshIcon_4" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="40" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                    <Image x:Name="refreshIcon_4" Grid.Row="2" Margin="-2,8,8,8" Tag="40" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头5号-->
@@ -132,7 +132,7 @@
                     <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
                     <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
                     <!--刷新按钮-->
-                    <Image x:Name="refreshIcon_5" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="50" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                    <Image x:Name="refreshIcon_5" Grid.Row="2" Margin="-2,8,8,8" Tag="50" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
         </Grid>
