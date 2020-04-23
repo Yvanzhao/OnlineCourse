@@ -1366,7 +1366,9 @@ namespace OnlineCourse
             int count = connectToServer.Receive(ipByte);
             string ip = System.Text.Encoding.UTF8.GetString(ipByte, 0, count);
             connectToServer.Close();
-            IPs[userPosition] = ip;
+            ////改成自己的ip
+            //////
+            IPs[userPosition] = "172.29.40.173";
             //测试socket连接
             Console.WriteLine("Local IP is " + ip);
         }
@@ -1386,7 +1388,9 @@ namespace OnlineCourse
         private void teacherSocketThread()
         {
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
+            Console.WriteLine(IPs[userPosition]);
+            //IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
+            IPAddress ipAdr = IPAddress.Parse("172.29.40.173");
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
@@ -1418,11 +1422,12 @@ namespace OnlineCourse
                 Window thisWindow = Window.GetWindow(this);
                 thisWindow.Close();
             }
-            IPs[0] = teacherIP;
+            //IPs[0] = teacherIP;
+            IPs[0] = "172.29.40.173";
             //与教师连接
-            Console.WriteLine(teacherIP);
+            Console.WriteLine(IPs[0]);
             Socket connectToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToTeacher.Connect(teacherIP, 8085);
+            connectToTeacher.Connect(IPs[0], 8085);
             str = "ConnectToTeacher@" + userPosition;
             connectToTeacher.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToTeacher.Close();
@@ -1602,7 +1607,8 @@ namespace OnlineCourse
                     return;
                 string studentIP = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
                 int studentPosition = int.Parse(order[1]);
-                IPs[studentPosition] = studentIP;
+                //IPs[studentPosition] = studentIP;
+                IPs[studentPosition] = "172.29.40.233";
                 socketOrder.Close();
                 string newOrder = "StudentIn@" + studentPosition;
                 broadcastOrder(newOrder, studentPosition);
