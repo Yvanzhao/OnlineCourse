@@ -71,7 +71,7 @@ namespace Server
             {
                 if (order.Length < 3)
                     return;
-                string ip = socketOrder.RemoteEndPoint.AddressFamily.ToString();
+                string ip = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
                 Console.WriteLine(ip);
                 socketOrder.Send(System.Text.Encoding.Default.GetBytes(ip));
                 if (int.Parse(order[1]) == 0)

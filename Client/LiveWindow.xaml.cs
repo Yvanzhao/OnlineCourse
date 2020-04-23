@@ -1428,7 +1428,7 @@ namespace OnlineCourse
             }
             //学生连接教师命令 格式"ConnectToTeacher@'userPosition'"
             else if (order[0].Equals("ConnectToTeacher")) { 
-                string studentIP = socketOrder.RemoteEndPoint.AddressFamily.ToString();
+                string studentIP = socketOrder.RemoteEndPoint.ToString().Split(':')[0];
                 IPs[userPosition] = studentIP;
                 socketOrder.Close();
                 return;
