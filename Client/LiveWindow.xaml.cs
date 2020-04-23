@@ -110,6 +110,7 @@ namespace OnlineCourse
 
             linesList = new List<List<double[]>>();
             colorList = new List<byte[]>();
+            drawSocket = new Socket[6];
 
             if (tag == 1)
             {
@@ -888,7 +889,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void PrintCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false)
+            if (canControl == false || isDrawing == false)
                 return;
             isDrawing = false;
             endDrawing(userPosition);
@@ -900,7 +901,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void printCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (canControl == false)
+            if (canControl == false || isDrawing == false)
                 return;
             isDrawing = false;
             endDrawing(userPosition);
