@@ -1149,7 +1149,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 2)
                     {
-                        studentMedia1.Open(studentAddress2);
+                        studentMedia2.Open(studentAddress2);
                         try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume != 0) studentMedia2.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1170,7 +1170,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 3)
                     {
-                        studentMedia1.Open(studentAddress3);
+                        studentMedia3.Open(studentAddress3);
                         try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume != 0) studentMedia3.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1191,7 +1191,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 4)
                     {
-                        studentMedia1.Open(studentAddress4);
+                        studentMedia4.Open(studentAddress4);
                         try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume != 0) studentMedia4.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1213,7 +1213,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 5)
                     {
-                        studentMedia1.Open(studentAddress5);
+                        studentMedia5.Open(studentAddress5);
                         try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume != 0) studentMedia5.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
