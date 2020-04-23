@@ -778,7 +778,7 @@ namespace OnlineCourse
             linesList.Add(pointsList);
             colorList.Add(currentColor);
             //Socket网络通信
-            string order = "Point@" + userPosition + "@0@" + startPoint.X + "@" + startPoint.Y+"@";
+            string order = "Point@" + painterPosition + "@0@" + startPoint.X + "@" + startPoint.Y+"@";
             //教师绘图或者教师接收到其他学生绘图，广播到学生
             if (isStudent == false)
             {
@@ -854,7 +854,7 @@ namespace OnlineCourse
             pointsList.Add(pointPosition);
 
             //Socket网络通信
-            string order = "Point@" + userPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
+            string order = "Point@" + painterPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
             //教师绘图或者教师接收到其他学生绘图，广播到学生
             if (isStudent == false)
             {
@@ -1535,7 +1535,11 @@ namespace OnlineCourse
                 currentColor[1] = byte.Parse(order[3]);
                 currentColor[2] = byte.Parse(order[4]);
                 currentColor[3] = byte.Parse(order[5]);
-                colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
+                App.Current.Dispatcher.Invoke((Action)(() =>
+                {
+                    colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
+                }));
+                
             }
             //画板更新命令 格式"Point@'userPosition'@'具体操作'@'X'@'Y@",因为是一个Socket多次发送，所以需要用循环便利所有缓冲区。这条命令自带广播功能。
             else if (order[0].Equals("Point"))
