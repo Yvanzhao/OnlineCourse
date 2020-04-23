@@ -1607,7 +1607,7 @@ namespace OnlineCourse
                 broadcastOrder(newOrder, 0);
 
                 ActivateComputerIcon(studentPosition, false);
-                ActivateRecordIcon(studentPosition, false);
+                ActivateRecordIcon(studentPosition, true);
 
                 switch (studentPosition)
                 {
