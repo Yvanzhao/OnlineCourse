@@ -1585,7 +1585,8 @@ namespace OnlineCourse
                 }
 
             }
-            //学生连接教师命令 格式"ConnectToTeacher@'userPosition'@'studentIP'"
+            //学生连接教师命令 格式"ConnectToTeacher@'hasStudent_1'@'hasStudent_2'@'hasStudent_3'@'hasStudent_4'@'hasStudent_5'"
+            //hasStudent=0表示没有，反之则有
             else if (order[0].Equals("ConnectToTeacher"))
             {
                 if (order.Length < 3)
@@ -1594,8 +1595,16 @@ namespace OnlineCourse
                 int studentPosition = int.Parse(order[1]);
                 IPs[studentPosition] = studentIP;
                 socketOrder.Close();
-                string newOrder = "StudentIn@" + studentPosition;
-                broadcastOrder(newOrder, studentPosition);
+
+                string newOrder = "StudentIn";
+                for (int position = 1; position < 6; position++) {
+                    if (IPs[position] == null)
+                        newOrder = newOrder + "@0";
+                    else
+                        newOrder = newOrder + "@1";
+                }              
+
+                broadcastOrder(newOrder, 0);
 
                 ActivateComputerIcon(studentPosition, false);
                 ActivateRecordIcon(studentPosition, false);
@@ -1619,24 +1628,29 @@ namespace OnlineCourse
             //有学生连接进来后老师广播 格式"StudentIn@'newStudentPostion'"
             else if (order[0].Equals("StudentIn"))
             {
-                if (order.Length < 2)
+                if (order.Length < 6)
                     return;
-                int newStudentPostion = int.Parse(order[1]);
-                IPs[newStudentPostion] = "hasStudent";
-
-                switch (newStudentPostion)
-                {
-                    case 1:
-                        studentMedia1.Open(studentAddress1); break;
-                    case 2:
-                        studentMedia2.Open(studentAddress2); break;
-                    case 3:
-                        studentMedia3.Open(studentAddress3); break;
-                    case 4:
-                        studentMedia4.Open(studentAddress4); break;
-                    case 5:
-                        studentMedia5.Open(studentAddress5); break;
+                for (int studentPosition = 1; studentPosition < 6; studentPosition++) {
+                    if (studentPosition != userPosition) {
+                        if (int.Parse(order[studentPosition]) == 1) {
+                            IPs[studentPosition] = "hasStudent";
+                            switch (studentPosition)
+                            {
+                                case 1:
+                                    studentMedia1.Open(studentAddress1); break;
+                                case 2:
+                                    studentMedia2.Open(studentAddress2); break;
+                                case 3:
+                                    studentMedia3.Open(studentAddress3); break;
+                                case 4:
+                                    studentMedia4.Open(studentAddress4); break;
+                                case 5:
+                                    studentMedia5.Open(studentAddress5); break;
+                            }
+                        }
+                    }
                 }
+                
             }
 
             socketOrder.Close();
