@@ -99,13 +99,16 @@ namespace OnlineCourse
 
             mute(userPosition);
 
-            socketTest();
+            
             if (tag == 1)
             {
+                socketTest();
                 StudentInitialization();
                 studentSocket();
             }
             else {
+                userPosition = 0;
+                socketTest();
                 TeacherInitialization();
                 teacherSocket();
             }
@@ -777,7 +780,7 @@ namespace OnlineCourse
                     if (position != painterPosition && IPs[position] != null)
                     {
                         drawSocket[position] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        drawSocket[position].Connect(IPs[position], 8086);
+                        drawSocket[position].Connect(IPs[position], 8085);
                         drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(order));
                     }
                 }
@@ -785,7 +788,7 @@ namespace OnlineCourse
             //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
             else if (userPosition == painterPosition) {
                 drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                drawSocket[0].Connect(IPs[0], 8086);
+                drawSocket[0].Connect(IPs[0], 8085);
                 drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(order));
             }
                
@@ -1066,12 +1069,13 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 鼠标落下事件，此按钮用于刷新。点击确认变量数值： 3 表征是刷新按钮。 
+        /// 鼠标落下事件，此按钮用于刷新。点击确认变量数值： 十位表征序号，3 表征是刷新按钮。 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RefreshIcon_MouseDown(object sender, MouseButtonEventArgs e) {
-            mouseClickedTag = 3;
+            int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
+            mouseClickedTag = tagHead * 10 + 3;
         }
         /// <summary>
         /// 鼠标抬起事件，此按钮用于刷新。
@@ -1079,13 +1083,30 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void RefreshIcon_MouseUp(object sender, MouseButtonEventArgs e) {
-            if (mouseClickedTag != 3)
+            Image image = sender as Image;
+            if (image != null)
             {
+                //用tag表示不同按钮
+                int tag = int.Parse(image.Tag.ToString());
+                //tagTail表示状态
+                int tagTail = tag % 10;
+                //tagHead表示序号
+                int tagHead = tag / 10;
+                //检测鼠标落下与抬起是否相同。十位表征序号，个位为 3 表征是刷新按钮。
+                Console.WriteLine(tag + ":" + tagHead + ":" + tagTail);
+                if (mouseClickedTag != tagHead * 10 + 3)
+                {
+                    mouseClickedTag = 0;
+                    return;
+                }
+                //在此添加刷新代码（根据tagHead获得位置）
+
+
+                //重置状态值避免bug
                 mouseClickedTag = 0;
-                return;
             }
 
-            //在此添加刷新代码
+            
         }
 
         /// <summary>
@@ -1125,22 +1146,27 @@ namespace OnlineCourse
                     case 1:
                         computerIcon_1.Visibility = Visibility.Visible;
                         recordIcon_1.Visibility = Visibility.Visible;
+                        refreshIcon_1.Visibility = Visibility.Visible;
                         break;
                     case 2:
                         computerIcon_2.Visibility = Visibility.Visible;
                         recordIcon_2.Visibility = Visibility.Visible;
+                        refreshIcon_2.Visibility = Visibility.Visible;
                         break;
                     case 3:
                         computerIcon_3.Visibility = Visibility.Visible;
                         recordIcon_3.Visibility = Visibility.Visible;
+                        refreshIcon_3.Visibility = Visibility.Visible;
                         break;
                     case 4:
                         computerIcon_4.Visibility = Visibility.Visible;
                         recordIcon_4.Visibility = Visibility.Visible;
+                        refreshIcon_4.Visibility = Visibility.Visible;
                         break;
                     case 5:
                         computerIcon_5.Visibility = Visibility.Visible;
                         recordIcon_5.Visibility = Visibility.Visible;
+                        refreshIcon_5.Visibility = Visibility.Visible;
                         break;
                 }
             }
@@ -1153,30 +1179,35 @@ namespace OnlineCourse
                             computerIcon_1.Visibility = Visibility.Hidden;
                         if (int.Parse(recordIcon_1.Tag.ToString()) % 10 == 0)
                             recordIcon_1.Visibility = Visibility.Hidden;
+                        refreshIcon_1.Visibility = Visibility.Hidden;
                         break;
                     case 2:
                         if (int.Parse(computerIcon_2.Tag.ToString()) % 10 == 0)
                             computerIcon_2.Visibility = Visibility.Hidden;
                         if (int.Parse(recordIcon_2.Tag.ToString()) % 10 == 0)
                             recordIcon_2.Visibility = Visibility.Hidden;
+                        refreshIcon_2.Visibility = Visibility.Hidden;
                         break;
                     case 3:
                         if (int.Parse(computerIcon_3.Tag.ToString()) % 10 == 0)
                             computerIcon_3.Visibility = Visibility.Hidden;
                         if (int.Parse(recordIcon_3.Tag.ToString()) % 10 == 0)
                             recordIcon_3.Visibility = Visibility.Hidden;
+                        refreshIcon_3.Visibility = Visibility.Hidden;
                         break;
                     case 4:
                         if (int.Parse(computerIcon_4.Tag.ToString()) % 10 == 0)
                             computerIcon_4.Visibility = Visibility.Hidden;
                         if (int.Parse(recordIcon_4.Tag.ToString()) % 10 == 0)
                             recordIcon_4.Visibility = Visibility.Hidden;
+                        refreshIcon_4.Visibility = Visibility.Hidden;
                         break;
                     case 5:
                         if (int.Parse(computerIcon_5.Tag.ToString()) % 10 == 0)
                             computerIcon_5.Visibility = Visibility.Hidden;
                         if (int.Parse(recordIcon_5.Tag.ToString()) % 10 == 0)
                             recordIcon_5.Visibility = Visibility.Hidden;
+                        refreshIcon_5.Visibility = Visibility.Hidden;
                         break;
                 }
             }
@@ -1187,7 +1218,7 @@ namespace OnlineCourse
         /// </summary>
         private void socketTest() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8086);
+            connectToServer.Connect("172.19.241.249", 8085);
             string str = "firstConnect@"+userPosition+"@"+roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
@@ -1216,7 +1247,7 @@ namespace OnlineCourse
         {
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
-            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8086);
+            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
             Console.WriteLine("教师端[服务器]启动成功");
@@ -1234,7 +1265,7 @@ namespace OnlineCourse
         private void studentSocket() {
             //获取教师IP
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8086);
+            connectToServer.Connect("172.19.241.249", 8085);
             string str = "getTeacher@"+roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
@@ -1250,7 +1281,7 @@ namespace OnlineCourse
             IPs[0] = teacherIP;
             //与教师连接
             Socket connectToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToTeacher.Connect(teacherIP, 8086);
+            connectToTeacher.Connect(teacherIP, 8085);
             str = "ConnectToTeacher@" + userPosition;
             connectToTeacher.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToTeacher.Close();
@@ -1268,7 +1299,7 @@ namespace OnlineCourse
         private void studentSocketThread() {
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
-            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8086);
+            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
             Console.WriteLine("学生端[服务器]启动成功");
@@ -1456,7 +1487,7 @@ namespace OnlineCourse
         /// <param name="order"></param>
         private void sendOrder(String order) {
             Socket sendToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            sendToTeacher.Connect(IPs[0], 8086);
+            sendToTeacher.Connect(IPs[0], 8085);
             sendToTeacher.Send(System.Text.Encoding.Default.GetBytes(order));
             sendToTeacher.Close();
         }
@@ -1471,7 +1502,7 @@ namespace OnlineCourse
                 if (IPs[position] != null) {
                     if (position != notToBroadCast) {
                         Socket broadcastToStudent = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        broadcastToStudent.Connect(IPs[position],8086);
+                        broadcastToStudent.Connect(IPs[position],8085);
                         broadcastToStudent.Send(System.Text.Encoding.Default.GetBytes(order));
                         broadcastToStudent.Close();
                     }

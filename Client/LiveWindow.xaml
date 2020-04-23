@@ -43,10 +43,13 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
-                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_1" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="10" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头2号-->
@@ -61,10 +64,13 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
-                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_2" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="20" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp"/>
                 </Grid>
             </Grid>
             <!--学生摄像头3号-->
@@ -79,10 +85,13 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
-                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_3" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="30" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头4号-->
@@ -97,10 +106,13 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
-                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_4" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="40" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
             <!--学生摄像头5号-->
@@ -114,10 +126,13 @@
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
-                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
                     </Grid.RowDefinitions>
                     <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
-                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="-2,9,8,40" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_5" Grid.Row="2" Grid.Column="1" Margin="-2,8,8,8" Tag="50" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -144,7 +159,7 @@
                 <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
             </DockPanel>
             <!--刷新按钮-->
-            <Image x:Name="refreshIcon" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="0" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp"/>
+            <Image x:Name="refreshIcon_0" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="00" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp"/>
         </Grid>
     </Grid>
 </Window>

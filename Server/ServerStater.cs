@@ -47,7 +47,7 @@ namespace Server
         {
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ipAdr = IPAddress.Parse("172.19.241.249");
-            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8086);
+            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
             Console.WriteLine("服务器端[服务器]启动成功");
