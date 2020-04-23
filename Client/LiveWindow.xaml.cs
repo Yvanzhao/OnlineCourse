@@ -100,8 +100,6 @@ namespace OnlineCourse
 
 
             user = userIn;
-            this.userPosition = server.getUserPosition(roomIdIn,userIn.userId);
-
             currentColor = new byte[4];
             currentColor[0] = 0xFF;
             currentColor[1] = 0x00;
@@ -114,6 +112,7 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
+                userPosition = server.getUserPosition(roomIdIn, userIn.userId);
                 socketTest();
                 StudentInitialization();
                 studentSocket();
