@@ -1420,6 +1420,7 @@ namespace OnlineCourse
             }
             IPs[0] = teacherIP;
             //与教师连接
+            Console.WriteLine(teacherIP);
             Socket connectToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToTeacher.Connect(teacherIP, 8085);
             str = "ConnectToTeacher@" + userPosition;
