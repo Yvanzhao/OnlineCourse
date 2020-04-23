@@ -96,29 +96,16 @@
         <Setter Property="Source" Value="{StaticResource delete_enter}"/>
         <Setter Property="OpacityMask" Value="{x:Null}"/>
     </Style>
-    <!--播放图标-->
-    <BitmapImage x:Key="stoped" UriSource="/OnlineCourse;component/Resource/Stop.png"/>
-    <BitmapImage x:Key="stoped_enter" UriSource="/OnlineCourse;component/Resource/Start_hightlight.png"/>
-    <Style x:Key="StartIcon" TargetType="{x:Type Image}">
+    <!--刷新图标-->
+    <BitmapImage x:Key="refresh" UriSource="/OnlineCourse;component/Resource/Refresh.png"/>
+    <BitmapImage x:Key="refresh_over" UriSource="/OnlineCourse;component/Resource/Refresh_Over.png"/>
+    <Style x:Key="RefreshIcon" TargetType="{x:Type Image}">
         <Setter Property="FlowDirection" Value="LeftToRight"/>
-        <Setter Property="Source" Value="{StaticResource stoped}"/>
+        <Setter Property="Source" Value="{StaticResource refresh}"/>
         <Setter Property="OpacityMask" Value="{x:Null}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source" Value="{StaticResource stoped_enter}"></Setter>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <!--停止图标-->
-    <BitmapImage x:Key="started" UriSource="/OnlineCourse;component/Resource/Start.png"/>
-    <BitmapImage x:Key="started_enter" UriSource="/OnlineCourse;component/Resource/Stop_highlight.png"/>
-    <Style x:Key="StopIcon" TargetType="{x:Type Image}">
-        <Setter Property="FlowDirection" Value="LeftToRight"/>
-        <Setter Property="Source" Value="{StaticResource started}"/>
-        <Setter Property="OpacityMask" Value="{x:Null}"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Source" Value="{StaticResource started_enter}"></Setter>
+                <Setter Property="Source" Value="{StaticResource refresh_over}"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -135,7 +122,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    <!--颜色选择图标-->
     <Style x:Key="ColorChoser" TargetType="{x:Type Ellipse}">
         <Setter Property="Stroke" Value="LightSlateGray"/>
         <Setter Property="Fill" Value="Black"/>
@@ -145,7 +132,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    <!--颜色选择禁用图标-->
     <Style x:Key="ColorChoserDiabled" TargetType="{x:Type Ellipse}">
         <Setter Property="Stroke" Value="LightSlateGray"/>
         <Setter Property="Fill" Value="DimGray"/>

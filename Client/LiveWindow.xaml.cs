@@ -857,31 +857,6 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 根据已有线集合与颜色集合重绘画板，用于学生端实时获取教师端画板
-        /// </summary>
-        private void Redraw()
-        {
-            if (linesList.Count > 0) {
-                for (int numberOfLines = 0; numberOfLines < linesList.Count; numberOfLines++) {
-                    if (linesList[numberOfLines].Count > 1) {
-                        for (int numberOfPoints = 1; numberOfPoints < linesList[numberOfLines].Count; numberOfPoints++) {
-                            var l = new Line();
-                            l.Stroke = new SolidColorBrush(Color.FromArgb(colorList[numberOfLines][0], colorList[numberOfLines][1], colorList[numberOfLines][2], colorList[numberOfLines][3])); 
-                            l.StrokeThickness = 1;
-                            // count-1  保证 line的起始点为点集合中的倒数第二个点。
-                            l.X1 = (linesList[numberOfLines])[numberOfPoints - 1][0];  
-                            l.Y1 = (linesList[numberOfLines])[numberOfPoints - 1][1];
-                            // 终点X,Y 为当前point的X,Y
-                            l.X2 = (linesList[numberOfLines])[numberOfPoints][0];
-                            l.Y2 = (linesList[numberOfLines])[numberOfPoints][1];
-                            printCanvas.Children.Add(l);
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 鼠标抬起事件，此事件用于终止画图
         /// </summary>
         /// <param name="sender"></param>
@@ -1089,7 +1064,29 @@ namespace OnlineCourse
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToServer.Close();
         }
-        
+
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于刷新。点击确认变量数值： 3 表征是刷新按钮。 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshIcon_MouseDown(object sender, MouseButtonEventArgs e) {
+            mouseClickedTag = 3;
+        }
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于刷新。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RefreshIcon_MouseUp(object sender, MouseButtonEventArgs e) {
+            if (mouseClickedTag != 3)
+            {
+                mouseClickedTag = 0;
+                return;
+            }
+
+            //在此添加刷新代码
+        }
 
         /// <summary>
         /// 鼠标移入镜头区域的函数，用于使隐藏的两个按钮展示出来
