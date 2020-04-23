@@ -16,11 +16,6 @@ namespace Server
         public int enterRoom(string roomId) { return 0; }
         public int createUser(string userName, string password) { return -1; }
         public int getUserPosition(string roomId, int userId) { return 1; }
-        /// <summary>
-        /// 将该房间的第position号位置设置为空，如果position为0，则删除该房间
-        /// </summary>
-        /// <param name="roomId"></param>
-        /// <param name="position"></param>
         public void setEmptyPosition(string roomId, int position) { }
         
         

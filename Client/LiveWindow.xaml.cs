@@ -58,6 +58,8 @@ namespace OnlineCourse
         Socket serverSocket;
         //客户端的服务器Socket线程
         Thread serverThread;
+        //画图用的特殊Socket
+        Socket[] drawSocket;
 
 
         /// <summary>
@@ -80,6 +82,7 @@ namespace OnlineCourse
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
 
+            //变量赋值与初始化
             IPs = new string[6] { null, null, null, null, null, null };
             roomId = roomIdIn;
             user = userIn;
@@ -90,8 +93,13 @@ namespace OnlineCourse
             currentColor[1] = 0x00;
             currentColor[2] = 0x00;
             currentColor[3] = 0x00;
-            
 
+            linesList = new List<List<double[]>>();
+            colorList = new List<byte[]>();
+
+            mute(userPosition);
+
+            socketTest();
             if (tag == 1)
             {
                 StudentInitialization();
@@ -112,22 +120,20 @@ namespace OnlineCourse
         /// 作为老师初始化窗口
         /// </summary>
         private void TeacherInitialization() {
-            linesList = new List<List<double[]>>();
-            colorList = new List<byte[]>();
+            DeactivateComputerIcons(0);
+            DeactivateRecordIcons();
+
             isStudent = false;
             canControl = true;
-            checkStudent();
         }
 
 
         /// <summary>
-        /// 作为学生初始化窗口，主要包括大量禁用按钮
+        /// 作为学生初始化窗口
         /// </summary>
         private void StudentInitialization() {
             isStudent = true;
             canControl = false;
-
-            hasStudent = server.checkStudent(roomId);
 
             DeactivateComputerIcons(0);
             DeactivateRecordIcons();
@@ -156,7 +162,7 @@ namespace OnlineCourse
             return null;
         }
         /// <summary>
-        /// 启用全部的控制权移交按钮
+        /// 教师端启用全部的控制权移交按钮
         /// </summary>
         private void ActivateComputerIcons() {
             for (int position = 1; position < 6; position++) {
@@ -170,12 +176,12 @@ namespace OnlineCourse
                 }
                 catch (Exception ex) { };
                 
-                if (hasStudent[position - 1])
+                if (IPs[position] != null)
                     ActivateComputerIcon(position, false);
             }
         }
         /// <summary>
-        /// 批量禁用移交控制权按钮。0时为静音所有，用于学生初始化与学生失去控制权;
+        /// 批量禁用移交控制权按钮。0时为静音所有，用于初始化与学生失去控制权;
         /// 1~5为对应位置设置为激活，并禁用其他，用于将控制权转交到对应学生时的教师端与获得控制权的学生端。
         /// </summary>
         /// <param name="position"></param>
@@ -238,7 +244,7 @@ namespace OnlineCourse
             
         }
         /// <summary>
-        /// 禁用移交控制权按钮isEnabled，isEnabled表示是否已获得控制权
+        /// 禁用移交控制权按钮，isEnabled表示是否已获得控制权
         /// </summary>
         /// <param name="button"></param>
         private void DeactivateComputerIcon(int position,Boolean isEnabled) {
@@ -397,24 +403,26 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="button"></param>
         private void ActivateCanvasIcons() {
+            //修改Canvas指针
             try
-            {//修改Canvas指针
+            {
                 printCanvas.Dispatcher.Invoke(() => {
                     printCanvas.Cursor = Cursors.Cross;
                 });
             }
             catch (Exception ex) { };
-            
+            //修改清除画板按钮状态
             try
-            {//修改清除画板按钮状态
+            {
                 deleteIcon.Dispatcher.Invoke(() => {
                     deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
                     deleteIcon.Cursor = Cursors.Hand;
                 });
             }
             catch (Exception ex) { };
+            //修改颜色选择按钮状态
             try
-            {//修改颜色选择按钮状态
+            {
                 colorChooser.Dispatcher.Invoke(() => {
                     colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoser"]);
                     colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
@@ -429,8 +437,9 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="button"></param>
         private void DeactivateCanvasIcons() {
+            //修改Canvas指针
             try
-            {//修改Canvas指针
+            {
                 printCanvas.Dispatcher.Invoke(() => {
                     printCanvas.Cursor = Cursors.Arrow;
                 });
@@ -438,11 +447,13 @@ namespace OnlineCourse
             catch (Exception ex) { };
             try
             {
-                deleteIcon.Dispatcher.Invoke(() => {//修改清除画板按钮状态
+                //修改清除画板按钮状态
+                deleteIcon.Dispatcher.Invoke(() => {
                     deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
                     deleteIcon.Cursor = Cursors.Arrow;
                 });
-                colorChooser.Dispatcher.Invoke(() => {//修改颜色选择按钮状态
+                //修改颜色选择按钮状态
+                colorChooser.Dispatcher.Invoke(() => {
                     colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoserDiabled"]);
                     colorChooser.Cursor = Cursors.Arrow;
                 });
@@ -529,7 +540,7 @@ namespace OnlineCourse
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             if (isStudent == false)
             {
-                if (hasStudent[tagHead - 1] == false)//该学生不存在
+                if (IPs[tagHead] == null)//该学生不存在
                     return;
             }
             else if (canControl == false)//是学生并且不具备控制权
@@ -565,7 +576,8 @@ namespace OnlineCourse
                     DeactivateCanvasIcons();
                     canControl = false;
                     //此处添加学生交还控制权的方法
-                    server.changeControl(roomId, userPosition, false);
+                    string order = "DisableControl@" + tagHead;
+                    sendOrder(order);
                 }
                 else {
                     //老师手动拿回控制权的时候
@@ -574,38 +586,22 @@ namespace OnlineCourse
                     {
                         if (canControl == true)
                         {
-                            try
-                            {
-                                image.Dispatcher.Invoke(() => {
-                                    image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
-                                    image.Tag = tagHead + "" + 1;
-                                });
-                            }
-                            catch (Exception ex) { };
                             canControl = false;
                             DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
                             DeactivateCanvasIcons();
-                            //此处添加老师移交控制权的方法
-                            server.changeControl(roomId, tagHead, true);
-                            startStudentThread();
+                            //老师移交控制权的Socket函数
+                            string order = "EnableControl@" + tagHead;
+                            broadcastOrder(order, 0);
                         }
                     }
                     else
                     {
-                        try
-                        {
-                            image.Dispatcher.Invoke(() => {
-                                image.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
-                                image.Tag = tagHead + "" + 0;
-                            });
-                        }
-                        catch (Exception ex) { };
                         canControl = true;
                         ActivateComputerIcons();
                         ActivateCanvasIcons();
-                        //此处添加老师拿回控制权的方法
-                        server.changeControl(roomId, tagHead, false);
-                        startTeacherThread();
+                        //老师拿回控制权的Socket函数
+                        string order = "DisableControl@" + tagHead;
+                        broadcastOrder(order, 0);
                     }
                 }
                
@@ -625,7 +621,7 @@ namespace OnlineCourse
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             if (isStudent == false)
             {
-                if (hasStudent[tagHead - 1] == false)//该学生不存在
+                if (IPs[tagHead] == null)//该学生不存在
                     return;
             }
             else if (tagHead != userPosition)//是学生并且点击的不是自己的按钮
@@ -658,47 +654,45 @@ namespace OnlineCourse
                 }
                 if (isStudent == false || tagHead == userPosition)
                 {
-                    //此处添加禁用远端某学生录音的方法
+                    //根据状态不同进行切换，BanRecord与EnableRecor自带Style切换与实际音量控制，故进行了合并
                     if (tagTail == 0)
                     {
-                        mute(tagHead);
-                        server.silenceStudent(roomId,tagHead, true);
+                        try
+                        {
+                            image.Dispatcher.Invoke(() => {
+                                image.Tag = tagHead + "" + 1;
+                            });
+                        }
+                        catch (Exception ex) { };
+                        BanRecord(tagHead,true);
+
+                        //Socket网络通信
+                        string order = "BanVoice@" + tagHead;
+                        socketOrder(order, 0);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            image.Dispatcher.Invoke(() => {
+                                image.Tag = tagHead + "" + 0;
+                            });
+                        }
+                        catch (Exception ex) { };
+                        EnableRecord(tagHead, true);
+
+                        //Socket网络通信
+                        string order = "EnableVoice@" + tagHead;
+                        socketOrder(order, 0);
                     }
 
-                    else {
-                        unMute(tagHead);
-                        server.silenceStudent(roomId,tagHead, false);
-                    }
-                        
                 }
                 else
                 {
                     return;
                 }
                     
-                //根据状态不同进行切换，此处仅负责按钮的样式
-                if (tagTail == 0)
-                {
-                    try
-                    {
-                        image.Dispatcher.Invoke(() => {
-                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
-                            image.Tag = tagHead + "" + 1;
-                        });
-                    }
-                    catch (Exception ex) { };
-                }
-                else
-                {
-                    try
-                    {
-                        image.Dispatcher.Invoke(() => {
-                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
-                            image.Tag = tagHead + "" + 0;
-                        });
-                    }
-                    catch (Exception ex) { };
-                }
+                
                 
                 //重置状态值避免bug
                 mouseClickedTag = 0;
@@ -725,9 +719,11 @@ namespace OnlineCourse
             }
         }
 
-        // 恢复第number号
+        // 恢复第number号。永远不会恢复自己
         private void unMute(int number)
         {
+            if (number == userPosition)
+                return;
             switch (number)
             {
                 case 0:
@@ -754,18 +750,15 @@ namespace OnlineCourse
             if (canControl == false)
                 return;
             Point startPoint = e.GetPosition(printCanvas);
-            newLines(startPoint);
+            newLines(startPoint,userPosition);
             isDrawing = true;
-
-            //以下是将画板变化更新到服务器上
-            server.updateCanvas(roomId, startPointPosition, currentColor, 0);
         }
 
         /// <summary>
         /// 实际初始化画图
         /// </summary>
         /// <param name="startPoint"></param>
-        private void newLines(Point startPoint) {
+        private void newLines(Point startPoint,int painterPosition) {
             pointsList = new List<double[]>();
             double[] startPointPosition = new double[2];
             startPointPosition[0] = startPoint.X;
@@ -774,6 +767,28 @@ namespace OnlineCourse
 
             linesList.Add(pointsList);
             colorList.Add(currentColor);
+            //Socket网络通信
+            string order = "Point@" + userPosition + "@0@" + startPoint.X + "@" + startPoint.Y+"@";
+            //教师绘图或者教师接收到其他学生绘图，广播到学生
+            if (isStudent == false)
+            {
+                for (int position = 1; position < 6; position++)
+                {
+                    if (position != painterPosition && IPs[position] != null)
+                    {
+                        drawSocket[position] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        drawSocket[position].Connect(IPs[position], 8086);
+                        drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(order));
+                    }
+                }
+            }
+            //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
+            else if (userPosition == painterPosition) {
+                drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                drawSocket[0].Connect(IPs[0], 8086);
+                drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(order));
+            }
+               
         }
 
        /// <summary>
@@ -794,20 +809,18 @@ namespace OnlineCourse
                 // 去重复点
                 if (count > 0) {
                     if (point.X - pointsList[count - 1][0] != 0 || point.Y - pointsList[count - 1][1] != 0) {
-                        drawLines(point,count); 
-                        //以下是将画板变化更新到服务器上
-                        server.updateCanvas(roomId, pointPosition, null, count);
+                        drawLines(point,count,userPosition); 
                     }
                 }
             }
         }
 
         /// <summary>
-        /// 实际绘制直线的方法
+        /// 实际绘制直线的方法。包含了网络的通信的部分
         /// </summary>
         /// <param name="newPoint"></param>
         /// <param name="count"></param>
-        private void drawLines(Point newPoint,int count) {
+        private void drawLines(Point newPoint,int count,int painterPosition) {
             var l = new Line();
             l.Stroke = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
             l.StrokeThickness = 1;
@@ -825,6 +838,22 @@ namespace OnlineCourse
             pointPosition[0] = newPoint.X;
             pointPosition[1] = newPoint.Y;
             pointsList.Add(pointPosition);
+
+            //Socket网络通信
+            string order = "Point@" + userPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
+            //教师绘图或者教师接收到其他学生绘图，广播到学生
+            if (isStudent == false)
+            {
+                for (int position = 1; position < 6; position++)
+                {
+                    if (position != painterPosition && drawSocket[position] != null) {
+                        drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(order));
+                    }
+                }
+            }
+            //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
+            else if (userPosition == painterPosition)
+                drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(order));
         }
 
         /// <summary>
@@ -858,22 +887,50 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PrintCanvas_MouseUp(object sender, MouseButtonEventArgs e)
-       {
-           if (canControl == false)
-               return;
-           isDrawing = false;
-       }
-       /// <summary>
-       /// 鼠标移动出Canvas事件，此事件用于终止画图
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
-       private void printCanvas_MouseLeave(object sender, MouseEventArgs e)
-       {
-           if (canControl == false)
-               return;
-           isDrawing = false;
-       }
+        {
+            if (canControl == false)
+                return;
+            isDrawing = false;
+            endDrawing(userPosition);
+        }
+        /// <summary>
+        /// 鼠标移动出Canvas事件，此事件用于终止画图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void printCanvas_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (canControl == false)
+                return;
+            isDrawing = false;
+            endDrawing(userPosition);
+        }
+
+        /// <summary>
+        /// 停止绘图调用的函数，主要是网络通信
+        /// </summary>
+        /// <param name="painterPosition"></param>
+        private void endDrawing(int painterPosition) {
+            //教师绘图或者教师接收到其他学生绘图，广播到学生
+            if (isStudent == false)
+            {
+                for (int position = 1; position < 6; position++)
+                {
+                    if (position != painterPosition && drawSocket[position] != null)
+                    {
+                        drawSocket[position].Close();
+                        drawSocket[position] = null;
+                    }
+
+                }
+            }
+            //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
+            else if (userPosition == painterPosition) {
+                drawSocket[0].Close();
+                drawSocket[0] = null;
+            }
+                
+        }
 
         /// <summary>
         /// 鼠标按下事件，此按钮用于清除Canvas。点击确认变量数值： 1 表征是删除按钮。
@@ -899,19 +956,25 @@ namespace OnlineCourse
                 mouseClickedTag = 0;
                 return;
             }
-            ClearCanvas();
+            ClearCanvas(userPosition);
             mouseClickedTag = 0;
-
-            //以下是将画板变化更新到服务器上
-            server.updateCanvas(roomId,null, null, -1);
         }
         /// <summary>
         /// 实际清除Canvas的命令
         /// </summary>
-        private void ClearCanvas() {
+        private void ClearCanvas(int painterPosition) {
             printCanvas.Children.Clear();
             colorList = new List<byte[]>();
             linesList = new List<List<double[]>>();
+
+            ///Socket网络通信
+            string order = "Point@" + userPosition + "@" + -1+"@";
+            //教师绘图或者教师接收到其他学生绘图，广播到学生
+            if (isStudent == false)
+                broadcastOrder(order, painterPosition); 
+            //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
+            else if(userPosition == painterPosition)
+                sendOrder(order);
         }
 
         /// <summary>
@@ -955,8 +1018,14 @@ namespace OnlineCourse
                 currentColor[2] = colorDialog.Color.G;
                 currentColor[3] = colorDialog.Color.B;
                 colorChooser.Fill = new SolidColorBrush(Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B));
+                
+                //Socket网络通信
+                string order = "Color@" + userPosition + "@" + currentColor[0] + "@" + currentColor[1] + "@" + currentColor[2] + "@" + currentColor[3];
+                socketOrder(order, 0);
             }
             mouseClickedTag = 0;
+
+
         }
 
         /// <summary>
@@ -979,7 +1048,10 @@ namespace OnlineCourse
             {
                 mouseClickedTag = 0;
                 return;
-            }           
+            }
+
+            string order = "Quit@" + userPosition;
+            socketOrder(order, 0);
 
             RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
@@ -997,8 +1069,25 @@ namespace OnlineCourse
                 serverThread.Abort();
             if (serverSocket != null)
                 serverSocket.Close();
+            for (int position = 0; position < 6; position++) {
+                if (drawSocket[position] != null)
+                    drawSocket[position].Close();
+            }
+            if (isStudent == false)
+                teacherQuit();
             pushTool.Quit();
             server.setEmptyPosition(roomId, userPosition);
+        }
+
+        /// <summary>
+        /// 通知服务器端的Socket本房间已经解散
+        /// </summary>
+        private void teacherQuit() {
+            Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            connectToServer.Connect("172.19.241.249", 8086);
+            string str = "CloseRoom@" + roomId;
+            connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
+            connectToServer.Close();
         }
         
 
@@ -1102,7 +1191,7 @@ namespace OnlineCourse
         private void socketTest() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToServer.Connect("172.19.241.249", 8086);
-            string str = "firstConnect";
+            string str = "firstConnect@"+userPosition+"@"+roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
             byte[] ipByte = new byte[1024];
@@ -1115,23 +1204,56 @@ namespace OnlineCourse
         }
 
         /// <summary>
+        /// 教师端开启Socket监听
+        /// </summary>
+        private void teacherSocket() {
+            serverThread = new Thread(new ThreadStart(this.teacherSocketThread));
+            serverThread.IsBackground = true;
+            serverThread.Start();
+        }
+
+        /// <summary>
+        /// 教师端的监听线程
+        /// </summary>
+        private void teacherSocketThread()
+        {
+            serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
+            IPEndPoint ipEp = new IPEndPoint(ipAdr, 8086);
+            serverSocket.Bind(ipEp);
+            serverSocket.Listen(0);
+            Console.WriteLine("教师端[服务器]启动成功");
+            while (true)
+            {
+                Socket studentOrder = serverSocket.Accept();
+                Console.WriteLine("教师端[服务器]已接收学生端[命令]");
+                orderAnalyze(studentOrder);
+            }
+        }
+
+        /// <summary>
         /// 学生端获取教师端IP地址，并开启自身的Socket监听
         /// </summary>
         private void studentSocket() {
             //获取教师IP
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToServer.Connect("172.19.241.249", 8086);
-            string str = "getTeacher";
+            string str = "getTeacher@"+roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
             byte[] ipByte = new byte[1024];
             int count = connectToServer.Receive(ipByte);
             string teacherIP = System.Text.Encoding.UTF8.GetString(ipByte, 0, count);
             connectToServer.Close();
+            if (teacherIP.Length < 1) {
+                Console.WriteLine("Something went wrong.");
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
+            }
             IPs[0] = teacherIP;
             //与教师连接
             Socket connectToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect(teacherIP, 8086);
+            connectToTeacher.Connect(teacherIP, 8086);
             str = "ConnectToTeacher@" + userPosition;
             connectToTeacher.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToTeacher.Close();
@@ -1161,7 +1283,7 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 学生端Socket的命令分析器，用于分析教师的命令
+        /// Socket的命令分析器，用于分析传进来的命令
         /// </summary>
         /// <param name="socketOrder"></param>
         private void orderAnalyze(Socket socketOrder) {
@@ -1170,7 +1292,8 @@ namespace OnlineCourse
             string orders = System.Text.Encoding.UTF8.GetString(readBuff, 0, count);
 
             string[] order = orders.Split('@');
-            if (order[0].Equals("BanVoice"))//静音命令 格式"BanVoice@'userPosition'"
+            //静音命令 格式"BanVoice@'userPosition'"
+            if (order[0].Equals("BanVoice"))
             {
                 if (order.Length < 2)
                     return;
@@ -1183,9 +1306,9 @@ namespace OnlineCourse
                 {
                     BanRecord(banPosition, false);
                 }
-                mute(banPosition);
             }
-            else if (order[0].Equals("EnableVoice")) //取消静音命令 格式"EnableVoice@'userPosition'"
+            //取消静音命令 格式"EnableVoice@'userPosition'"
+            else if (order[0].Equals("EnableVoice")) 
             {
                 if (order.Length < 2)
                     return;
@@ -1198,9 +1321,9 @@ namespace OnlineCourse
                 {
                     EnableRecord(enablePosition, false);
                 }
-                unMute(enablePosition);
             }
-            else if (order[0].Equals("EnableControl"))//教师移交控制权命令 格式"EnableControl@'userPosition'"
+            //教师移交控制权命令 格式"EnableControl@'userPosition'"
+            else if (order[0].Equals("EnableControl"))
             {
                 if (order.Length < 2)
                     return;
@@ -1216,7 +1339,8 @@ namespace OnlineCourse
                     DeactivateComputerIcon(enablePosition, true);
                 }
             }
-            else if (order[0].Equals("DisableControl"))//教师拿回控制权命令 格式"DisableControl@'userPosition'"
+            //教师拿回控制权命令 格式"DisableControl@'userPosition'"
+            else if (order[0].Equals("DisableControl"))
             {
                 if (order.Length < 2)
                     return;
@@ -1239,7 +1363,8 @@ namespace OnlineCourse
                     DeactivateComputerIcon(disablePosition, false);
                 }
             }
-            else if (order[0].Equals("Color"))//修改颜色命令 格式"Color@'userPosition'@'A'@'R'@'G'@'B'"
+            //修改颜色命令 格式"Color@'userPosition'@'A'@'R'@'G'@'B'"
+            else if (order[0].Equals("Color"))
             {
                 if (order.Length < 6)
                     return;
@@ -1249,8 +1374,12 @@ namespace OnlineCourse
                 currentColor[3] = byte.Parse(order[5]);
                 colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
             }
+            //画板更新命令 格式"Point@'userPosition'@'具体操作'@'X'@'Y@",因为是一个Socket多次发送，所以需要用循环便利所有缓冲区。这条命令自带广播功能。
             else if (order[0].Equals("Point"))
-            {//画板更新命令 格式"Point@'userPosition'@'具体操作'@'X'@'Y",因为是一个Socket多次发送，所以需要用循环便利所有缓冲区。
+            {
+                int painterPosition = int.Parse(order[1]);
+                int basicOrder = int.Parse(order[2]);
+
                 for (int position = 0; position < order.Length; position = position + 5)
                 {
                     if (order[position].Equals("Point") == false)
@@ -1258,20 +1387,24 @@ namespace OnlineCourse
                     switch (int.Parse(order[position + 2]))
                     {
                         case -1://具体操作值为-1 表示清除画板
-                            ClearCanvas();
+                            ClearCanvas(painterPosition);
                             break;
                         case 0://具体操作值为0 表示新建一条线
-                            newLines(new Point(double.Parse(order[position + 3]), double.Parse(order[position + 4])));
+                            newLines(new Point(double.Parse(order[position + 3]), double.Parse(order[position + 4])), painterPosition);
                             break;
                         case 1://具体操作值为1 表示添加新的点
-                            drawLines(new Point(double.Parse(order[position + 3]), double.Parse(order[position + 4])), pointsList.Count);
+                            drawLines(new Point(double.Parse(order[position + 3]), double.Parse(order[position + 4])), pointsList.Count, painterPosition);
                             break;
                     }
                 }
+                if (basicOrder != -1)
+                    endDrawing(painterPosition);
+                return;
 
             }
+            //退出命令 格式"Quit@'userPosition'"
             else if (order[0].Equals("Quit"))
-            {//退出命令 格式"Quit@'userPosition'"
+            {
                 if (order.Length < 2)
                     return;
                 if (int.Parse(order[1]) == 0)
@@ -1285,19 +1418,69 @@ namespace OnlineCourse
                 }
                 else
                 {
-                    IPs[int.Parse(order[1])] = null;
+                    int position = int.Parse(order[1]);
+                    IPs[position] = null;
+                    DeactivateComputerIcon(position, false);
+                    DeactivateRecordIcon(position, false);
                     socketOrder.Close();
-                    return;
                 }
 
             }
-            else if (order[0].Equals("ConnectToTeacher")) { //学生连接教师命令 格式"ConnectToTeacher@'userPosition'"
-                string studentIP = socketOrder.RemoteEndPoint.ToString();
+            //学生连接教师命令 格式"ConnectToTeacher@'userPosition'"
+            else if (order[0].Equals("ConnectToTeacher")) { 
+                string studentIP = socketOrder.RemoteEndPoint.AddressFamily.ToString();
                 IPs[userPosition] = studentIP;
                 socketOrder.Close();
                 return;
             }
+
             socketOrder.Close();
+
+            //如果是教师端，则还需要负责将命令广播出去。
+            if (isStudent == false) {
+                broadcastOrder(orders, int.Parse(order[1]));
+            }
+        }
+
+        /// <summary>
+        /// 发送Socket命令
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="notToBroadCast"></param>
+        private void socketOrder(String order, int notToBroadCast) {
+            if (isStudent)
+                sendOrder(order);
+            else
+                broadcastOrder(order, notToBroadCast);
+        }
+        /// <summary>
+        /// 将命令发送给教师的Socket
+        /// </summary>
+        /// <param name="order"></param>
+        private void sendOrder(String order) {
+            Socket sendToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sendToTeacher.Connect(IPs[0], 8086);
+            sendToTeacher.Send(System.Text.Encoding.Default.GetBytes(order));
+            sendToTeacher.Close();
+        }
+
+        /// <summary>
+        /// 将命令广播到每个学生的Socket
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="notToBroeadCast"></param>
+        private void broadcastOrder(string order, int notToBroadCast) {
+            for (int position = 1; position < 6; position++) {
+                if (IPs[position] != null) {
+                    if (position != notToBroadCast) {
+                        Socket broadcastToStudent = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        broadcastToStudent.Connect(IPs[position],8086);
+                        broadcastToStudent.Send(System.Text.Encoding.Default.GetBytes(order));
+                        broadcastToStudent.Close();
+                    }
+                
+                }
+            }
         }
         
     }
