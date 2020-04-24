@@ -633,7 +633,12 @@ namespace OnlineCourse
                         {
                             hasControl = tagHead;
                             //禁用老师向其他学生交出控制权并禁用老师的画板
-                            DeactivateComputerIcons(tagHead);
+                            for (int position = 1; position < 6; position++) {
+                                if (position != tagHead)
+                                    DisableComputerIcon(position, false);
+                                else
+                                    EnableComputerIcon(position, true);
+                            }
                             DeactivateCanvasIcons();
                             enableRecoverControl();//启用一键收回控制权按钮
                             //老师移交控制权的Socket函数
@@ -1317,11 +1322,14 @@ namespace OnlineCourse
                 int tag = int.Parse(image.Tag.ToString());
                 if (tag == 0)
                 {
-                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    try
                     {
-                        image.Tag = 1;
-                        image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
-                    }));
+                        image.Dispatcher.Invoke(() => {
+                            image.Tag = 1;
+                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                        });
+                    }
+                    catch (Exception ex) { };
                     for (int position = 1; position < 6; position++)
                     {
                         if (IPs[position] == null)
@@ -1332,11 +1340,14 @@ namespace OnlineCourse
                     broadcastOrder("BanVoice@0", 0);
                 }
                 else {
-                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    try
                     {
-                        image.Tag = 0;
-                        image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
-                    }));
+                        image.Dispatcher.Invoke(() => {
+                            image.Tag = 0;
+                            image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                        });
+                    }
+                    catch (Exception ex) { };
                     for (int position = 1; position < 6; position++)
                     {
                         if (IPs[position] == null)
@@ -1394,12 +1405,15 @@ namespace OnlineCourse
         /// 收回控制权，同时调用方法将其他控制权按钮置为对应的普通状态
         /// </summary>
         private void disableRecoverControl() {
-            App.Current.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                recoverControlIcon.Tag = 0;
-                recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
-                recoverControlIcon.Cursor = Cursors.Arrow;
-            }));
+                recoverControlIcon.Dispatcher.Invoke(() => {
+                    recoverControlIcon.Tag = 0;
+                    recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                    recoverControlIcon.Cursor = Cursors.Arrow;
+                });
+            }
+            catch (Exception ex) { };
         }
 
         /// <summary>
@@ -1407,12 +1421,15 @@ namespace OnlineCourse
         /// </summary>
         private void enableRecoverControl()
         {
-            App.Current.Dispatcher.Invoke((Action)(() =>
+            try
             {
-                recoverControlIcon.Tag = 1;
-                recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
-                recoverControlIcon.Cursor = Cursors.Hand;
-            }));
+                recoverControlIcon.Dispatcher.Invoke(() => {
+                    recoverControlIcon.Tag = 1;
+                    recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
+                    recoverControlIcon.Cursor = Cursors.Hand;
+                });
+            }
+            catch (Exception ex) { };
         }
 
         /// <summary>
