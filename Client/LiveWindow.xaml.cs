@@ -769,10 +769,12 @@ namespace OnlineCourse
             newLines(startPoint,userPosition);
             isDrawing = true;
         }
+        
         //绘图时用于保存所有命令的string
         string drawOrder;
         //已有命令数统计
         int drawOrderCount;
+
         /// <summary>
         /// 实际初始化画图
         /// </summary>
@@ -1487,7 +1489,7 @@ namespace OnlineCourse
                 }
             }
             //取消静音命令 格式"EnableVoice@'userPosition'"
-            else if (order[0].Equals("EnableVoice")) 
+            else if (order[0].Equals("EnableVoice"))
             {
                 if (order.Length < 2)
                     return;
@@ -1536,6 +1538,9 @@ namespace OnlineCourse
                     DeactivateComputerIcons(0);
                     DeactivateCanvasIcons();
                     canControl = false;
+                    if (isDrawing)
+                        endDrawing(userPosition);
+                    isDrawing = false;
                 }
                 else//学生收到教师收回他人控制权命令
                 {
@@ -1555,7 +1560,7 @@ namespace OnlineCourse
                 {
                     colorChooser.Fill = new SolidColorBrush(Color.FromArgb(currentColor[0], currentColor[1], currentColor[2], currentColor[3]));
                 }));
-                
+
             }
             //画板更新命令 格式"Point@'userPosition'@'具体操作'@'X'@'Y@",因为是一个Socket多次发送，所以需要用循环便利所有缓冲区。这条命令自带广播功能。
             else if (order[0].Equals("Point"))
@@ -1620,15 +1625,17 @@ namespace OnlineCourse
                 string studentIP = order[2];
                 int studentPosition = int.Parse(order[1]);
                 IPs[studentPosition] = studentIP;
+                studentInNewCanvas(studentPosition);
                 socketOrder.Close();
 
                 string newOrder = "StudentIn";
-                for (int position = 1; position < 6; position++) {
+                for (int position = 1; position < 6; position++)
+                {
                     if (IPs[position] == null)
                         newOrder = newOrder + "@0";
                     else
                         newOrder = newOrder + "@1";
-                }              
+                }
 
                 broadcastOrder(newOrder, 0);
 
@@ -1656,9 +1663,12 @@ namespace OnlineCourse
             {
                 if (order.Length < 6)
                     return;
-                for (int studentPosition = 1; studentPosition < 6; studentPosition++) {
-                    if (studentPosition != userPosition) {
-                        if (int.Parse(order[studentPosition]) == 1) {
+                for (int studentPosition = 1; studentPosition < 6; studentPosition++)
+                {
+                    if (studentPosition != userPosition)
+                    {
+                        if (int.Parse(order[studentPosition]) == 1)
+                        {
                             IPs[studentPosition] = "hasStudent";
                             switch (studentPosition)
                             {
@@ -1676,7 +1686,13 @@ namespace OnlineCourse
                         }
                     }
                 }
-                
+
+            }
+            //特殊情况教师端需要学生端暂时停止绘图 格式"EndDraw@"
+            else if (order[0].Equals("EndDraw")) {
+                if (isDrawing)
+                    endDrawing(userPosition);
+                isDrawing = false;
             }
 
             socketOrder.Close();
@@ -1685,6 +1701,46 @@ namespace OnlineCourse
             if (isStudent == false) {
                 broadcastOrder(orders, int.Parse(order[1]));
             }
+        }
+
+        private void studentInNewCanvas(int studentIn) {
+            isDrawing = false;
+            if (canControl)
+                endDrawing(0);
+            else {
+                string order = "EndDraw@";
+                broadcastOrder(order, studentIn);
+            }
+            drawOrder = "";
+            drawOrderCount = 0;
+            for (int linePosition = 0; linePosition < linesList.Count; linePosition++) {
+                drawOrder = drawOrder + "Point@0@0@" + linesList[linePosition][0] + "@" + linesList[linePosition][1] + "@";
+                drawOrderCount++;
+                Socket colorSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                colorSocket.Connect(IPs[studentIn], 8085);
+                colorSocket.Send(System.Text.Encoding.Default.GetBytes("Color@"+colorList[0]+"@"+colorList[1] + "@" + colorList[2] + "@" + colorList[3]));
+                colorSocket.Close();
+                for (int pointPosition = 1; pointPosition < linesList[linePosition].Count; pointPosition++) { 
+                    drawOrder = drawOrder + "Point@0@1"+ linesList[linePosition][pointPosition] + "@" + linesList[linePosition][pointPosition] + "@";
+                    if (drawOrderCount >= 10 && drawOrder.Length >= 450) {
+                        drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        drawSocket[studentIn].Connect(IPs[studentIn], 8085);
+                        drawSocket[studentIn].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
+                        drawSocket[studentIn].Close();
+
+                        drawOrder = "";
+                        drawOrderCount = 0;
+                    }
+                    drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    drawSocket[studentIn].Connect(IPs[studentIn], 8085);
+                    drawSocket[studentIn].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
+                    drawSocket[studentIn].Close();
+
+                    drawOrder = "";
+                    drawOrderCount = 0;
+                }
+            }
+
         }
 
         /// <summary>
