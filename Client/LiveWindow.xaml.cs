@@ -162,7 +162,11 @@ namespace OnlineCourse
         private void StudentInitialization() {
             isStudent = true;
 
-            DeactivateComputerIcons(userPosition);
+            recoverControlIcon.Visibility = Visibility.Collapsed;
+            silenceAllIcon.Visibility = Visibility.Collapsed;
+
+            DeactivateComputerIcons(0);
+            DisableComputerIcon(userPosition, true);
             DeactivateRecordIcons();
             DeactivateCanvasIcons();
         }
@@ -237,6 +241,7 @@ namespace OnlineCourse
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
                         button.Cursor = Cursors.Hand;
                         button.Tag = position + "" + 1;
+                        button.Visibility = Visibility.Visible;
                     });
                 }
                 catch (Exception ex) { };
@@ -249,6 +254,7 @@ namespace OnlineCourse
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
                         button.Cursor = Cursors.Arrow;
                         button.Tag = position + "" + 1;
+                        button.Visibility = Visibility.Visible;
                     });
                 }
                 catch (Exception ex) { };
@@ -273,6 +279,7 @@ namespace OnlineCourse
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
                         button.Cursor = Cursors.Hand;
                         button.Tag = position + "" + 0;
+                        button.Visibility = Visibility.Hidden;
                     });
                 }
                 catch (Exception ex) { };
@@ -285,6 +292,7 @@ namespace OnlineCourse
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]);
                         button.Cursor = Cursors.Arrow;
                         button.Tag = position + "" + 0;
+                        button.Visibility = Visibility.Hidden;
                     });
                 }
                 catch (Exception ex) { };
@@ -304,6 +312,7 @@ namespace OnlineCourse
                 button.Dispatcher.Invoke(() => {
                     button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerAskControlIcon"]);
                     button.Tag = position + "" + 2;
+                    button.Visibility = Visibility.Visible;
                 });
             }
             catch (Exception ex) { };
@@ -360,6 +369,7 @@ namespace OnlineCourse
                     button.Dispatcher.Invoke(() => { 
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
                         button.Tag = position + "" + 1;
+                        button.Visibility = Visibility.Visible;
                     }); } catch (Exception ex) { };
                 
             }
@@ -369,6 +379,7 @@ namespace OnlineCourse
                     button.Dispatcher.Invoke(() => { 
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
                         button.Tag = position + "" + 1;
+                        button.Visibility = Visibility.Hidden;
                     }); } catch (Exception ex) { };
                 
             }
@@ -390,15 +401,19 @@ namespace OnlineCourse
                     button.Dispatcher.Invoke(() => { 
                         button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
                         button.Tag = position + "" + 0;
+                        button.Visibility = Visibility.Hidden;
                     }); } catch (Exception ex) { };
                 
             }
             else
             {
-                try { button.Dispatcher.Invoke(() => { 
-                    button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
-                    button.Tag = position + "" + 0;
-                }); } catch (Exception ex) { };
+                try { 
+                    button.Dispatcher.Invoke(() => { 
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+                        button.Tag = position + "" + 0;
+                        button.Visibility = Visibility.Hidden;
+                    }); 
+                } catch (Exception ex) { };
                 
             }
         }
@@ -1430,6 +1445,8 @@ namespace OnlineCourse
         /// <param name="setVisible"></param>
         private void SetButtonsVisibility(int tag, Boolean setVisible)
         {
+            if (IPs[tag] == null)
+                return;
             if (setVisible)
             {
                 switch (tag)
