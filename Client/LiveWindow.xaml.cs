@@ -1644,7 +1644,6 @@ namespace OnlineCourse
                 string studentIP = order[2];
                 int studentPosition = int.Parse(order[1]);
                 IPs[studentPosition] = studentIP;
-                studentInNewCanvas(studentPosition);
                 socketOrder.Close();
 
                 string newOrder = "StudentIn";
@@ -1722,51 +1721,8 @@ namespace OnlineCourse
             }
         }
 
-        private void studentInNewCanvas(int studentIn) {
-            isDrawing = false;
-            if (canControl)
-                endDrawing(0);
-            else {
-                string order = "EndDraw@";
-                broadcastOrder(order, studentIn);
-            }
-            drawOrder = "";
-            drawOrderCount = 0;
-            for (int linePosition = 0; linePosition < linesList.Count; linePosition++) {
-                drawOrder = drawOrder + "Point@0@0@" + linesList[linePosition][0][0] + "@" + linesList[linePosition][0][1] + "@";
-                drawOrderCount++;
-                Socket colorSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                colorSocket.Connect(IPs[studentIn], 8085);
-                colorSocket.Send(System.Text.Encoding.Default.GetBytes("Color@"+colorList[linePosition][0]+"@"+colorList[linePosition][1] + "@" + colorList[linePosition][2] + "@" + colorList[linePosition][3]));
-                colorSocket.Close();
-                for (int pointPosition = 1; pointPosition < linesList[linePosition].Count; pointPosition++) { 
-                    drawOrder = drawOrder + "Point@0@1@"+ linesList[linePosition][pointPosition][0] + "@" + linesList[linePosition][pointPosition][1] + "@";
-                    drawOrderCount++;
-                    if (drawOrderCount >= 10 && drawOrder.Length >= 450) {
-                        drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        drawSocket[studentIn].Connect(IPs[studentIn], 8085);
-                        drawSocket[studentIn].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
-                        drawSocket[studentIn].Close();
-
-                        drawOrder = "";
-                        drawOrderCount = 0;
-                    }
-                    if (drawOrderCount > 0) {
-                        drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        drawSocket[studentIn].Connect(IPs[studentIn], 8085);
-                        drawSocket[studentIn].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
-                        drawSocket[studentIn].Close();
-
-                        drawOrder = "";
-                        drawOrderCount = 0;
-                    }
 
 
-                    
-                }
-            }
-
-        }
 
         /// <summary>
         /// 发送Socket命令
