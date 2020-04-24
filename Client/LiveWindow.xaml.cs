@@ -34,7 +34,7 @@ namespace OnlineCourse
         //区分老师与学生
         Boolean isStudent = false;
         //判断是否有权控制画板
-        Boolean canControl = true;
+        int hasControl = 0;
         //房间ID
         string roomId;
         //当前用户
@@ -55,6 +55,7 @@ namespace OnlineCourse
         Thread serverThread;
         //画图用的特殊Socket
         Socket[] drawSocket;
+        //老师与学生的地址
         Uri teacherAddress;
         Uri studentAddress1;
         Uri studentAddress2;
@@ -64,7 +65,7 @@ namespace OnlineCourse
 
 
         /// <summary>
-        /// 暂时利用Tag分辨老师与学生
+        /// 利用tag 分辨老师与学生
         /// </summary>
         /// <param name="tag"></param>
         public LiveWindow(int tag,string roomIdIn,user userIn, Server.ServerService server)
@@ -106,12 +107,14 @@ namespace OnlineCourse
 
             if (tag == 1)
             {
+                hasControl = 0;
                 userPosition = server.getUserPosition(roomIdIn, userIn.userId);
                 socketTest();
                 StudentInitialization();
                 studentSocket();
             }
             else {
+                hasControl = 0;
                 userPosition = 0;
                 socketTest();
                 TeacherInitialization();
@@ -150,7 +153,6 @@ namespace OnlineCourse
             DeactivateRecordIcons();
             
             isStudent = false;
-            canControl = true;
         }
 
 
@@ -159,9 +161,8 @@ namespace OnlineCourse
         /// </summary>
         private void StudentInitialization() {
             isStudent = true;
-            canControl = false;
 
-            DeactivateComputerIcons(0);
+            DeactivateComputerIcons(userPosition);
             DeactivateRecordIcons();
             DeactivateCanvasIcons();
         }
@@ -192,97 +193,120 @@ namespace OnlineCourse
         private void ActivateComputerIcons() {
             for (int position = 1; position < 6; position++) {
                 Image button = getComputerIcon(position);
-                
-                if (IPs[position] != null)
-                    ActivateComputerIcon(position, false);
+
+                if (IPs[position] == null)
+                    DisableComputerIcon(position, false);//关闭控制权按钮，初始状态为未获得控制权
+                else
+                    DisableComputerIcon(position, true);//激活控制权按钮，初始状态为未获得控制权
             }
         }
         /// <summary>
-        /// 批量禁用移交控制权按钮。0时为静音所有，用于初始化与学生失去控制权;
-        /// 1~5为对应位置设置为激活，并禁用其他，用于将控制权转交到对应学生时的教师端与获得控制权的学生端。
+        /// 批量禁用移交控制权按钮。0时为禁用所有，用于教师初始化;
+        /// 1~5为对应位置设置为激活，并禁用其他，用于将控制权转交到对应学生时的教师端与学生端初始化。
         /// </summary>
         /// <param name="position"></param>
         private void DeactivateComputerIcons(int position) {
             for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++) {
-                if (deactivatePosition != position) { 
-                    DeactivateComputerIcon(deactivatePosition,false);
-                    Image button = getComputerIcon(deactivatePosition);
-                    
+                if (deactivatePosition != position) {
+                    DisableComputerIcon(position, false);//禁用控制权按钮，初始状态为未获得控制权                   
                 }
                     
                 else {
                     if (position > 0) {
                         if (IPs[position] != null)
-                            ActivateComputerIcon(deactivatePosition, true);
+                            EnableComputerIcon(deactivatePosition, true);//启用控制权按钮，初始状态为已获得控制权
                     }
                 }
                     
             }
         }
         /// <summary>
-        /// 启用移交控制权按钮，isEnabled表示是否已获得控制权
+        /// 将按钮置为已经按过的状态。（即获得控制权）isActivated表示此时按钮是否可用
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="position"></param>
         /// <param name="isActivated"></param>
-        private void ActivateComputerIcon(int position,Boolean isEnabled) {
+        private void EnableComputerIcon(int position, Boolean isActivated) {
             Image button = getComputerIcon(position);
             if (button == null)
                 return;
-            if (isEnabled)
+            if (isActivated)
             {
-                try { 
-                    button.Dispatcher.Invoke(() => { 
-                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]); 
-                        button.Cursor = Cursors.Hand; 
-                    }); 
-                } 
+                try
+                {
+                    button.Dispatcher.Invoke(() => {
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivedIcon"]);
+                        button.Cursor = Cursors.Hand;
+                        button.Tag = position + "" + 1;
+                    });
+                }
                 catch (Exception ex) { };
-                
-            }
-            else {
-                try { 
-                    button.Dispatcher.Invoke(() => { 
-                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]); 
-                        button.Cursor = Cursors.Hand; 
-                    }); 
-                } 
-                catch (Exception ex) { };
-                
-            }
-            
-            
-        }
-        /// <summary>
-        /// 禁用移交控制权按钮，isEnabled表示是否已获得控制权
-        /// </summary>
-        /// <param name="button"></param>
-        private void DeactivateComputerIcon(int position,Boolean isEnabled) {
-            Image button = getComputerIcon(position);
-            if (button == null)
-                return;
-            if (isEnabled)
-            {
-                try { 
-                    button.Dispatcher.Invoke(() => { 
-                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]); 
-                        button.Cursor = Cursors.Arrow; 
-                    }); 
-                } 
-                catch (Exception ex) { };
-
             }
             else
             {
-                try { 
-                    button.Dispatcher.Invoke(() => { 
-                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]); 
+                try
+                {
+                    button.Dispatcher.Invoke(() => {
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
                         button.Cursor = Cursors.Arrow;
-                    }); 
-                } 
+                        button.Tag = position + "" + 1;
+                    });
+                }
                 catch (Exception ex) { };
 
             }
-            
+        }
+        /// <summary>
+        /// 将按钮置为未按过的状态。（即失去控制权）isActivated表示此时按钮是否可用
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="isActivated"></param>
+        private void DisableComputerIcon(int position, Boolean isActivated)
+        {
+            Image button = getComputerIcon(position);
+            if (button == null)
+                return;
+            if (isActivated)
+            {
+                try
+                {
+                    button.Dispatcher.Invoke(() => {
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
+                        button.Cursor = Cursors.Hand;
+                        button.Tag = position + "" + 0;
+                    });
+                }
+                catch (Exception ex) { };
+            }
+            else
+            {
+                try
+                {
+                    button.Dispatcher.Invoke(() => {
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerInactiveIcon"]);
+                        button.Cursor = Cursors.Arrow;
+                        button.Tag = position + "" + 0;
+                    });
+                }
+                catch (Exception ex) { };
+
+            }
+        }
+        /// <summary>
+        /// 学生要求控制权时的按钮样式
+        /// </summary>
+        /// <param name="position"></param>
+        private void askControlIcon(int position) {
+            Image button = getComputerIcon(position);
+            if (button == null)
+                return;
+            try
+            {
+                button.Dispatcher.Invoke(() => {
+                    button.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerAskControlIcon"]);
+                    button.Tag = position + "" + 2;
+                });
+            }
+            catch (Exception ex) { };
         }
 
         /// <summary>
@@ -315,53 +339,10 @@ namespace OnlineCourse
             for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++)
             {
                 if (deactivatePosition != userPosition)
-                    DeactivateRecordIcon(deactivatePosition,true);
+                    BanRecord(deactivatePosition, false);
                 else
-                    ActivateRecordIcon(deactivatePosition, true);
+                    BanRecord(deactivatePosition, true);
             }
-        }
-        /// <summary>
-        /// 启用禁音按钮，notSilenced表示启用时按钮的状态是否为已经被静音
-        /// </summary>
-        /// <param name="button"></param>
-        /// <param name="isActivated"></param>
-        private void ActivateRecordIcon(int position, Boolean notSilenced)
-        {
-            Image button = getRecordIcon(position);
-            if (button == null)
-                return;
-            if (notSilenced)
-            {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
-                
-            }
-            else
-            {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); button.Cursor = Cursors.Hand; }); } catch (Exception ex) { };
-                
-            }
-
-            
-        }
-        /// <summary>
-        /// 禁用静音按钮，notSilenced表示启用时按钮的状态是否为已经被静音
-        /// </summary>
-        /// <param name="button"></param>
-        private void DeactivateRecordIcon(int position, Boolean notSilenced) {
-            Image button = getRecordIcon(position);
-            if (button == null)
-                return;
-            if (notSilenced)
-            {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); button.Cursor = Cursors.Arrow; }); } catch (Exception ex) { };
-                
-            }
-            else
-            {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); button.Cursor = Cursors.Arrow; }); } catch (Exception ex) { };
-                
-            }
-            
         }
         /// <summary>
         /// 将某一位置的按钮变为被静音状态。isActivated表示静音时该按钮是否可用
@@ -375,12 +356,20 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]); }); } catch (Exception ex) { };
+                try { 
+                    button.Dispatcher.Invoke(() => { 
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                        button.Tag = position + "" + 1;
+                    }); } catch (Exception ex) { };
                 
             }
             else
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]); }); } catch (Exception ex) { };
+                try { 
+                    button.Dispatcher.Invoke(() => { 
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedWhenInactiveIcon"]);
+                        button.Tag = position + "" + 1;
+                    }); } catch (Exception ex) { };
                 
             }
         }
@@ -397,12 +386,19 @@ namespace OnlineCourse
                 return;
             if (isActivated)
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]); }); } catch (Exception ex) { };
+                try { 
+                    button.Dispatcher.Invoke(() => { 
+                        button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                        button.Tag = position + "" + 0;
+                    }); } catch (Exception ex) { };
                 
             }
             else
             {
-                try { button.Dispatcher.Invoke(() => { button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]); }); } catch (Exception ex) { };
+                try { button.Dispatcher.Invoke(() => { 
+                    button.SetValue(Button.StyleProperty, Application.Current.Resources["RecordInactiveIcon"]);
+                    button.Tag = position + "" + 0;
+                }); } catch (Exception ex) { };
                 
             }
         }
@@ -420,15 +416,18 @@ namespace OnlineCourse
                 });
             }
             catch (Exception ex) { };
-            //修改清除画板按钮状态
-            try
-            {
-                deleteIcon.Dispatcher.Invoke(() => {
-                    deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
-                    deleteIcon.Cursor = Cursors.Hand;
-                });
+            if (isStudent == false) {//学生不可以清楚（虽然我不知道为什么会有这个要求）
+                //修改清除画板按钮状态
+                try
+                {
+                    deleteIcon.Dispatcher.Invoke(() => {
+                        deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
+                        deleteIcon.Cursor = Cursors.Hand;
+                    });
+                }
+                catch (Exception ex) { };
             }
-            catch (Exception ex) { };
+            
             //修改颜色选择按钮状态
             try
             {
@@ -478,33 +477,32 @@ namespace OnlineCourse
         {
             teacherMedia.MediaInitializing += OnMediaInitializing;
         }
-
         private void stu1Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia1.MediaInitializing += OnMediaInitializing;
         }
-
         private void stu2Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia2.MediaInitializing += OnMediaInitializing;
         }
-
         private void stu3Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia3.MediaInitializing += OnMediaInitializing;
         }
-
         private void stu4Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia4.MediaInitializing += OnMediaInitializing;
         }
-
         private void stu5Media_Loaded(object sender, RoutedEventArgs e)
         {
             studentMedia5.MediaInitializing += OnMediaInitializing;
         }
 
-        // 修改播放器缓冲
+        /// <summary>
+        /// 修改播放器缓冲
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnMediaInitializing(object sender, MediaInitializingEventArgs e)
         {
             e.Configuration.GlobalOptions.FlagNoBuffer = true;
@@ -514,7 +512,11 @@ namespace OnlineCourse
             //e.Configuration.GlobalOptions.MaxAnalyzeDuration = TimeSpan.FromMilliseconds(500);
         }
 
-        // 静音自己
+        /// <summary>
+        /// 静音自己
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mute_MediaOpening(object sender, MediaOpeningEventArgs e)
         {
             switch (userPosition)
@@ -544,10 +546,12 @@ namespace OnlineCourse
             int tagHead = int.Parse((sender as Image).Tag.ToString()) / 10;
             if (isStudent == false)
             {
-                if (IPs[tagHead] == null || IPs[tagHead].Length <1)//该学生不存在
+                //该学生不存在
+                if (IPs[tagHead] == null || IPs[tagHead].Length <1)
                     return;
             }
-            else if (canControl == false)//是学生并且不具备控制权
+            // 是学生并且不是自己的对应按钮
+            else if (tagHead != userPosition)
                 return;
             mouseClickedTag = tagHead * 10;
         }
@@ -559,8 +563,6 @@ namespace OnlineCourse
        /// <param name="e"></param>
         private void ComputerIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false && isStudent == true)
-                return;
             Image image = sender as Image;
             if (image != null) {
                 //用tag表示不同按钮
@@ -574,44 +576,67 @@ namespace OnlineCourse
                     mouseClickedTag = 0;
                     return;
                 }
-                if (isStudent == true)
-                {//学生主动交还控制权的情况
-                    DeactivateComputerIcons(0);
-                    DeactivateCanvasIcons();
-                    canControl = false;
-                    //此处添加学生交还控制权的方法
-                    string order = "DisableControl@" + tagHead;
-                    sendOrder(order);
-                }
-                else {
-                    //老师手动拿回控制权的时候
-                    //根据状态不同进行切换
-                    if (tagTail == 0)
+                if (isStudent == true && userPosition == tagHead)
+                {
+                    //学生主动交还控制权的情况
+                    if (hasControl == userPosition)
                     {
-                        if (canControl == true)
+                        DeactivateComputerIcons(0);
+                        DeactivateCanvasIcons();
+                        hasControl = 0;
+                        //此处添加学生交还控制权的方法
+                        string order = "DisableControl@" + hasControl;
+                        sendOrder(order);
+                    }
+                    //教师获得控制权时学生可以举手
+                    else if (hasControl == 0) {
+                        //学生举手
+                        if (tagTail == 0)
                         {
-                            canControl = false;
-                            DeactivateComputerIcons(tagHead);//暂时禁用老师向其他学生交出控制权并禁用老师的画板
+                            askControlIcon(userPosition);
+                            //此处是学生举手
+                            string order = "AskControl@" + userPosition;
+                            sendOrder(order);
+                        }
+                        else if (tagTail == 2) {
+                            DisableComputerIcon(userPosition,true);
+                            //此处是学生取消举手
+                            string order = "CancelAskControl@" + userPosition;
+                            sendOrder(order);
+                        }
+                        
+                    }
+                    
+                }
+                else if(isStudent == false){
+                    if (IPs[tagHead] == null)
+                        return;
+                    //教师主动移交控制权
+                    if (tagTail == 0 || tagTail == 2)
+                    {
+                        if (hasControl == 0)
+                        {
+                            hasControl = tagHead;
+                            //禁用老师向其他学生交出控制权并禁用老师的画板
+                            DeactivateComputerIcons(tagHead);
                             DeactivateCanvasIcons();
+                            enableRecoverControl();//启用一键收回控制权按钮
                             //老师移交控制权的Socket函数
                             string order = "EnableControl@" + tagHead;
                             broadcastOrder(order, 0);
-                            image.Dispatcher.Invoke(() => {
-                                image.Tag = tagHead + "" + 1;
-                            });
                         }
                     }
+                    //教师主动收回控制权
                     else
                     {
-                        canControl = true;
-                        ActivateComputerIcons();
+                        hasControl = 0;
+                        //恢复教师端的画板与移交控制权按钮
+                        ActivateComputerIcons(); 
                         ActivateCanvasIcons();
+                        disableRecoverControl();//禁用一键收回控制权按钮
                         //老师拿回控制权的Socket函数
-                        string order = "DisableControl@" + tagHead;
+                        string order = "DisableControl@" + hasControl;
                         broadcastOrder(order, 0);
-                        image.Dispatcher.Invoke(() => {
-                            image.Tag = tagHead + "" + 0;
-                        });
                     }
                 }
                
@@ -667,13 +692,6 @@ namespace OnlineCourse
                     //根据状态不同进行切换，BanRecord与EnableRecor自带Style切换与实际音量控制，故进行了合并
                     if (tagTail == 0)
                     {
-                        try
-                        {
-                            image.Dispatcher.Invoke(() => {
-                                image.Tag = tagHead + "" + 1;
-                            });
-                        }
-                        catch (Exception ex) { };
                         BanRecord(tagHead,true);
 
                         //Socket网络通信
@@ -682,13 +700,6 @@ namespace OnlineCourse
                     }
                     else
                     {
-                        try
-                        {
-                            image.Dispatcher.Invoke(() => {
-                                image.Tag = tagHead + "" + 0;
-                            });
-                        }
-                        catch (Exception ex) { };
                         EnableRecord(tagHead, true);
 
                         //Socket网络通信
@@ -700,16 +711,17 @@ namespace OnlineCourse
                 else
                 {
                     return;
-                }
-                    
-                
+                }                                  
                 
                 //重置状态值避免bug
                 mouseClickedTag = 0;
             }
         }
 
-        // 静音第number号
+        /// <summary>
+        /// 静音第number号
+        /// </summary>
+        /// <param name="number"></param>
         private void mute(int number)
         {
             switch (number)
@@ -729,7 +741,10 @@ namespace OnlineCourse
             }
         }
 
-        // 恢复第number号。永远不会恢复自己
+        /// <summary>
+        /// 恢复第number号。永远不会恢复自己
+        /// </summary>
+        /// <param name="number"></param>
         private void unMute(int number)
         {
             if (number == userPosition)
@@ -757,7 +772,7 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void PrintCanvas_MouseDown(object sender, MouseButtonEventArgs e) {
-            if (canControl == false)
+            if (hasControl != userPosition)
                 return;
             Point startPoint = e.GetPosition(printCanvas);
             newLines(startPoint,userPosition);
@@ -817,7 +832,7 @@ namespace OnlineCourse
        /// <param name="e"></param>
         private void PrintCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (canControl == false)
+            if (hasControl != userPosition)
                 return;
             if (e.LeftButton == MouseButtonState.Pressed && isDrawing == true) {
 
@@ -870,7 +885,10 @@ namespace OnlineCourse
                 drawSend(painterPosition);
 
         }
-
+        /// <summary>
+        /// 将缓存在drawOrder中的所有点数据发送到对应的客户端
+        /// </summary>
+        /// <param name="painterPosition"></param>
         private void drawSend(int painterPosition) {           
             //教师绘图或者教师接收到其他学生绘图，广播到学生
             if (isStudent == false)
@@ -906,7 +924,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void PrintCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false || isDrawing == false)
+            if (hasControl != userPosition || isDrawing == false)
                 return;
             isDrawing = false;
             endDrawing(userPosition);
@@ -918,14 +936,14 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void printCanvas_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (canControl == false || isDrawing == false)
+            if (hasControl != userPosition || isDrawing == false)
                 return;
             isDrawing = false;
             endDrawing(userPosition);
         }
 
         /// <summary>
-        /// 停止绘图调用的函数，主要是网络通信
+        /// 停止绘图调用的函数，将仍然留在缓存中的drawOrder命令全部发送
         /// </summary>
         /// <param name="painterPosition"></param>
         private void endDrawing(int painterPosition) {
@@ -940,7 +958,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void DeleteIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
-           if (canControl == false)
+           if (hasControl != userPosition)
                return;
            mouseClickedTag = 1;
         }
@@ -951,7 +969,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void DeleteIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false)
+            if (hasControl != userPosition)
                 return;
             if (mouseClickedTag != 1) {
                 mouseClickedTag = 0;
@@ -989,7 +1007,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void ColorChooser_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false)
+            if (hasControl != userPosition)
                 return;
             mouseClickedTag = 2;
         }
@@ -1000,7 +1018,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void ColorChooser_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (canControl == false)
+            if (hasControl != userPosition)
                 return;
             if (mouseClickedTag != 2)
             {
@@ -1080,7 +1098,7 @@ namespace OnlineCourse
             }
             if (isStudent == false)
                 teacherQuit();
-            else if (canControl) {
+            else if (hasControl == userPosition) {
                 string order = "DisableControl@" + userPosition;
                 sendOrder(order);
             }
@@ -1257,6 +1275,129 @@ namespace OnlineCourse
             }
 
             
+        }
+        
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于一键静音或解除静音。点击确认变量数值： 99 表征是一键静音按钮。 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SilenceAll_MouseDown(object sender, MouseButtonEventArgs e) {
+            mouseClickedTag = 99;
+        }
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于一键静音或解除静音
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SilenceAll_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Image image = sender as Image;
+            if (image != null) {
+                if (mouseClickedTag != 99 || isStudent)
+                {
+                    mouseClickedTag = 0;//重置状态值避免bug
+                    return;
+                }
+                int tag = int.Parse(image.Tag.ToString());
+                if (tag == 0)
+                {
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        image.Tag = 1;
+                        image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordBannedIcon"]);
+                    }));
+                    for (int position = 1; position < 6; position++)
+                    {
+                        if (IPs[position] == null)
+                            BanRecord(position, false);
+                        else
+                            BanRecord(position, true);
+                    }
+                    broadcastOrder("BanVoice@0", 0);
+                }
+                else {
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        image.Tag = 0;
+                        image.SetValue(Button.StyleProperty, Application.Current.Resources["RecordIcon"]);
+                    }));
+                    for (int position = 1; position < 6; position++)
+                    {
+                        if (IPs[position] == null)
+                            EnableRecord(position, false);
+                        else
+                            EnableRecord(position, true);
+                    }
+                    broadcastOrder("EnableVoice@0", 0);
+                }
+            }
+            //重置状态值避免bug
+            mouseClickedTag = 0;
+        }
+
+        /// <summary>
+        /// 鼠标落下事件，此按钮用于一键收回控制权。点击确认变量数值： 98 表征是一键收回控制权按钮。 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RecoverControl_MouseDown(object sender, MouseButtonEventArgs e) {
+            Image button = sender as Image;
+            if (int.Parse(button.Tag.ToString()) == 0)
+                return;
+            mouseClickedTag = 98;
+        }
+
+        /// <summary>
+        /// 鼠标抬起事件，此按钮用于一键收回控制权
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RecoverControl_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Image image = sender as Image;
+            if (image != null)
+            {
+                if (mouseClickedTag != 98 || isStudent) {
+                    mouseClickedTag = 0;//重置状态值避免bug
+                    return;
+                }
+                    
+                int tag = int.Parse(image.Tag.ToString());
+                if (tag == 1 && hasControl != 0) {
+                    broadcastOrder("DisableControl@" + hasControl, 0);
+                    disableRecoverControl();
+
+                    ActivateCanvasIcons();
+                    hasControl = 0;
+                }
+                mouseClickedTag = 0;//重置状态值避免bug
+            }
+        }
+        
+        /// <summary>
+        /// 收回控制权，同时调用方法将其他控制权按钮置为对应的普通状态
+        /// </summary>
+        private void disableRecoverControl() {
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                recoverControlIcon.Tag = 0;
+                recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
+                recoverControlIcon.Cursor = Cursors.Arrow;
+            }));
+        }
+
+        /// <summary>
+        /// 控制权交给学生，启用一键收回控制权按钮
+        /// </summary>
+        private void enableRecoverControl()
+        {
+            App.Current.Dispatcher.Invoke((Action)(() =>
+            {
+                recoverControlIcon.Tag = 1;
+                recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
+                recoverControlIcon.Cursor = Cursors.Hand;
+            }));
         }
 
         /// <summary>
@@ -1486,6 +1627,14 @@ namespace OnlineCourse
                 {
                     BanRecord(userPosition, true);
                 }
+                else if (banPosition == 0) {//教师一键静音所有学生
+                    for (int position = 1; position < 6; position++) {
+                        if (position == userPosition)
+                            BanRecord(position, true);
+                        else
+                            BanRecord(position, false);
+                    }   
+                }
                 else//其他学生静音
                 {
                     BanRecord(banPosition, false);
@@ -1501,6 +1650,16 @@ namespace OnlineCourse
                 {
                     EnableRecord(userPosition, true);
                 }
+                else if (enablePosition == 0)
+                {//教师一键解除所有学生静音
+                    for (int position = 1; position < 6; position++)
+                    {
+                        if (position == userPosition)
+                            EnableRecord(position, true);
+                        else
+                            EnableRecord(position, false);
+                    }
+                }
                 else// 其他学生解除静音
                 {
                     EnableRecord(enablePosition, false);
@@ -1512,15 +1671,19 @@ namespace OnlineCourse
                 if (order.Length < 2)
                     return;
                 int enablePosition = int.Parse(order[1]);
-                if (enablePosition == userPosition)//教师将控制权交于本学生
+                //教师将控制权交于本学生
+                if (enablePosition == userPosition)
                 {
                     DeactivateComputerIcons(userPosition);
                     ActivateCanvasIcons();
-                    canControl = true;
+                    hasControl = userPosition;
                 }
-                else//教师将控制权交于其他学生
+                //教师将控制权交于其他学生
+                else
                 {
-                    DeactivateComputerIcon(enablePosition, true);
+                    //学生自动取消自己的举手并禁用举手功能
+                    DisableComputerIcon(userPosition, false);
+                    hasControl = enablePosition;
                 }
             }
             //教师拿回控制权命令 格式"DisableControl@'userPosition'"
@@ -1529,26 +1692,43 @@ namespace OnlineCourse
                 if (order.Length < 2)
                     return;
                 int disablePosition = int.Parse(order[1]);
+                //教师收到学生交还控制权命令
                 if (isStudent == false)
-                {//教师收到学生交还控制权命令
+                {
                     ActivateComputerIcons();
                     ActivateCanvasIcons();
-                    canControl = true;
+                    hasControl = userPosition;
+                    disableRecoverControl();
 
                 }
-                else if (disablePosition == userPosition)//学生收到教师收回自己控制权命令
+                //学生收到教师收回自己控制权命令
+                else if (disablePosition == userPosition)
                 {
-                    DeactivateComputerIcons(0);
+                    DisableComputerIcon(userPosition, true);//将按钮状态从可按已激活变成可按未激活
                     DeactivateCanvasIcons();
-                    canControl = false;
+                    hasControl = 0;
                     if (isDrawing)
                         endDrawing(userPosition);
                     isDrawing = false;
                 }
-                else//学生收到教师收回他人控制权命令
+                //学生收到教师收回他人控制权命令
+                else
                 {
-                    DeactivateComputerIcon(disablePosition, false);
+                    DisableComputerIcon(disablePosition, false);//将按钮状态从不可按已激活变成不可按未激活
+                    DisableComputerIcon(userPosition, true);//将按钮状态从不可按变成可按未激活
+                    hasControl = 0;
                 }
+            }
+            //学生举手命令 格式"AskControl@'userPosition'"
+            else if (order[0].Equals("AskControl"))
+            {
+                int studentPosition = int.Parse(order[1]);
+                askControlIcon(studentPosition);
+            }
+            //学生取消举手命令 格式"CancelAskControl@'userPosition'"
+            else if (order[0].Equals("CancelAskControl")) {
+                int studentPosition = int.Parse(order[1]);
+                DisableComputerIcon(studentPosition, true);
             }
             //修改颜色命令 格式"Color@'userPosition'@'A'@'R'@'G'@'B'"
             else if (order[0].Equals("Color"))
@@ -1611,14 +1791,14 @@ namespace OnlineCourse
                         thisWindow.Close();
                         roomControl.Show();
                     }));
-                    
+
                 }
                 else
                 {
                     int position = int.Parse(order[1]);
                     IPs[position] = null;
-                    DeactivateComputerIcon(position, false);
-                    DeactivateRecordIcon(position, false);
+                    DisableComputerIcon(position, false);//禁用目标位置控制权按钮并设置为未激活
+                    BanRecord(position, false);//将目标位置静音设置为不可按已静音
                     socketOrder.Close();
 
                     switch (position)
@@ -1659,8 +1839,8 @@ namespace OnlineCourse
 
                 broadcastOrder(newOrder, 0);
 
-                ActivateComputerIcon(studentPosition, false);
-                ActivateRecordIcon(studentPosition, true);
+                DisableComputerIcon(studentPosition, true);//将学生按钮设置为可按未激活
+                BanRecord(studentPosition, true);//将学生按钮设置为可按已静音
 
                 switch (studentPosition)
                 {
@@ -1709,7 +1889,8 @@ namespace OnlineCourse
 
             }
             //特殊情况教师端需要学生端暂时停止绘图 格式"EndDraw@"
-            else if (order[0].Equals("EndDraw")) {
+            else if (order[0].Equals("EndDraw"))
+            {
                 if (isDrawing)
                     endDrawing(userPosition);
                 isDrawing = false;

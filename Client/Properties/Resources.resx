@@ -139,6 +139,12 @@
   <data name="computer_active_highlight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resource\computer_active_highlight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="computer_askControl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\computer_askControl.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="computer_askControl_over" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\computer_askControl_over.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="computer_highlight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resource\computer_highlight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

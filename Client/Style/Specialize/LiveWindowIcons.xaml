@@ -26,6 +26,19 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+    <!--学生要求控制权图标-->
+    <BitmapImage x:Key="computer_askControl" UriSource="/OnlineCourse;component/Resource/computer_askControl.png"/>
+    <BitmapImage x:Key="computer_askControl_over" UriSource="/OnlineCourse;component/Resource/computer_askControl_over.png"/>
+    <Style x:Key="ComputerAskControlIcon" TargetType="{x:Type Image}">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
+        <Setter Property="Source" Value="{StaticResource computer_askControl}"/>
+        <Setter Property="OpacityMask" Value="{x:Null}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Source" Value="{StaticResource computer_askControl_over}"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <!--控制权不可用图标-->
     <Style x:Key="ComputerInactiveIcon" TargetType="{x:Type Image}">
         <Setter Property="FlowDirection" Value="LeftToRight"/>

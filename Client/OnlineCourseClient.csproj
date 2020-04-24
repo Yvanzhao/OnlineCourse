@@ -327,6 +327,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\computer_askControl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resource\computer_askControl_over.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets" Condition="Exists('packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

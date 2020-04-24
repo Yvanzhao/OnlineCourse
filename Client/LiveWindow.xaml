@@ -157,6 +157,10 @@
                 <Ellipse x:Name="colorChooser" DockPanel.Dock="Left" Width="30" Height="30" Style="{StaticResource ColorChoser}" StrokeThickness="3" Margin="2,5,10,0" Cursor="Hand" MouseLeftButtonDown="ColorChooser_MouseDown" MouseLeftButtonUp="ColorChooser_MouseUp"/>
                 <!--清除按钮-->
                 <Image x:Name="deleteIcon" DockPanel.Dock="Left" Style="{StaticResource DeleteIcon}" Cursor="Hand" MouseLeftButtonDown="DeleteIcon_MouseDown" MouseLeftButtonUp="DeleteIcon_MouseUp"/>
+                <!--一键静音按钮-->
+                <Image x:Name="silenceAllIcon" Tag="1" DockPanel.Dock="Right" Style="{StaticResource RecordBannedIcon}" Width="35" Height="35" Margin="2,5,10,0" Cursor="Hand" MouseLeftButtonDown="SilenceAll_MouseDown" MouseLeftButtonUp="SilenceAll_MouseUp"/>
+                <!--一键收回控制权按钮-->
+                <Image x:Name="recoverControlIcon" Tag="0" DockPanel.Dock="Right" Style="{StaticResource ComputerActivatedWhenInactiveIcon}" Width="35" Height="35" Margin="2,5,15,0" MouseLeftButtonDown="RecoverControl_MouseDown" MouseLeftButtonUp="RecoverControl_MouseUp"/>
             </DockPanel>
             <!--刷新按钮-->
             <Image x:Name="refreshIcon_0" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="00" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp"/>
