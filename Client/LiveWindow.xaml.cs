@@ -1474,6 +1474,8 @@ namespace OnlineCourse
             string orders = System.Text.Encoding.UTF8.GetString(readBuff, 0, count);
 
             string[] order = orders.Split('@');
+            if (order.Length < 1)
+                return;
             //静音命令 格式"BanVoice@'userPosition'"
             if (order[0].Equals("BanVoice"))
             {
@@ -1717,7 +1719,8 @@ namespace OnlineCourse
 
             //如果是教师端，则还需要负责将命令广播出去。
             if (isStudent == false) {
-                broadcastOrder(orders, int.Parse(order[1]));
+                if(order.Length > 1)
+                    broadcastOrder(orders, int.Parse(order[1]));
             }
         }
 
