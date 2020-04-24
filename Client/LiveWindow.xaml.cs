@@ -1714,14 +1714,14 @@ namespace OnlineCourse
             drawOrder = "";
             drawOrderCount = 0;
             for (int linePosition = 0; linePosition < linesList.Count; linePosition++) {
-                drawOrder = drawOrder + "Point@0@0@" + linesList[linePosition][0] + "@" + linesList[linePosition][1] + "@";
+                drawOrder = drawOrder + "Point@0@0@" + linesList[linePosition][0][0] + "@" + linesList[linePosition][0][1] + "@";
                 drawOrderCount++;
                 Socket colorSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 colorSocket.Connect(IPs[studentIn], 8085);
                 colorSocket.Send(System.Text.Encoding.Default.GetBytes("Color@"+colorList[linePosition][0]+"@"+colorList[linePosition][1] + "@" + colorList[linePosition][2] + "@" + colorList[linePosition][3]));
                 colorSocket.Close();
                 for (int pointPosition = 1; pointPosition < linesList[linePosition].Count; pointPosition++) { 
-                    drawOrder = drawOrder + "Point@0@1"+ linesList[linePosition][pointPosition] + "@" + linesList[linePosition][pointPosition] + "@";
+                    drawOrder = drawOrder + "Point@0@1@"+ linesList[linePosition][pointPosition][0] + "@" + linesList[linePosition][pointPosition][1] + "@";
                     if (drawOrderCount >= 10 && drawOrder.Length >= 450) {
                         drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         drawSocket[studentIn].Connect(IPs[studentIn], 8085);
