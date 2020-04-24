@@ -1601,10 +1601,15 @@ namespace OnlineCourse
                 if (int.Parse(order[1]) == 0)
                 {
                     socketOrder.Close();
-                    RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
-                    Window thisWindow = Window.GetWindow(this);
-                    thisWindow.Close();
-                    roomControl.Show();
+
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
+                        Window thisWindow = Window.GetWindow(this);
+                        thisWindow.Close();
+                        roomControl.Show();
+                    }));
+                    
                 }
                 else
                 {
