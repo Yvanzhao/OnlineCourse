@@ -1718,7 +1718,7 @@ namespace OnlineCourse
                 drawOrderCount++;
                 Socket colorSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 colorSocket.Connect(IPs[studentIn], 8085);
-                colorSocket.Send(System.Text.Encoding.Default.GetBytes("Color@"+colorList[0]+"@"+colorList[1] + "@" + colorList[2] + "@" + colorList[3]));
+                colorSocket.Send(System.Text.Encoding.Default.GetBytes("Color@"+colorList[linePosition][0]+"@"+colorList[linePosition][1] + "@" + colorList[linePosition][2] + "@" + colorList[linePosition][3]));
                 colorSocket.Close();
                 for (int pointPosition = 1; pointPosition < linesList[linePosition].Count; pointPosition++) { 
                     drawOrder = drawOrder + "Point@0@1"+ linesList[linePosition][pointPosition] + "@" + linesList[linePosition][pointPosition] + "@";
