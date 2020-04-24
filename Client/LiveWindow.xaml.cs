@@ -1440,6 +1440,7 @@ namespace OnlineCourse
             str = "ConnectToTeacher@" + userPosition+"@"+IPs[userPosition];
             connectToTeacher.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToTeacher.Close();
+            teacherMedia.Open(teacherAddress);
 
             serverThread = new Thread(new ThreadStart(this.studentSocketThread));
             serverThread.IsBackground = true;
