@@ -69,14 +69,6 @@ namespace OnlineCourse
         /// <param name="tag"></param>
         public LiveWindow(int tag,string roomIdIn,user userIn, Server.ServerService server)
         {
-
-            var defaultEncoding = Encoding.Default;
-            Console.WriteLine("开始时间:{0}", DateTime.Now.ToString());
-            var stream = new FileStream("F:/log.txt", FileMode.Create);
-            Console.SetOut(new StreamWriter(stream));
-            Console.WriteLine("开始时间:{0}", DateTime.Now.ToString());
-            Console.WriteLine("结束时间:{0}", DateTime.Now.ToString());
-
             pushTool = new LiveCapture();
 
             this.server = server;
@@ -1094,7 +1086,7 @@ namespace OnlineCourse
             }
 
             pushTool.Quit();
-            Console.Out.Close();
+
             server.setEmptyPosition(roomId, userPosition);
         }
 
