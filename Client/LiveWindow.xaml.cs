@@ -973,7 +973,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void DeleteIcon_MouseDown(object sender, MouseButtonEventArgs e)
         {
-           if (hasControl != userPosition)
+           if (isStudent)
                return;
            mouseClickedTag = 1;
         }
@@ -984,7 +984,7 @@ namespace OnlineCourse
         /// <param name="e"></param>
         private void DeleteIcon_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (hasControl != userPosition)
+            if (isStudent)
                 return;
             if (mouseClickedTag != 1) {
                 mouseClickedTag = 0;
