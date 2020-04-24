@@ -1088,6 +1088,11 @@ namespace OnlineCourse
             }
             if (isStudent == false)
                 teacherQuit();
+            else if (canControl) {
+                string order = "DisableControl@" + userPosition;
+                sendOrder(order);
+            }
+
             pushTool.Quit();
             Console.Out.Close();
             server.setEmptyPosition(roomId, userPosition);
