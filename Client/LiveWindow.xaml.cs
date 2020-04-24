@@ -596,7 +596,19 @@ namespace OnlineCourse
                     //学生主动交还控制权的情况
                     if (hasControl == userPosition)
                     {
-                        DeactivateComputerIcons(0);
+                        //禁用老师向其他学生交出控制权并禁用老师的画板
+                        ///这里将一堆控制权按钮改掉
+                        ///
+                        ///
+                        ///
+                        ///
+                        for (int position = 1; position < 6; position++)
+                        {
+                            if (position != userPosition)
+                                DisableComputerIcon(position, false);
+                            else
+                                DisableComputerIcon(position, true);
+                        }
                         DeactivateCanvasIcons();
                         hasControl = 0;
                         //此处添加学生交还控制权的方法
@@ -633,6 +645,11 @@ namespace OnlineCourse
                         {
                             hasControl = tagHead;
                             //禁用老师向其他学生交出控制权并禁用老师的画板
+                            ///这里将一堆控制权按钮改掉
+                            ///
+                            ///
+                            ///
+                            ///
                             for (int position = 1; position < 6; position++) {
                                 if (position != tagHead)
                                     DisableComputerIcon(position, false);
@@ -1708,7 +1725,19 @@ namespace OnlineCourse
                 //教师将控制权交于本学生
                 if (enablePosition == userPosition)
                 {
-                    DeactivateComputerIcons(userPosition);
+                    //禁用老师向其他学生交出控制权并禁用老师的画板
+                    ///这里将一堆控制权按钮改掉
+                    ///
+                    ///
+                    ///
+                    ///
+                    for (int position = 1; position < 6; position++)
+                    {
+                        if (position != userPosition)
+                            DisableComputerIcon(position, false);
+                        else
+                            EnableComputerIcon(position, true);
+                    }
                     ActivateCanvasIcons();
                     hasControl = userPosition;
                 }
@@ -1717,6 +1746,7 @@ namespace OnlineCourse
                 {
                     //学生自动取消自己的举手并禁用举手功能
                     DisableComputerIcon(userPosition, false);
+                    EnableComputerIcon(enablePosition, false);
                     hasControl = enablePosition;
                 }
             }
