@@ -872,7 +872,7 @@ namespace OnlineCourse
             //Socket网络通信
             drawOrder = drawOrder + "Point@" + painterPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
             drawOrderCount++;            
-            if (drawOrderCount >= 20 && drawOrder.Length >= 1000)
+            if (drawOrderCount >= 10 && drawOrder.Length >= 450)
                 drawSend(painterPosition);
 
         }
@@ -1723,7 +1723,7 @@ namespace OnlineCourse
                 for (int pointPosition = 1; pointPosition < linesList[linePosition].Count; pointPosition++) { 
                     drawOrder = drawOrder + "Point@0@1@"+ linesList[linePosition][pointPosition][0] + "@" + linesList[linePosition][pointPosition][1] + "@";
                     drawOrderCount++;
-                    if (drawOrderCount >= 20 && drawOrder.Length >= 1000) {
+                    if (drawOrderCount >= 10 && drawOrder.Length >= 450) {
                         drawSocket[studentIn] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         drawSocket[studentIn].Connect(IPs[studentIn], 8085);
                         drawSocket[studentIn].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
