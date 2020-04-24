@@ -1417,8 +1417,11 @@ namespace OnlineCourse
                     ///
                     ///
                     for (int position = 1; position < 6; position++)
-                    {                       
-                        DisableComputerIcon(position, true);
+                    {
+                        if (IPs[position] != null)
+                            DisableComputerIcon(position, true);
+                        else
+                            DisableComputerIcon(position, false);
                     }
                     hasControl = 0;
                 }
@@ -1872,6 +1875,20 @@ namespace OnlineCourse
                     DisableComputerIcon(position, false);//禁用目标位置控制权按钮并设置为未激活
                     BanRecord(position, false);//将目标位置静音设置为不可按已静音
                     socketOrder.Close();
+
+                    if (isStudent == false && position == hasControl) {
+                        hasControl = 0;
+                        ActivateCanvasIcons();
+                        for (int positionIP = 1; positionIP < 6; positionIP++)
+                        {
+                            if (IPs[positionIP] != null)
+                                DisableComputerIcon(positionIP, true);
+                            else
+                                DisableComputerIcon(positionIP, false);
+                        }
+                        disableRecoverControl();
+
+                    }
 
                     switch (position)
                     {
