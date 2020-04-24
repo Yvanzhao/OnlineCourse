@@ -769,7 +769,10 @@ namespace OnlineCourse
             newLines(startPoint,userPosition);
             isDrawing = true;
         }
-
+        //绘图时用于保存所有命令的string
+        string drawOrder;
+        //已有命令数统计
+        int drawOrderCount;
         /// <summary>
         /// 实际初始化画图
         /// </summary>
@@ -795,7 +798,7 @@ namespace OnlineCourse
                         drawSocket[position] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         drawSocket[position].Connect(IPs[position], 8085);
                         drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(order));
-                        //drawSocket[position].Close();
+                        drawSocket[position].Close();
                     }
                 }
             }
@@ -804,8 +807,10 @@ namespace OnlineCourse
                 drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 drawSocket[0].Connect(IPs[0], 8085);
                 drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(order));
-                //drawSocket[0].Close();
+                drawSocket[0].Close();
             }
+            drawOrder = "";
+            drawOrderCount = 0;
                
         }
 
@@ -833,6 +838,7 @@ namespace OnlineCourse
             }
         }
 
+        
         /// <summary>
         /// 实际绘制直线的方法。包含了网络的通信的部分
         /// </summary>
@@ -862,7 +868,14 @@ namespace OnlineCourse
             pointsList.Add(pointPosition);
 
             //Socket网络通信
-            string order = "Point@" + painterPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
+            drawOrder = drawOrder + "Point@" + painterPosition + "@1@" + newPoint.X + "@" + newPoint.Y+"@";
+            drawOrderCount++;            
+            if (drawOrderCount >= 10 && drawOrder.Length >= 450)
+                drawSend(painterPosition);
+
+        }
+
+        private void drawSend(int painterPosition) {           
             //教师绘图或者教师接收到其他学生绘图，广播到学生
             if (isStudent == false)
             {
@@ -872,19 +885,22 @@ namespace OnlineCourse
                     {
                         drawSocket[position] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         drawSocket[position].Connect(IPs[position], 8085);
-                        drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(order));
+                        drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
                         drawSocket[position].Close();
                     }
                 }
             }
             //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
-            else if (userPosition == painterPosition) {
+            else if (userPosition == painterPosition)
+            {
                 drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 drawSocket[0].Connect(IPs[0], 8085);
-                drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(order));
+                drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
                 drawSocket[0].Close();
             }
-                
+
+            drawOrderCount = 0;
+            drawOrder = "";
         }
 
         /// <summary>
@@ -917,25 +933,8 @@ namespace OnlineCourse
         /// </summary>
         /// <param name="painterPosition"></param>
         private void endDrawing(int painterPosition) {
-            /*//教师绘图或者教师接收到其他学生绘图，广播到学生
-            if (isStudent == false)
-            {
-                for (int position = 1; position < 6; position++)
-                {
-                    if (position != painterPosition && drawSocket[position] != null)
-                    {
-                        drawSocket[position].Close();
-                        drawSocket[position] = null;
-                    }
+            drawSend(painterPosition);
 
-                }
-            }
-            //学生自己绘图，通知教师。如果不是本人绘图，表明是教师的广播命令，不能重新通知教师
-            else if (userPosition == painterPosition) {
-                drawSocket[0].Close();
-                drawSocket[0] = null;
-            }*/
-                
         }
 
         /// <summary>
