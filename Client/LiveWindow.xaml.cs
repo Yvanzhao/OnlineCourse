@@ -218,7 +218,7 @@ namespace OnlineCourse
                 else {
                     if (position > 0) {
                         if (IPs[position] != null)
-                            EnableComputerIcon(deactivatePosition, true);//启用控制权按钮，初始状态为已获得控制权
+                            EnableComputerIcon(position, true);//启用控制权按钮，初始状态为已获得控制权
                     }
                 }
                     
@@ -1887,6 +1887,8 @@ namespace OnlineCourse
                         if (int.Parse(order[studentPosition]) == 1)
                         {
                             IPs[studentPosition] = "hasStudent";
+                            BanRecord(studentPosition, false);
+                            DisableComputerIcon(studentPosition, false);
                             switch (studentPosition)
                             {
                                 case 1:
