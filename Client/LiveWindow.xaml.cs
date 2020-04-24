@@ -1411,7 +1411,15 @@ namespace OnlineCourse
                     broadcastOrder("DisableControl@" + hasControl, 0);
                     disableRecoverControl();
 
-                    ActivateCanvasIcons();
+                    ///这里将一堆控制权按钮改掉
+                    ///
+                    ///
+                    ///
+                    ///
+                    for (int position = 1; position < 6; position++)
+                    {                       
+                        DisableComputerIcon(position, true);
+                    }
                     hasControl = 0;
                 }
                 mouseClickedTag = 0;//重置状态值避免bug
@@ -1519,35 +1527,35 @@ namespace OnlineCourse
                     case 1:
                         if (int.Parse(computerIcon_1.Tag.ToString()) % 10 == 0)
                             computerIcon_1.Visibility = Visibility.Hidden;
-                        if (int.Parse(recordIcon_1.Tag.ToString()) % 10 == 0)
+                        if (int.Parse(recordIcon_1.Tag.ToString()) % 10 == 0 || ((isStudent && tag != userPosition)))
                             recordIcon_1.Visibility = Visibility.Hidden;
                         refreshIcon_1.Visibility = Visibility.Hidden;
                         break;
                     case 2:
                         if (int.Parse(computerIcon_2.Tag.ToString()) % 10 == 0)
                             computerIcon_2.Visibility = Visibility.Hidden;
-                        if (int.Parse(recordIcon_2.Tag.ToString()) % 10 == 0)
+                        if (int.Parse(recordIcon_2.Tag.ToString()) % 10 == 0 || ((isStudent && tag != userPosition)))
                             recordIcon_2.Visibility = Visibility.Hidden;
                         refreshIcon_2.Visibility = Visibility.Hidden;
                         break;
                     case 3:
                         if (int.Parse(computerIcon_3.Tag.ToString()) % 10 == 0)
                             computerIcon_3.Visibility = Visibility.Hidden;
-                        if (int.Parse(recordIcon_3.Tag.ToString()) % 10 == 0)
+                        if (int.Parse(recordIcon_3.Tag.ToString()) % 10 == 0 || ((isStudent && tag != userPosition)))
                             recordIcon_3.Visibility = Visibility.Hidden;
                         refreshIcon_3.Visibility = Visibility.Hidden;
                         break;
                     case 4:
                         if (int.Parse(computerIcon_4.Tag.ToString()) % 10 == 0)
                             computerIcon_4.Visibility = Visibility.Hidden;
-                        if (int.Parse(recordIcon_4.Tag.ToString()) % 10 == 0)
+                        if (int.Parse(recordIcon_4.Tag.ToString()) % 10 == 0 || ((isStudent && tag != userPosition)))
                             recordIcon_4.Visibility = Visibility.Hidden;
                         refreshIcon_4.Visibility = Visibility.Hidden;
                         break;
                     case 5:
                         if (int.Parse(computerIcon_5.Tag.ToString()) % 10 == 0)
                             computerIcon_5.Visibility = Visibility.Hidden;
-                        if (int.Parse(recordIcon_5.Tag.ToString()) % 10 == 0)
+                        if (int.Parse(recordIcon_5.Tag.ToString()) % 10 == 0 || ((isStudent && tag != userPosition)))
                             recordIcon_5.Visibility = Visibility.Hidden;
                         refreshIcon_5.Visibility = Visibility.Hidden;
                         break;
