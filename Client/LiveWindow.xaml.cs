@@ -1601,7 +1601,6 @@ namespace OnlineCourse
                 if (int.Parse(order[1]) == 0)
                 {
                     socketOrder.Close();
-
                     RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
                     Window thisWindow = Window.GetWindow(this);
                     thisWindow.Close();
@@ -1614,6 +1613,20 @@ namespace OnlineCourse
                     DeactivateComputerIcon(position, false);
                     DeactivateRecordIcon(position, false);
                     socketOrder.Close();
+
+                    switch (position)
+                    {
+                        case 1:
+                            studentMedia1.Close(); break;
+                        case 2:
+                            studentMedia2.Close(); break;
+                        case 3:
+                            studentMedia3.Close(); break;
+                        case 4:
+                            studentMedia4.Close(); break;
+                        case 5:
+                            studentMedia5.Close(); break;
+                    }
                 }
 
             }
