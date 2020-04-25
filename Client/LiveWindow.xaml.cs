@@ -1205,7 +1205,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 1)
                     {
-                        studentMedia1.Open(studentAudio1);
+                        studentMedia1.Open(studentAddress1);
                         try { studentMedia1.Dispatcher.Invoke(() => { if (studentMedia1.Volume != 0) studentMedia1.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1213,10 +1213,14 @@ namespace OnlineCourse
                         // 检查1号位置有没有学生接入
                         if (IPs[1] != null)
                         {
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia1.Open(studentAddress1);
                             else
                                 studentMedia1.Open(studentAudio1);
+=======
+                            studentMedia1.Open(studentAddress1);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
                         }
                         else
                         {
@@ -1229,7 +1233,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 2)
                     {
-                        studentMedia2.Open(studentAudio2);
+                        studentMedia2.Open(studentAddress2);
                         try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume != 0) studentMedia2.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1237,10 +1241,14 @@ namespace OnlineCourse
                         // 检查2号位置有没有学生接入
                         if (IPs[2] != null)
                         {
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia2.Open(studentAddress2);
                             else
                                 studentMedia2.Open(studentAudio2);
+=======
+                            studentMedia2.Open(studentAddress2);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
                         }
                         else
                         {
@@ -1253,7 +1261,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 3)
                     {
-                        studentMedia3.Open(studentAudio3);
+                        studentMedia3.Open(studentAddress3);
                         try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume != 0) studentMedia3.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1261,10 +1269,14 @@ namespace OnlineCourse
                         // 检查3号位置有没有学生接入
                         if (IPs[3] != null)
                         {
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia3.Open(studentAddress3);
                             else
                                 studentMedia3.Open(studentAudio3);
+=======
+                            studentMedia3.Open(studentAddress3);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
                         }
                         else
                         {
@@ -1277,7 +1289,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 4)
                     {
-                        studentMedia4.Open(studentAudio4);
+                        studentMedia4.Open(studentAddress4);
                         try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume != 0) studentMedia4.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1285,10 +1297,14 @@ namespace OnlineCourse
                         // 检查4号位置有没有学生接入
                         if (IPs[4] != null)
                         {
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia4.Open(studentAddress4);
                             else
                                 studentMedia4.Open(studentAudio4);
+=======
+                            studentMedia4.Open(studentAddress4);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
                         }
                         else
                         {
@@ -1302,7 +1318,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 5)
                     {
-                        studentMedia5.Open(studentAudio5);
+                        studentMedia5.Open(studentAddress5);
                         try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume != 0) studentMedia5.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1310,10 +1326,14 @@ namespace OnlineCourse
                         // 检查5号位置有没有学生接入
                         if (IPs[5] != null)
                         {
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia5.Open(studentAddress5);
                             else
                                 studentMedia5.Open(studentAudio5);
+=======
+                            studentMedia5.Open(studentAddress5);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
                         }
                         else
                         {
