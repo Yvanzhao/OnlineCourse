@@ -1222,7 +1222,10 @@ namespace OnlineCourse
                         // 检查1号位置有没有学生接入
                         if (IPs[1] != null)
                         {
-                            studentMedia1.Open(studentAudio1);
+                            if (userPosition == 0)
+                                studentMedia1.Open(studentAddress1);
+                            else
+                                studentMedia1.Open(studentAudio1);
                         }
                         else
                         {
@@ -1243,7 +1246,10 @@ namespace OnlineCourse
                         // 检查2号位置有没有学生接入
                         if (IPs[2] != null)
                         {
-                            studentMedia2.Open(studentAudio2);
+                            if (userPosition == 0)
+                                studentMedia2.Open(studentAddress2);
+                            else
+                                studentMedia2.Open(studentAudio2);
                         }
                         else
                         {
@@ -1264,7 +1270,10 @@ namespace OnlineCourse
                         // 检查3号位置有没有学生接入
                         if (IPs[3] != null)
                         {
-                            studentMedia3.Open(studentAudio3);
+                            if (userPosition == 0)
+                                studentMedia3.Open(studentAddress3);
+                            else
+                                studentMedia3.Open(studentAudio3);
                         }
                         else
                         {
@@ -1285,7 +1294,10 @@ namespace OnlineCourse
                         // 检查4号位置有没有学生接入
                         if (IPs[4] != null)
                         {
-                            studentMedia4.Open(studentAudio4);
+                            if (userPosition == 0)
+                                studentMedia4.Open(studentAddress4);
+                            else
+                                studentMedia4.Open(studentAudio4);
                         }
                         else
                         {
@@ -1307,7 +1319,10 @@ namespace OnlineCourse
                         // 检查5号位置有没有学生接入
                         if (IPs[5] != null)
                         {
-                            studentMedia5.Open(studentAudio5);
+                            if (userPosition == 0)
+                                studentMedia5.Open(studentAddress5);
+                            else
+                                studentMedia5.Open(studentAudio5);
                         }
                         else
                         {
