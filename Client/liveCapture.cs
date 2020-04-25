@@ -30,18 +30,26 @@ namespace OnlineCourse
             
         }
 
-        // 录制摄像头+麦克风
-        public void StartCamera(string address)
+        // 老师 录制摄像头+麦克风  学生 只录制麦克风
+        public void StartCamera(string address, int user)
         {
 
             //ffmpeg - f dshow - i video = "Integrated Camera" - vcodec libx264 - acodec copy - preset:v ultrafast -tune:v zerolatency -f flv rtmp://eguid.cc:1935/rtmp/eguid
             string pushstream;
-            pushstream = "-rtbufsize 3041280*50 -thread_queue_size 128 -start_time_realtime 0 -f dshow -i video=\"" + videoName + "\"" + ":audio=\"" + audioName +
+
+            if(user == 0)
+            {
+                pushstream = "-rtbufsize 3041280*50 -thread_queue_size 128 -start_time_realtime 0 -f dshow -i video=\"" + videoName + "\"" + ":audio=\"" + audioName +
                 "\" -vcodec libx264 -preset:v ultrafast -tune:v zerolatency -threads 1 -b:v 200k -g 20 -acodec aac -f flv " +
-                "rtmp://172.19.241.249:1935/live/" + address;
-            //pushstream = "-rtbufsize 3041280*50 -thread_queue_size 128 -start_time_realtime 0 -f dshow -i audio=\"" + audioName +
-            //    "\" -acodec aac -f flv " +
-            //    "rtmp://172.19.241.249:8082/live/" + address;
+                "rtmp://172.19.241.249:8082/live/" + address;
+            }
+            else
+            {
+                pushstream = "-rtbufsize 3041280*50 -thread_queue_size 128 -start_time_realtime 0 -f dshow -i audio=\"" + audioName +
+                "\" -acodec aac -f flv " +
+                "rtmp://172.19.241.249:8082/live/" + address;
+            }
+            
             CmdRun(ffmpeg, pushstream);
 
         }
