@@ -1214,10 +1214,14 @@ namespace OnlineCourse
                         if (IPs[1] != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia1.Open(studentAddress1);
                             else
                                 studentMedia1.Open(studentAudio1);
+=======
+                            studentMedia1.Open(studentAddress1);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
 =======
                             studentMedia1.Open(studentAddress1);
 >>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
@@ -1242,10 +1246,14 @@ namespace OnlineCourse
                         if (IPs[2] != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia2.Open(studentAddress2);
                             else
                                 studentMedia2.Open(studentAudio2);
+=======
+                            studentMedia2.Open(studentAddress2);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
 =======
                             studentMedia2.Open(studentAddress2);
 >>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
@@ -1270,10 +1278,14 @@ namespace OnlineCourse
                         if (IPs[3] != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia3.Open(studentAddress3);
                             else
                                 studentMedia3.Open(studentAudio3);
+=======
+                            studentMedia3.Open(studentAddress3);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
 =======
                             studentMedia3.Open(studentAddress3);
 >>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
@@ -1298,10 +1310,14 @@ namespace OnlineCourse
                         if (IPs[4] != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia4.Open(studentAddress4);
                             else
                                 studentMedia4.Open(studentAudio4);
+=======
+                            studentMedia4.Open(studentAddress4);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
 =======
                             studentMedia4.Open(studentAddress4);
 >>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
@@ -1327,10 +1343,14 @@ namespace OnlineCourse
                         if (IPs[5] != null)
                         {
 <<<<<<< HEAD
+<<<<<<< HEAD
                             if (userPosition == 0)
                                 studentMedia5.Open(studentAddress5);
                             else
                                 studentMedia5.Open(studentAudio5);
+=======
+                            studentMedia5.Open(studentAddress5);
+>>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
 =======
                             studentMedia5.Open(studentAddress5);
 >>>>>>> parent of 34bed77... Update LiveWindow.xaml.cs
