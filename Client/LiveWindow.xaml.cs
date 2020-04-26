@@ -1113,6 +1113,14 @@ namespace OnlineCourse
             string order = "Quit@" + userPosition;
             socketOrder(order, 0);
 
+            // 关闭所有视频流
+            teacherMedia.Close();
+            studentMedia1.Close();
+            studentMedia2.Close();
+            studentMedia3.Close();
+            studentMedia4.Close();
+            studentMedia5.Close();
+
             RoomControlWindow roomControl = new RoomControlWindow(user,this.server);
             Window thisWindow = Window.GetWindow(this);
             thisWindow.Close();
@@ -1858,7 +1866,7 @@ namespace OnlineCourse
                 if (int.Parse(order[1]) == 0)
                 {
                     socketOrder.Close();
-
+                    
                     App.Current.Dispatcher.Invoke((Action)(() =>
                     {
                         RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
@@ -1889,7 +1897,7 @@ namespace OnlineCourse
                         disableRecoverControl();
 
                     }
-
+                    
                     switch (position)
                     {
                         case 1:
@@ -2011,10 +2019,11 @@ namespace OnlineCourse
                 broadcastOrder(order, notToBroadCast);
         }
         /// <summary>
-        /// 将命令发送给教师的Socket
+        /// 将命令发送给教师的Socket 
         /// </summary>
         /// <param name="order"></param>
         private void sendOrder(String order) {
+            
             Socket sendToTeacher = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             sendToTeacher.Connect(IPs[0], 8085);
             sendToTeacher.Send(System.Text.Encoding.Default.GetBytes(order));
