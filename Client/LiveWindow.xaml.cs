@@ -1161,7 +1161,7 @@ namespace OnlineCourse
         /// </summary>
         private void teacherQuit() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8086);
+            connectToServer.Connect("172.19.241.249", 8085);
             string str = "CloseRoom@" + roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToServer.Close();
