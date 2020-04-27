@@ -949,14 +949,6 @@ namespace OnlineCourse
                 } catch (SocketException e) {
                     isDrawing = false;
                     drawSocket[0] = null;
-
-                    App.Current.Dispatcher.Invoke((Action)(() =>
-                    {
-                        RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
-                        Window thisWindow = Window.GetWindow(this);
-                        thisWindow.Close();
-                        roomControl.Show();
-                    }));
                 }               
 
             }
@@ -996,7 +988,6 @@ namespace OnlineCourse
         /// <param name="painterPosition"></param>
         private void endDrawing(int painterPosition) {
             drawSend(painterPosition);
-
         }
 
         /// <summary>
@@ -1785,9 +1776,9 @@ namespace OnlineCourse
                 //学生收到教师收回自己控制权命令
                 else if (disablePosition == userPosition)
                 {
-                    if (isDrawing)
-                        endDrawing(userPosition);
                     isDrawing = false;
+                    if (isDrawing)
+                        endDrawing(userPosition);                   
                     DisableComputerIcon(userPosition, true);//将按钮状态从可按已激活变成可按未激活
                     DeactivateCanvasIcons();
                     hasControl = 0;
