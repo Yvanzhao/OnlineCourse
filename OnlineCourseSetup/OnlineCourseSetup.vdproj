@@ -34,7 +34,7 @@
         "Entry"
         {
         "MsmKey" = "8:_0696A1DB0DB91A34A5D23684AE645534"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -136,7 +136,7 @@
         "Entry"
         {
         "MsmKey" = "8:_51D15589184FF8697E7FB2774A37B519"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,7 +178,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7A9EE37F168DC6B4A6C75DA62A22E9E0"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -214,7 +214,7 @@
         "Entry"
         {
         "MsmKey" = "8:_86148929D9B79CE138C1556DDC2AE81A"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -244,13 +244,7 @@
         "Entry"
         {
         "MsmKey" = "8:_944BFB65C3CACCA9326E5D13B3409A27"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_966E26726047433A8E6E745C312A0274"
-        "OwnerKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -298,7 +292,7 @@
         "Entry"
         {
         "MsmKey" = "8:_B487FFC6771FC7448A823B9B536CB8C5"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -316,7 +310,13 @@
         "Entry"
         {
         "MsmKey" = "8:_B5C91581C6A3D92630D37B2AAA06F0CB"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -334,7 +334,7 @@
         "Entry"
         {
         "MsmKey" = "8:_C722D08044CC29481422F52523C044A1"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -346,7 +346,7 @@
         "Entry"
         {
         "MsmKey" = "8:_D42A8A497EA37ABA81015EE661DCCEC6"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -424,13 +424,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_51D15589184FF8697E7FB2774A37B519"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_966E26726047433A8E6E745C312A0274"
+        "OwnerKey" = "8:_B6B41126ED1945AFBC3F7234BE329880"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -479,6 +473,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_7A9EE37F168DC6B4A6C75DA62A22E9E0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_51D15589184FF8697E7FB2774A37B519"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1945,7 +1945,7 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:OnlineCourseSetup"
+        "ProductName" = "8:OnlineCourse"
         "ProductCode" = "8:{CD692D8D-A6C2-40AD-8577-B698181D5ED2}"
         "PackageCode" = "8:{1AB45325-E245-4175-8786-35F333C62CA5}"
         "UpgradeCode" = "8:{550D6896-600F-45FE-84DD-46D2F43B2FB3}"
@@ -2466,7 +2466,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_966E26726047433A8E6E745C312A0274"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B6B41126ED1945AFBC3F7234BE329880"
             {
             "SourcePath" = "8:..\\Client\\obj\\Debug\\OnlineCourse.exe"
             "TargetName" = "8:"
