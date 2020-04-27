@@ -942,7 +942,21 @@ namespace OnlineCourse
             else if (userPosition == painterPosition)
             {
                 drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                drawSocket[0].Connect(IPs[0], 8085);
+                try { 
+                    drawSocket[0].Connect(IPs[0], 8085); 
+                } catch (SocketException e) {
+                    isDrawing = false;
+                    drawSocket[0] = null;
+
+                    App.Current.Dispatcher.Invoke((Action)(() =>
+                    {
+                        RoomControlWindow roomControl = new RoomControlWindow(user, this.server);
+                        Window thisWindow = Window.GetWindow(this);
+                        thisWindow.Close();
+                        roomControl.Show();
+                    }));
+                }
+                
                 drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
                 drawSocket[0].Close();
             }
@@ -1851,6 +1865,10 @@ namespace OnlineCourse
                 if (int.Parse(order[1]) == 0)
                 {
                     socketOrder.Close();
+
+                    isDrawing = false;
+                    drawSocket[0].Close();
+                    drawSocket[0] = null;
                     
                     App.Current.Dispatcher.Invoke((Action)(() =>
                     {
