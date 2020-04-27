@@ -929,12 +929,18 @@ namespace OnlineCourse
             {
                 for (int position = 1; position < 6; position++)
                 {
-                    if (position != painterPosition && drawSocket[position] != null)
+                    if (position != painterPosition && drawSocket[position] != null && IPs[position]!=null)
                     {
                         drawSocket[position] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        drawSocket[position].Connect(IPs[position], 8085);
-                        drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
-                        drawSocket[position].Close();
+                        try
+                        {
+                            drawSocket[position].Connect(IPs[position], 8085);
+                            drawSocket[position].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
+                            drawSocket[position].Close();
+                        }
+                        catch (SocketException e)
+                        {}
+                        
                     }
                 }
             }
@@ -2039,9 +2045,14 @@ namespace OnlineCourse
                 if (IPs[position] != null) {
                     if (position != notToBroadCast) {
                         Socket broadcastToStudent = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        broadcastToStudent.Connect(IPs[position],8085);
-                        broadcastToStudent.Send(System.Text.Encoding.Default.GetBytes(order));
-                        broadcastToStudent.Close();
+                        try
+                        {
+                            broadcastToStudent.Connect(IPs[position], 8085);
+                            broadcastToStudent.Send(System.Text.Encoding.Default.GetBytes(order));
+                            broadcastToStudent.Close();
+                        }
+                        catch (SocketException e)
+                        { }                      
                     }
                 
                 }
