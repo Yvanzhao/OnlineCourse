@@ -1420,6 +1420,7 @@ namespace OnlineCourse
                 int tag = int.Parse(image.Tag.ToString());
                 if (tag == 1 && hasControl != 0) {
                     broadcastOrder("DisableControl@" + hasControl, 0);
+                    ActivateCanvasIcons();
                     disableRecoverControl();
 
                     ///这里将一堆控制权按钮改掉
