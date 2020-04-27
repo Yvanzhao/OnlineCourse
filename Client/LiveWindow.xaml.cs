@@ -1107,6 +1107,9 @@ namespace OnlineCourse
                 return;
             }
 
+            string order1 = "DisableControl@" + userPosition;
+            socketOrder(order1, 0);
+
             string order = "Quit@" + userPosition;
             socketOrder(order, 0);
 
