@@ -943,7 +943,9 @@ namespace OnlineCourse
             {
                 drawSocket[0] = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 try { 
-                    drawSocket[0].Connect(IPs[0], 8085); 
+                    drawSocket[0].Connect(IPs[0], 8085);
+                    drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
+                    drawSocket[0].Close();
                 } catch (SocketException e) {
                     isDrawing = false;
                     drawSocket[0] = null;
@@ -955,10 +957,8 @@ namespace OnlineCourse
                         thisWindow.Close();
                         roomControl.Show();
                     }));
-                }
-                
-                drawSocket[0].Send(System.Text.Encoding.Default.GetBytes(drawOrder));
-                drawSocket[0].Close();
+                }               
+
             }
 
             drawOrderCount = 0;
@@ -1121,12 +1121,6 @@ namespace OnlineCourse
                 return;
             }
 
-            if (userPosition != 0)
-            {
-                string order1 = "DisableControl@" + userPosition;
-                socketOrder(order1, 0);
-            }
-
             string order = "Quit@" + userPosition;
             socketOrder(order, 0);
 
@@ -1150,10 +1144,6 @@ namespace OnlineCourse
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LiveWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            if (serverThread != null)
-                serverThread.Abort();
-            if (serverSocket != null)
-                serverSocket.Close();
             for (int position = 0; position < 6; position++) {
                 if (drawSocket[position] != null)
                     drawSocket[position].Close();
@@ -1164,6 +1154,11 @@ namespace OnlineCourse
                 string order = "DisableControl@" + userPosition;
                 sendOrder(order);
             }
+
+            if (serverThread != null)
+                serverThread.Abort();
+            if (serverSocket != null)
+                serverSocket.Close();
 
             pushTool.Quit();
 
@@ -1873,8 +1868,11 @@ namespace OnlineCourse
                     socketOrder.Close();
 
                     isDrawing = false;
-                    drawSocket[0].Close();
-                    drawSocket[0] = null;
+                    if (drawSocket[0] != null) {
+                        drawSocket[0].Close();
+                        drawSocket[0] = null;
+                    }
+
                     
                     App.Current.Dispatcher.Invoke((Action)(() =>
                     {
