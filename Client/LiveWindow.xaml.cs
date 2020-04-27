@@ -347,10 +347,7 @@ namespace OnlineCourse
         {
             for (int deactivatePosition = 1; deactivatePosition < 6; deactivatePosition++)
             {
-                if (deactivatePosition != userPosition)
-                    BanRecord(deactivatePosition, false);
-                else
-                    BanRecord(deactivatePosition, true);
+                BanRecord(deactivatePosition, false);
             }
         }
         /// <summary>
@@ -665,8 +662,7 @@ namespace OnlineCourse
                     }
                     //教师主动收回控制权
                     else
-                    {
-                        hasControl = 0;
+                    {                       
                         //恢复教师端的画板与移交控制权按钮
                         ActivateComputerIcons(); 
                         ActivateCanvasIcons();
@@ -674,6 +670,7 @@ namespace OnlineCourse
                         //老师拿回控制权的Socket函数
                         string order = "DisableControl@" + hasControl;
                         broadcastOrder(order, 0);
+                        hasControl = 0;
                     }
                 }
                
@@ -696,7 +693,7 @@ namespace OnlineCourse
                 if (IPs[tagHead] == null)//该学生不存在
                     return;
             }
-            else if (tagHead != userPosition)//是学生并且点击的不是自己的按钮
+            else//是学生
                 return;
             mouseClickedTag = tagHead * 10 + 1;
         }
@@ -724,7 +721,7 @@ namespace OnlineCourse
                      mouseClickedTag = 0;
                      return;
                 }
-                if (isStudent == false || tagHead == userPosition)
+                if (isStudent == false)
                 {
                     //根据状态不同进行切换，BanRecord与EnableRecor自带Style切换与实际音量控制，故进行了合并
                     if (tagTail == 0)
@@ -733,7 +730,7 @@ namespace OnlineCourse
 
                         //Socket网络通信
                         string order = "BanVoice@" + tagHead;
-                        socketOrder(order, 0);
+                        broadcastOrder(order, 0);
                     }
                     else
                     {
@@ -741,7 +738,7 @@ namespace OnlineCourse
 
                         //Socket网络通信
                         string order = "EnableVoice@" + tagHead;
-                        socketOrder(order, 0);
+                        broadcastOrder(order, 0);
                     }
 
                 }
@@ -1090,7 +1087,7 @@ namespace OnlineCourse
 
         /// <summary>
         /// 鼠标落下事件，此按钮用于关闭此窗口。点击确认变量数值： 100 表征是关闭按钮。 
-        /// /// </summary>
+        /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ExitIcon_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1693,19 +1690,12 @@ namespace OnlineCourse
                 if (order.Length < 2)
                     return;
                 int banPosition = int.Parse(order[1]);
-                if (isStudent == false || banPosition == userPosition)//教师静音本学生或学生禁音自己并通知教师
-                {
-                    BanRecord(userPosition, true);
-                }
-                else if (banPosition == 0) {//教师一键静音所有学生
+                if (banPosition == 0) {//教师一键静音所有学生
                     for (int position = 1; position < 6; position++) {
-                        if (position == userPosition)
-                            BanRecord(position, true);
-                        else
                             BanRecord(position, false);
                     }   
                 }
-                else//其他学生静音
+                else//单个学生被静音
                 {
                     BanRecord(banPosition, false);
                 }
@@ -1716,21 +1706,14 @@ namespace OnlineCourse
                 if (order.Length < 2)
                     return;
                 int enablePosition = int.Parse(order[1]);
-                if (isStudent == false || enablePosition == userPosition)//教师解除静音本学生或学生解除静音自己并通知教师
-                {
-                    EnableRecord(userPosition, true);
-                }
-                else if (enablePosition == 0)
+                if (enablePosition == 0)
                 {//教师一键解除所有学生静音
                     for (int position = 1; position < 6; position++)
                     {
-                        if (position == userPosition)
-                            EnableRecord(position, true);
-                        else
                             EnableRecord(position, false);
                     }
                 }
-                else// 其他学生解除静音
+                else// 单个学生解除静音
                 {
                     EnableRecord(enablePosition, false);
                 }
@@ -1787,18 +1770,20 @@ namespace OnlineCourse
                 //学生收到教师收回自己控制权命令
                 else if (disablePosition == userPosition)
                 {
-                    DisableComputerIcon(userPosition, true);//将按钮状态从可按已激活变成可按未激活
-                    DeactivateCanvasIcons();
-                    hasControl = 0;
                     if (isDrawing)
                         endDrawing(userPosition);
                     isDrawing = false;
+                    DisableComputerIcon(userPosition, true);//将按钮状态从可按已激活变成可按未激活
+                    DeactivateCanvasIcons();
+                    hasControl = 0;
+                    
                 }
                 //学生收到教师收回他人控制权命令
                 else
                 {
                     DisableComputerIcon(disablePosition, false);//将按钮状态从不可按已激活变成不可按未激活
                     DisableComputerIcon(userPosition, true);//将按钮状态从不可按变成可按未激活
+                    DeactivateCanvasIcons();
                     hasControl = 0;
                 }
             }
