@@ -86,14 +86,12 @@ namespace OnlineCourse
             //变量赋值与初始化
             IPs = new string[6] { null, null, null, null, null, null };
             roomId = roomIdIn;
-            teacherAddress = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "0");
-            studentAddress1 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "1");
-            studentAddress2 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "2");
-            studentAddress3 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "3");
-            studentAddress4 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "4");
-            studentAddress5 = new Uri("rtmp://172.19.241.249:8082/live/" + roomId + "5");
-
-
+            teacherAddress = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "0");
+            studentAddress1 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "1");
+            studentAddress2 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "2");
+            studentAddress3 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "3");
+            studentAddress4 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "4");
+            studentAddress5 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "5");
             user = userIn;
             currentColor = new byte[4];
             currentColor[0] = 0xFF;
@@ -1167,7 +1165,7 @@ namespace OnlineCourse
         /// </summary>
         private void teacherQuit() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8085);
+            connectToServer.Connect("49.233.213.154", 8085);
             string str = "CloseRoom@" + roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             connectToServer.Close();
@@ -1589,7 +1587,7 @@ namespace OnlineCourse
         /// </summary>
         private void socketTest() {
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8085);
+            connectToServer.Connect("49.233.213.154", 8085);
             
             string ip = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
             string str = "firstConnect@"+userPosition+"@"+roomId+"@"+ip;
@@ -1640,7 +1638,7 @@ namespace OnlineCourse
         private void studentSocket() {
             //获取教师IP
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            connectToServer.Connect("172.19.241.249", 8085);
+            connectToServer.Connect("49.233.213.154", 8085);
             string str = "getTeacher@"+roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
@@ -1675,6 +1673,7 @@ namespace OnlineCourse
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
+
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
             Console.WriteLine("学生端[服务器]启动成功");
