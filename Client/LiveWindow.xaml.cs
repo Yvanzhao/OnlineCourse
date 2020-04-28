@@ -1589,8 +1589,10 @@ namespace OnlineCourse
             Socket connectToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             connectToServer.Connect("49.233.213.154", 8085);
             
-            string ip = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
-            string str = "firstConnect@"+userPosition+"@"+roomId+"@"+ip;
+            // 在公网环境下拿到的是本机内网IP  VPN环境下拿到的是虚拟IP
+            //string ip = Dns.GetHostAddresses(Dns.GetHostName()).FirstOrDefault(a => a.AddressFamily.ToString().Equals("InterNetwork")).ToString();
+            //string str = "firstConnect@"+userPosition+"@"+roomId+"@"+ip;
+            string str = "firstConnect@" + userPosition + "@" + roomId;
             connectToServer.Send(System.Text.Encoding.Default.GetBytes(str));
             //回信
             byte[] ipByte = new byte[1024];
@@ -1598,7 +1600,7 @@ namespace OnlineCourse
             string serverResponse = System.Text.Encoding.UTF8.GetString(ipByte, 0, count);
             connectToServer.Close();
             
-            IPs[userPosition] = ip;
+            IPs[userPosition] = serverResponse;
             //测试socket连接
             Console.WriteLine("Connect to server is " + serverResponse);
         }
@@ -1618,7 +1620,7 @@ namespace OnlineCourse
         private void teacherSocketThread()
         {
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Console.WriteLine(IPs[userPosition]);
+            Console.WriteLine("第"+userPosition+"位的IP"+IPs[userPosition]);
             IPAddress ipAdr = IPAddress.Parse(IPs[userPosition]);
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
