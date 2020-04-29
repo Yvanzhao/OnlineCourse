@@ -117,14 +117,14 @@ namespace OnlineCourse
             {
                 hasControl = 0;
                 userPosition = server.getUserPosition(roomIdIn, userIn.userId);
-                connectToServer();
                 StudentInitialization();
+                connectToServer();
             }
             else {
                 hasControl = 0;
                 userPosition = 0;
-                connectToServer();
                 TeacherInitialization();
+                connectToServer();
             }
 
             // 开始推流
