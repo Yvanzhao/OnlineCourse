@@ -368,6 +368,7 @@ namespace OnlineCourse
         private void BanRecord(int position,Boolean isActivated) {
             Image button = getRecordIcon(position);
             mute(position);
+            Console.WriteLine("本地静音了第" + position + "位用户");
             if (button == null)
                 return;
             if (isActivated)
@@ -400,6 +401,7 @@ namespace OnlineCourse
         {
             Image button = getRecordIcon(position);
             unMute(position);
+            Console.WriteLine("本地恢复了第" + position + "位用户");
             if (button == null)
                 return;
             if (isActivated)
