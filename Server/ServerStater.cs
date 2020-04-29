@@ -97,13 +97,10 @@ namespace Server
         static Boolean orderAnalyze(string orders,Socket clientSocket)
         {
             string[] order = orders.Split('@');
-            int properPosition = getProperPosition(order);
-            if (properPosition < 0)
-                return false;
             if (order.Length >= 3) {
                 //所有指令的第二位必须是roomId,第三位必须是userPosition
-                string roomId = order[properPosition+1];
-                int userPosition = int.Parse(order[properPosition+2]);
+                string roomId = order[1];
+                int userPosition = int.Parse(order[2]);
 
                 if (isClosing[getPosition(roomId)])
                     return true;
@@ -207,33 +204,6 @@ namespace Server
             }
             
             return false;
-        }
-
-        static int getProperPosition(string[] order) {
-            int position;
-            for (position = 0; position < order.Length; position++) {
-                if (checkOrder(order[position]))
-                    return position;
-            }
-            return -1;
-        }
-
-        static Boolean checkOrder(string order) {
-            Boolean check = false;
-            check = check || order.Equals("BanVoice");
-            check = check || order.Equals("EnableVoice");
-            check = check || order.Equals("EnableControl");
-            check = check || order.Equals("DisableControl");
-            check = check || order.Equals("AskControl");
-            check = check || order.Equals("CancelAskControl");
-            check = check || order.Equals("Color");
-            check = check || order.Equals("ClearCanvas");
-            check = check || order.Equals("Quit");
-            check = check || order.Equals("StudentIn");
-            check = check || order.Equals("EndDraw");
-            check = check || order.Equals("Point");
-            check = check || order.Equals("FirstConnect");
-            return check;
         }
 
         /// <summary>
