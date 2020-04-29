@@ -1624,16 +1624,23 @@ namespace OnlineCourse
                 //绘制新点
                 else
                 {
-                    int mode;
-                    double x;
-                    double y;
+                    int mode = 0;
+                    double x = 0;
+                    double y = 0;
 
                     if (order.Length < position + 4)
                         return;
-
-                    mode = int.Parse(order[position]);
-                    x = double.Parse(order[position + 1]);
-                    y = double.Parse(order[position + 2]);
+                    try
+                    {
+                        mode = int.Parse(order[position]);
+                        x = double.Parse(order[position + 1]);
+                        y = double.Parse(order[position + 2]);
+                    }
+                    catch (FormatException e) {
+                        position++;
+                        continue;
+                    }
+                    
 
                     if (mode == 0)
                     {

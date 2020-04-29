@@ -118,6 +118,7 @@ namespace Server
                         isClosing.Add(false);
 
                         clientSocket.Send(System.Text.Encoding.Default.GetBytes("Success"));
+                        return false;
                     }
                     //学生与服务器连接，加入房间，并且需要将“现有房间内哪些位置”有人通知房间内其他人，
                     else if (userPosition < 6)
