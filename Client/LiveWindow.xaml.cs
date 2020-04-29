@@ -1640,7 +1640,7 @@ namespace OnlineCourse
                         double y = double.Parse(order[position + 2]);
                         if(x < 0.5 || y < 0.5)
                         {
-                            position++;
+                            position = position + 3;
                             continue;
                         }
 
