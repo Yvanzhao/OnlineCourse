@@ -56,11 +56,11 @@ namespace OnlineCourse
         Boolean[] hasStudent;
         //服务器端的Socket
         Socket socketServer;
+        //监听线程
+        Thread serverThread;
 
         //绘图时用于保存所有命令的string
         string drawOrder;
-        //已有命令数统计
-        int drawOrderCount;
 
         //服务器地址
         static string serverIP = "49.233.213.154";
@@ -1079,6 +1079,8 @@ namespace OnlineCourse
             string order = "Quit@" + roomId + "@" + userPosition + "@";
             sendOrder(order);
 
+            if (serverThread != null)
+                serverThread.Abort();
             if (socketServer != null)
                 socketServer.Close();
 
@@ -1507,6 +1509,7 @@ namespace OnlineCourse
             byte[] receiverByte = new byte[1024];
             int count = socketServer.Receive(receiverByte);
             string serverResponse = System.Text.Encoding.UTF8.GetString(receiverByte, 0, count);
+            Console.WriteLine(serverResponse);
 
             if (isStudent)
                 studentSocket(serverResponse);
@@ -1520,7 +1523,7 @@ namespace OnlineCourse
         private void teacherSocket(string response) {
             if (response.Equals("Success"))
             {
-                Thread serverThread = new Thread(new ThreadStart(this.socketThread));
+                serverThread = new Thread(new ThreadStart(this.socketThread));
                 serverThread.IsBackground = true;
                 serverThread.Start();
             }
@@ -1555,7 +1558,7 @@ namespace OnlineCourse
             else
             {
                 orderAnalyze(response);
-                Thread serverThread = new Thread(new ThreadStart(this.socketThread));
+                serverThread = new Thread(new ThreadStart(this.socketThread));
                 serverThread.IsBackground = true;
                 serverThread.Start();
             }

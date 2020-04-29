@@ -24,7 +24,7 @@ namespace Server
         static int Main(string[] args)
         {
             //注册通道
-            TcpChannel chan = new TcpChannel(8086);
+            TcpChannel chan = new TcpChannel(8084);
             ChannelServices.RegisterChannel(chan);
             string sshan = chan.ChannelName;
             System.Console.WriteLine(sshan);
@@ -44,6 +44,7 @@ namespace Server
         static void ServerSocket() {
             Sockets = new List<Socket[]>();
             RoomIds = new List<string>();
+            isClosing = new List<Boolean>();
             Thread serverThread = new Thread(new ThreadStart(serverSocketThread));
             serverThread.IsBackground = true;
             serverThread.Start();
@@ -55,7 +56,7 @@ namespace Server
         static void serverSocketThread()
         {
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ipAdr = IPAddress.Parse("49.233.213.154");
+            IPAddress ipAdr = IPAddress.Parse("0.0.0.0");
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
@@ -96,7 +97,7 @@ namespace Server
         static Boolean orderAnalyze(string orders,Socket clientSocket)
         {
             string[] order = orders.Split('@');
-            if (order.Length > 3) {
+            if (order.Length >= 3) {
                 //所有指令的第二位必须是roomId,第三位必须是userPosition
                 string roomId = order[1];
                 int userPosition = int.Parse(order[2]);
