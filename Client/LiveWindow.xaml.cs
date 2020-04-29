@@ -1080,10 +1080,10 @@ namespace OnlineCourse
             studentMedia4.Close();
             studentMedia5.Close();
 
-            if (isClosing == false) {
+            //if (isClosing == false) {
                 string order = "Quit@" + roomId + "@" + userPosition + "@";
                 sendOrder(order);
-            }           
+            //}           
 
             if (serverThread != null)
                 serverThread.Abort();
@@ -1819,7 +1819,7 @@ namespace OnlineCourse
                 int position = int.Parse(order[2]);
                 if (position == 0)
                 {
-                    socketServer.Close();
+                    isClosing = true;
                     
                     App.Current.Dispatcher.Invoke((Action)(() =>
                     {
