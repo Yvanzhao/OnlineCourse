@@ -74,6 +74,8 @@ namespace OnlineCourse
         Uri studentAddress4;
         Uri studentAddress5;
 
+        Boolean isClosing;
+
 
         /// <summary>
         /// 利用tag 分辨老师与学生
@@ -112,6 +114,8 @@ namespace OnlineCourse
 
             linesList = new List<List<double[]>>();
             colorList = new List<byte[]>();
+
+            isClosing = false;
 
             if (tag == 1)
             {
@@ -1076,8 +1080,10 @@ namespace OnlineCourse
             studentMedia4.Close();
             studentMedia5.Close();
 
-            string order = "Quit@" + roomId + "@" + userPosition + "@";
-            sendOrder(order);
+            if (isClosing == false) {
+                string order = "Quit@" + roomId + "@" + userPosition + "@";
+                sendOrder(order);
+            }           
 
             if (serverThread != null)
                 serverThread.Abort();
@@ -1569,7 +1575,7 @@ namespace OnlineCourse
         /// </summary>
         private void socketThread()
         {
-            while (true)
+            while (isClosing == false)
             {
                 byte[] readBuff = new byte[2048];
                 int count = socketServer.Receive(readBuff);
@@ -1608,7 +1614,7 @@ namespace OnlineCourse
             int painterPosition = int.Parse(order[2]);
             int position = 3;
 
-            while (true) {
+            while (position < order.Length) {
                 if (order[position].Equals("Point"))
                 {
                     if (order.Length < position + 7)
@@ -1635,22 +1641,20 @@ namespace OnlineCourse
                         mode = int.Parse(order[position]);
                         x = double.Parse(order[position + 1]);
                         y = double.Parse(order[position + 2]);
+                        if (mode == 0)
+                        {
+                            newLines(new Point(x, y));
+                        }
+                        else
+                        {
+                            drawLines(new Point(x, y), pointsList.Count());
+                        }
+                        position = position + 3;
                     }
                     catch (FormatException e) {
                         position++;
                         continue;
-                    }
-                    
-
-                    if (mode == 0)
-                    {
-                        newLines(new Point(x, y));
-                    }
-                    else
-                    {
-                        drawLines(new Point(x, y), pointsList.Count());
-                    }
-                    position = position + 3;
+                    }   
                 }
             }
         }

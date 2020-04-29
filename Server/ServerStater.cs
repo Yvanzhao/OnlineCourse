@@ -102,6 +102,9 @@ namespace Server
                 string roomId = order[1];
                 int userPosition = int.Parse(order[2]);
 
+                if (isClosing[getPosition(roomId)])
+                    return true;
+
                 //与服务器第一次建立连接 格式"FirstConnect@'roomId'@'userPosition'@"
                 if (order[0].Equals("FirstConnect"))
                 {
