@@ -889,7 +889,7 @@ namespace OnlineCourse
                     return;
 
                 double difference = pointsList[count - 1][0] + pointsList[count - 1][1] - newPoint.X - newPoint.Y;
-                if (difference > 50 || difference < -50)
+                if (difference > 60 || difference < -60)
                     return;
 
                 // count-1  保证 line的起始点为点集合中的倒数第二个点。
