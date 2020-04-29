@@ -785,8 +785,6 @@ namespace OnlineCourse
         /// <param name="number"></param>
         private void unMute(int number)
         {
-            if (userPosition != 0)
-                return;
             switch (number)
             {
                 case 0:
@@ -1630,17 +1628,14 @@ namespace OnlineCourse
                 //绘制新点
                 else
                 {
-                    int mode = 0;
-                    double x = 0;
-                    double y = 0;
 
                     if (order.Length < position + 4)
                         return;
                     try
                     {
-                        mode = int.Parse(order[position]);
-                        x = double.Parse(order[position + 1]);
-                        y = double.Parse(order[position + 2]);
+                        int mode = int.Parse(order[position]);
+                        double x = double.Parse(order[position + 1]);
+                        double y = double.Parse(order[position + 2]);
                         if (mode == 0)
                         {
                             newLines(new Point(x, y));
