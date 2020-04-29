@@ -780,12 +780,12 @@ namespace OnlineCourse
         }
 
         /// <summary>
-        /// 恢复第number号。永远不会恢复自己
+        /// 老师恢复第number号。自己永远不能恢复自己
         /// </summary>
         /// <param name="number"></param>
         private void unMute(int number)
         {
-            if (number == userPosition)
+            if (userPosition != 0)
                 return;
             switch (number)
             {
