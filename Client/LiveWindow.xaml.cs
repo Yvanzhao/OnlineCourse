@@ -134,12 +134,10 @@ namespace OnlineCourse
             // 开始推流
             pushTool.StartCamera(roomId + userPosition,userPosition);
 
-
+            teacherMedia.Open(teacherAddress);
             // 播放自己
             switch (userPosition)
             {
-                case 0:
-                    teacherMedia.Open(teacherAddress);break;
                 case 1:
                     studentMedia1.Open(studentAddress1);break;
                 case 2:
