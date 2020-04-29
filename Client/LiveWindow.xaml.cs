@@ -63,7 +63,9 @@ namespace OnlineCourse
         string drawOrder;
 
         //服务器地址
-        static string serverIP = "49.233.213.154";
+        static string serverIP = "172.19.241.249";
+        //服务器地址
+        static string streamIP = "172.19.241.249:8082";
         //服务器Socket端口
         static int serverPort = 8085;
         //老师与学生的地址
@@ -99,12 +101,12 @@ namespace OnlineCourse
             //变量赋值与初始化
             hasStudent = new Boolean[6] { true, false, false, false, false, false };
             roomId = roomIdIn;
-            teacherAddress = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "0");
-            studentAddress1 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "1");
-            studentAddress2 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "2");
-            studentAddress3 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "3");
-            studentAddress4 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "4");
-            studentAddress5 = new Uri("rtmp://49.233.213.154:8083/live/" + roomId + "5");
+            teacherAddress = new Uri("rtmp://" + streamIP + "/live/" + roomId + "0");
+            studentAddress1 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "1");
+            studentAddress2 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "2");
+            studentAddress3 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "3");
+            studentAddress4 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "4");
+            studentAddress5 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "5");
             user = userIn;
             currentColor = new byte[4];
             currentColor[0] = 0xFF;

@@ -15,9 +15,10 @@ namespace OnlineCourse
     {
         [Obsolete]
         public static Server.ServerService connectToServer() {
+            string ip = "172.19.241.249:8086";
             TcpChannel chan = new TcpChannel();
             ChannelServices.RegisterChannel(chan);
-            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp://49.233.213.154:8084/OnlineCourseServer");
+            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp:///" + ip + "OnlineCourseServer");
             if (server == null)
             {
                 System.Console.WriteLine("Could not connect to server");
@@ -26,7 +27,7 @@ namespace OnlineCourse
             else {
                 System.Console.WriteLine("Connected to server");
                 return server;
-            } 
+            }
         }
     }
 }
