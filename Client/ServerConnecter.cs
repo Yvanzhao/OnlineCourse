@@ -18,7 +18,7 @@ namespace OnlineCourse
             string ip = "172.19.241.249:8086";
             TcpChannel chan = new TcpChannel();
             ChannelServices.RegisterChannel(chan);
-            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp:///" + ip + "OnlineCourseServer");
+            Server.ServerService server = (Server.ServerService)Activator.GetObject(typeof(Server.ServerService), "tcp://" + ip + "/OnlineCourseServer");
             if (server == null)
             {
                 System.Console.WriteLine("Could not connect to server");
