@@ -17,7 +17,9 @@ namespace Server
 {
     class ServerStater
     {
-        private static List<string[]> IPandRoomIDs;
+        private static List<Socket[]> Sockets;
+        private static List<string> RoomIds;
+        private static List<Boolean> isClosing;
         [Obsolete]
         static int Main(string[] args)
         {
@@ -36,82 +38,197 @@ namespace Server
             return 0;
         }
 
+        /// <summary>
+        /// 开启服务器端的Socket
+        /// </summary>
         static void ServerSocket() {
-            IPandRoomIDs = new List<string[]>();
+            Sockets = new List<Socket[]>();
+            RoomIds = new List<string>();
             Thread serverThread = new Thread(new ThreadStart(serverSocketThread));
             serverThread.IsBackground = true;
             serverThread.Start();
         }
 
+        /// <summary>
+        /// 开启服务器端的线程，对于客户端连接进行监听
+        /// </summary>
         static void serverSocketThread()
         {
             Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress ipAdr = IPAddress.Parse("172.19.241.249");
+            IPAddress ipAdr = IPAddress.Parse("49.233.213.154");
             IPEndPoint ipEp = new IPEndPoint(ipAdr, 8085);
             serverSocket.Bind(ipEp);
             serverSocket.Listen(0);
-            Console.WriteLine("服务器端[服务器]启动成功");
+            Console.WriteLine("[服务器]启动成功");
             while (true)
             {
-                Socket studentOrder = serverSocket.Accept();
-                Console.WriteLine("服务器端[服务器]已接收客户端[命令]");
-                orderAnalyze(studentOrder);
+                Socket clientSocket = serverSocket.Accept();
+                Console.WriteLine("[服务器]已接收客户端[连接]");
+                Thread clientThread = new Thread(new ParameterizedThreadStart(ClientSocketThread));
+                clientThread.Start(clientSocket);
+                
             }
         }
 
-        static void orderAnalyze(Socket socketOrder)
+        /// <summary>
+        /// 客户端连接后的线程，监听客户端的请求
+        /// </summary>
+        /// <param name="clientSocketObject"></param>
+        static void ClientSocketThread(Object clientSocketObject) {
+            Socket client = clientSocketObject as Socket;
+            while (true) {
+                byte[] readBuff = new byte[3072];
+                int count = client.Receive(readBuff);
+                string orders = System.Text.Encoding.UTF8.GetString(readBuff, 0, count);
+
+                Boolean canExit = orderAnalyze(orders, client);
+                if (canExit)
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 对于Socket命令进行解析，返回值表示是否可以退出，为true时表示Socket将关闭
+        /// </summary>
+        /// <param name="orders">客户端指令集</param>
+        /// <param name="clientSocket">客户端Socket</param>
+        /// <returns></returns>
+        static Boolean orderAnalyze(string orders,Socket clientSocket)
         {
-            byte[] readBuff = new byte[1024];
-            int count = socketOrder.Receive(readBuff);
-            string orders = System.Text.Encoding.UTF8.GetString(readBuff, 0, count);
-
             string[] order = orders.Split('@');
-            //与服务器第一次建立连接 格式"firstConnect@'userPosition'@'roomId'@'userID'"
-            if (order[0].Equals("firstConnect"))
-            {
-                if (order.Length < 4)
-                    return;
-                string ip = order[3];
-                Console.WriteLine(ip);
-                socketOrder.Send(System.Text.Encoding.Default.GetBytes("Success"));
-                if (int.Parse(order[1]) == 0)
+            if (order.Length > 3) {
+                //所有指令的第二位必须是roomId,第三位必须是userPosition
+                string roomId = order[1];
+                int userPosition = int.Parse(order[2]);
+
+                //与服务器第一次建立连接 格式"FirstConnect@'roomId'@'userPosition'@"
+                if (order[0].Equals("FirstConnect"))
                 {
-                    string[] IPandRoomId = new string[2];
-                    IPandRoomId[0] = ip;
-                    IPandRoomId[1] = order[2];
-                    IPandRoomIDs.Add(IPandRoomId);
+                    if (order.Length < 3)
+                        return false;
+
+                    //老师与服务器连接，需要建立房间
+                    if (userPosition == 0)
+                    {
+                        RoomIds.Add(roomId);
+                        Socket[] newSockets = new Socket[6];
+                        newSockets[0] = clientSocket;
+                        Sockets.Add(newSockets);
+                        isClosing.Add(false);
+
+                        clientSocket.Send(System.Text.Encoding.Default.GetBytes("Success"));
+                    }
+                    //学生与服务器连接，加入房间，并且需要将“现有房间内哪些位置”有人通知房间内其他人，
+                    else if (userPosition < 6)
+                    {
+                        int roomPosition = getPosition(roomId);
+                        if (roomPosition < 0)
+                        {
+                            clientSocket.Send(System.Text.Encoding.Default.GetBytes("Fail"));
+                            return true;
+                        }
+                        Sockets[roomPosition][userPosition] = clientSocket;
+                        //生成新的命令，用于通知房间内所有人，哪些学生有人  格式"StudentIn@'hasStudent_1'@'hasStudent_2'@'hasStudent_3'@'hasStudent_4'@'hasStudent_5'@"
+                        string newOrder = "StudentIn@";
+                        for (int position = 1; position < 6; position++)
+                        {
+                            if (Sockets[roomPosition][position] == null)
+                                newOrder = newOrder + "0@";
+                            else
+                                newOrder = newOrder + "1@";
+                        }
+
+                        broadcastOrder(roomPosition, newOrder, -1);
+
+                        return false;
+                    }
+
+                    clientSocket.Send(System.Text.Encoding.Default.GetBytes("Fail"));
+                    return true;
+                }
+                //用户退出房间 格式"Quit@'roomId'@'userPosition'@"
+                else if (order[0].Equals("Quit"))
+                {
+                    if (order.Length < 3)
+                        return false;
+
+                    //教师退出房间，需要关闭整个房间
+                    if (userPosition == 0)
+                    {
+                        int roomPosition = getPosition(roomId);
+                        if (roomPosition < 0)
+                        {
+                            return true;
+                        }
+                        isClosing[roomPosition] = true;
+
+                        broadcastOrder(roomPosition, orders, userPosition);
+
+                        RoomIds.RemoveAt(roomPosition);
+                        Sockets.RemoveAt(roomPosition);
+                        isClosing.RemoveAt(roomPosition);
+                        return true;
+                    }
+                    //学生退出房间，需要通知房间内其他人
+                    else if (userPosition < 6)
+                    {
+                        int roomPosition = getPosition(roomId);
+                        if (roomPosition < 0)
+                        {
+                            return true;
+                        }
+                        Sockets[roomPosition][userPosition] = null;
+                        if (isClosing[roomPosition] == false)//房间不是正在关闭，则表示是单个学生退出，需要通知其他所有人
+                            broadcastOrder(roomPosition, orders, userPosition);
+                        return true;
+                    }
+
+                    return true;
+                }
+                //其他指令，服务器不作处理，直接广播到房间内其他客户端处
+                else
+                {
+                    int roomPosition = getPosition(roomId);
+                    if (roomPosition < 0)
+                    {
+                        return false;
+                    }
+                    if(isClosing[roomPosition] == false)
+                        broadcastOrder(roomPosition, orders, userPosition);
                 }
             }
-            //获得教师IP 格式"getTeacher@'roomId'"
-            else if (order[0].Equals("getTeacher"))
-            {
-                if (order.Length < 2)
-                    return;
-                string roomId = order[1];
-                for (int position = 0; position < IPandRoomIDs.Count; position++)
-                {
-                    if (IPandRoomIDs[position][1].Equals(roomId))
-                    {
-                        socketOrder.Send(System.Text.Encoding.Default.GetBytes(IPandRoomIDs[position][0]));
+            
+            return false;
+        }
+
+        /// <summary>
+        /// 根据roomId获取该房间的房间号
+        /// </summary>
+        /// <param name="roomId"></param>
+        /// <returns></returns>
+        static private int getPosition(string roomId) {
+            for (int position = 0; position < RoomIds.Count; position++) {
+                if (RoomIds[position].Equals(roomId))
+                    return position;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// 将命令进行广播
+        /// </summary>
+        /// <param name="roomPosition"></param>
+        /// <param name="orders"></param>
+        /// <param name="notToBroadcast"></param>
+        static private void broadcastOrder(int roomPosition,string orders,int notToBroadcast) {
+            Socket[] roomSockets = Sockets[roomPosition];
+            for (int position = 0; position < roomSockets.Length; position++) {
+                if (position != notToBroadcast) {
+                    if (roomSockets[position] != null) {
+                        roomSockets[position].Send(System.Text.Encoding.Default.GetBytes(orders));
                     }
                 }
             }
-            //删除房间 格式"CloseRoom@'roomId'"
-            else if (order[0].Equals("CloseRoom")) {
-                if (order.Length < 2)
-                    return;
-                string roomId = order[1];
-                for (int position = 0; position < IPandRoomIDs.Count; position++)
-                {
-                    if (IPandRoomIDs[position][1].Equals(roomId))
-                    {
-                        IPandRoomIDs.RemoveAt(position);
-                    }
-                }
-            }
-
-            socketOrder.Close();
-
         }
     }
 }
