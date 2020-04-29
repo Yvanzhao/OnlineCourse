@@ -1638,6 +1638,12 @@ namespace OnlineCourse
                         int mode = int.Parse(order[position]);
                         double x = double.Parse(order[position + 1]);
                         double y = double.Parse(order[position + 2]);
+                        if(x < 0.5 || y < 0.5)
+                        {
+                            position++;
+                            continue;
+                        }
+
                         if (mode == 0)
                         {
                             newLines(new Point(x, y));

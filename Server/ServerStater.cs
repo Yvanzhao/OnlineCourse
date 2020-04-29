@@ -103,10 +103,7 @@ namespace Server
             if (order.Length >= 3) {
                 //所有指令的第二位必须是roomId,第三位必须是userPosition
                 string roomId = order[properPosition+1];
-                int userPosition = int.Parse(order[properPosition+2]);
-
-                if (isClosing[getPosition(roomId)])
-                    return true;
+                int userPosition = int.Parse(order[properPosition+2]);               
 
                 //与服务器第一次建立连接 格式"FirstConnect@'roomId'@'userPosition'@"
                 if (order[0].Equals("FirstConnect"))
@@ -196,6 +193,9 @@ namespace Server
                 //其他指令，服务器不作处理，直接广播到房间内其他客户端处
                 else
                 {
+                    if (isClosing[getPosition(roomId)])
+                        return true;
+
                     int roomPosition = getPosition(roomId);
                     if (roomPosition < 0)
                     {
