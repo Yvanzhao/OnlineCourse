@@ -785,6 +785,8 @@ namespace OnlineCourse
         /// <param name="number"></param>
         private void unMute(int number)
         {
+            if (number == userPosition)
+                return;
             switch (number)
             {
                 case 0:
