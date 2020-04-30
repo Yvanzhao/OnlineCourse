@@ -1943,18 +1943,37 @@ namespace OnlineCourse
                                 hasStudent[studentPosition] = true;
                                 BanRecord(studentPosition, false);
                                 DisableComputerIcon(studentPosition, false);
-                                switch (studentPosition)
+                                if (userPosition == 0)
                                 {
-                                    case 1:
-                                        studentMedia1.Open(studentAudio1); break;
-                                    case 2:
-                                        studentMedia2.Open(studentAudio2); break;
-                                    case 3:
-                                        studentMedia3.Open(studentAudio3); break;
-                                    case 4:
-                                        studentMedia4.Open(studentAudio4); break;
-                                    case 5:
-                                        studentMedia5.Open(studentAudio5); break;
+                                    switch (studentPosition)
+                                    {
+                                        case 1:
+                                            studentMedia1.Open(studentAddress1); break;
+                                        case 2:
+                                            studentMedia2.Open(studentAddress2); break;
+                                        case 3:
+                                            studentMedia3.Open(studentAddress3); break;
+                                        case 4:
+                                            studentMedia4.Open(studentAddress4); break;
+                                        case 5:
+                                            studentMedia5.Open(studentAddress5); break;
+                                    }
+                                }
+                                else
+                                {
+                                    switch (studentPosition)
+                                    {
+                                        case 1:
+                                            studentMedia1.Open(studentAudio1); break;
+                                        case 2:
+                                            studentMedia2.Open(studentAudio2); break;
+                                        case 3:
+                                            studentMedia3.Open(studentAudio3); break;
+                                        case 4:
+                                            studentMedia4.Open(studentAudio4); break;
+                                        case 5:
+                                            studentMedia5.Open(studentAudio5); break;
+                                    }
                                 }
                             }                            
                         }
