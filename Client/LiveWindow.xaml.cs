@@ -186,6 +186,7 @@ namespace OnlineCourse
 
             recoverControlIcon.Visibility = Visibility.Collapsed;
             silenceAllIcon.Visibility = Visibility.Collapsed;
+            deleteIcon.Visibility = Visibility.Collapsed;
 
             DeactivateComputerIcons(0);
             DisableComputerIcon(userPosition, true);
@@ -448,7 +449,7 @@ namespace OnlineCourse
             try
             {
                 printCanvas.Dispatcher.Invoke(() => {
-                    printCanvas.Cursor = Cursors.Cross;
+                    printCanvas.Cursor = Cursors.Pen;
                 });
             }
             catch (Exception ex) { };
