@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:OnlineCourse"
         xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         mc:Ignorable="d"
-        Title="直播窗口" Height="750" Width="1300" ResizeMode="NoResize" Icon="Resource/logo.png" Closing="LiveWindow_Closing">
+        Title="直播窗口" Height="750" Width="1300" ResizeMode="NoResize" Icon="Resource/logo.png" ShowInTaskbar="False" Closing="LiveWindow_Closing">
 
     <Grid>
 
