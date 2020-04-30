@@ -142,15 +142,15 @@ namespace OnlineCourse
             switch (userPosition)
             {
                 case 1:
-                    user1.Content = user.userName; user1.Visibility = Visibility.Visible; studentMedia1.Open(studentAudio1);break;
+                    label1.Visibility = Visibility.Visible; user1.Content = user.userName; user1.Visibility = Visibility.Visible; studentMedia1.Open(studentAudio1);break;
                 case 2:
-                    user2.Content = user.userName; user2.Visibility = Visibility.Visible; studentMedia2.Open(studentAudio2); break;
+                    label2.Visibility = Visibility.Visible; user2.Content = user.userName; user2.Visibility = Visibility.Visible; studentMedia2.Open(studentAudio2); break;
                 case 3:
-                    user3.Content = user.userName; user3.Visibility = Visibility.Visible; studentMedia3.Open(studentAudio3); break;
+                    label3.Visibility = Visibility.Visible; user3.Content = user.userName; user3.Visibility = Visibility.Visible; studentMedia3.Open(studentAudio3); break;
                 case 4:
-                    user4.Content = user.userName; user4.Visibility = Visibility.Visible; studentMedia4.Open(studentAudio4); break;
+                    label4.Visibility = Visibility.Visible; user4.Content = user.userName; user4.Visibility = Visibility.Visible; studentMedia4.Open(studentAudio4); break;
                 case 5:
-                    user5.Content = user.userName; user5.Visibility = Visibility.Visible; studentMedia5.Open(studentAudio5); break;
+                    label5.Visibility = Visibility.Visible; user5.Content = user.userName; user5.Visibility = Visibility.Visible; studentMedia5.Open(studentAudio5); break;
             }
             mute(userPosition);
         }
@@ -1802,12 +1802,26 @@ namespace OnlineCourse
                                 });
                             }
                             catch (Exception ex) { }
+                            try
+                            {
+                                label1.Dispatcher.Invoke(() => {
+                                    label1.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
                             break;
                         case 2:
                             studentMedia2.Close(); try
                             {
                                 user2.Dispatcher.Invoke(() => {
                                     user2.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            try
+                            {
+                                label2.Dispatcher.Invoke(() => {
+                                    label2.Visibility = Visibility.Hidden;
                                 });
                             }
                             catch (Exception ex) { }
@@ -1820,6 +1834,13 @@ namespace OnlineCourse
                                 });
                             }
                             catch (Exception ex) { }
+                            try
+                            {
+                                label3.Dispatcher.Invoke(() => {
+                                    label3.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
                             break;
                         case 4:
                             studentMedia4.Close(); try
@@ -1829,12 +1850,26 @@ namespace OnlineCourse
                                 });
                             }
                             catch (Exception ex) { }
+                            try
+                            {
+                                label4.Dispatcher.Invoke(() => {
+                                    label4.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
                             break;
                         case 5:
                             studentMedia5.Close(); try
                             {
                                 user5.Dispatcher.Invoke(() => {
                                     user5.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            try
+                            {
+                                label5.Dispatcher.Invoke(() => {
+                                    label5.Visibility = Visibility.Hidden;
                                 });
                             }
                             catch (Exception ex) { }
@@ -1883,7 +1918,7 @@ namespace OnlineCourse
                                             try
                                             {
                                                 user1.Dispatcher.Invoke(() => {
-                                                    user1.Content = server.getUserName(roomId, studentPosition); user1.Visibility = Visibility.Visible;
+                                                    label1.Visibility = Visibility.Visible; user1.Content = server.getUserName(roomId, studentPosition); user1.Visibility = Visibility.Visible;
                                                 });
                                             }
                                             catch (Exception ex) { }
@@ -1893,7 +1928,7 @@ namespace OnlineCourse
                                             try
                                             {
                                                 user2.Dispatcher.Invoke(() => {
-                                                    user2.Content = server.getUserName(roomId, studentPosition); user2.Visibility = Visibility.Visible;
+                                                    label2.Visibility = Visibility.Visible; user2.Content = server.getUserName(roomId, studentPosition); user2.Visibility = Visibility.Visible;
                                                 });
                                             }
                                             catch (Exception ex) { }
@@ -1903,7 +1938,7 @@ namespace OnlineCourse
                                             try
                                             {
                                                 user3.Dispatcher.Invoke(() => {
-                                                    user3.Content = server.getUserName(roomId, studentPosition); user3.Visibility = Visibility.Visible;
+                                                    label3.Visibility = Visibility.Visible; user3.Content = server.getUserName(roomId, studentPosition); user3.Visibility = Visibility.Visible;
                                                 });
                                             }
                                             catch (Exception ex) { }
@@ -1913,7 +1948,7 @@ namespace OnlineCourse
                                             try
                                             {
                                                 user4.Dispatcher.Invoke(() => {
-                                                    user4.Content = server.getUserName(roomId, studentPosition); user4.Visibility = Visibility.Visible;
+                                                    label4.Visibility = Visibility.Visible; user4.Content = server.getUserName(roomId, studentPosition); user4.Visibility = Visibility.Visible;
                                                 });
                                             }
                                             catch (Exception ex) { }
@@ -1923,7 +1958,7 @@ namespace OnlineCourse
                                             try
                                             {
                                                 user5.Dispatcher.Invoke(() => {
-                                                    user5.Content = server.getUserName(roomId, studentPosition); user5.Visibility = Visibility.Visible;
+                                                    label5.Visibility = Visibility.Visible; user5.Content = server.getUserName(roomId, studentPosition); user5.Visibility = Visibility.Visible;
                                                 });
                                             }
                                             catch (Exception ex) { }

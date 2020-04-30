@@ -51,7 +51,7 @@
                     <!--刷新按钮-->
                     <Image x:Name="refreshIcon_1" Grid.Row="2" Margin="-2,8,8,8" Tag="10" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
-                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="label1" Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"  Visibility="Hidden" />
                 <Label x:Name="user1" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top"  Visibility="Hidden" Foreground="#FFEC0B0B"/>
             </Grid>
             <!--学生摄像头2号-->
@@ -74,7 +74,7 @@
                     <!--刷新按钮-->
                     <Image x:Name="refreshIcon_2" Grid.Row="2" Margin="-2,8,8,8" Tag="20" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
-                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="label2" Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"  Visibility="Hidden" />
                 <Label x:Name="user2" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden" Foreground="#FFEC0B0B"/>
             </Grid>
             <!--学生摄像头3号-->
@@ -97,7 +97,7 @@
                     <!--刷新按钮-->
                     <Image x:Name="refreshIcon_3" Grid.Row="2" Margin="-2,8,8,8" Tag="30" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
-                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="label3"  Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104" Visibility="Hidden" />
                 <Label x:Name="user3" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"  Foreground="#FFEC0B0B"/>
             </Grid>
             <!--学生摄像头4号-->
@@ -120,7 +120,7 @@
                     <!--刷新按钮-->
                     <Image x:Name="refreshIcon_4" Grid.Row="2" Margin="-2,8,8,8" Tag="40" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
-                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="label4"  Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"  Visibility="Hidden" />
                 <Label x:Name="user4" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"  Foreground="#FFEC0B0B"/>
             </Grid>
             <!--学生摄像头5号-->
@@ -142,7 +142,7 @@
                     <!--刷新按钮-->
                     <Image x:Name="refreshIcon_5" Grid.Row="2" Margin="-2,8,8,8" Tag="50" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
                 </Grid>
-                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="label5"  Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"  Visibility="Hidden" />
                 <Label x:Name="user5" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"  Foreground="#FFEC0B0B"/>
             </Grid>
         </Grid>
