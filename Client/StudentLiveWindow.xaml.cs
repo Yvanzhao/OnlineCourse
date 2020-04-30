@@ -424,7 +424,7 @@ namespace OnlineCourse
             try
             {
                 printCanvas.Dispatcher.Invoke(() => {
-                    printCanvas.Cursor = Cursors.Pen;
+                    printCanvas.Cursor = Cursors.Cross;
                 });
             }
             catch (Exception ex) { };
