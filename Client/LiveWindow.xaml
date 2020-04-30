@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:OnlineCourse"
         xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
         mc:Ignorable="d"
-        Title="直播窗口" Height="750" Width="1300" ResizeMode="NoResize" Icon="Resource/logo.png" ShowInTaskbar="False" Closing="LiveWindow_Closing">
+        Title="直播窗口" Height="750" Width="1300" Icon="Resource/logo.png" ShowInTaskbar="False" Closing="LiveWindow_Closing">
 
     <Grid>
 
@@ -150,7 +150,7 @@
             <!--退出按钮-->
             <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
             <!--画板-->
-            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross"/>
+            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Pen"/>
             <!--画板控制区域-->
             <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
                 <!--颜色选择按钮-->
