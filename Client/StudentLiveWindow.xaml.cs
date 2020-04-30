@@ -1692,7 +1692,10 @@ namespace OnlineCourse
                     ActivateComputerIcons();
                     ActivateCanvasIcons();
                     hasControl = userPosition;
-                    DeactivateCanvasIcons();
+                    for (int position = 1; position < 6; position++)
+                    {
+                        DisableComputerIcon(position, false);
+                    }
                 }
                 //学生收到教师收回自己控制权命令
                 else if (disablePosition == userPosition)
@@ -1708,6 +1711,7 @@ namespace OnlineCourse
                 //学生收到教师收回他人控制权命令
                 else
                 {
+                    ActivateComputerIcons();
                     DisableComputerIcon(disablePosition, false);//将按钮状态从不可按已激活变成不可按未激活
                     DisableComputerIcon(userPosition, true);//将按钮状态从不可按变成可按未激活
                     DeactivateCanvasIcons();
@@ -1999,6 +2003,7 @@ namespace OnlineCourse
             socketServer.Send(System.Text.Encoding.Default.GetBytes(order));
         }
 
-        
+
+
     }
 }
