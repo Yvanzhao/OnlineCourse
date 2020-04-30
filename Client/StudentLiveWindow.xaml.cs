@@ -144,13 +144,13 @@ namespace OnlineCourse
                 case 1:
                     user1.Content = user.userName; user1.Visibility = Visibility.Visible; studentMedia1.Open(studentAudio1);break;
                 case 2:
-                    user2.Content = user.userName; user2.Foreground = new SolidColorBrush(Colors.AliceBlue); user2.Visibility = Visibility.Visible; studentMedia2.Open(studentAudio2); break;
+                    user2.Content = user.userName; user2.Visibility = Visibility.Visible; studentMedia2.Open(studentAudio2); break;
                 case 3:
-                    user3.Content = user.userName; user3.Foreground = new SolidColorBrush(Colors.AliceBlue); user3.Visibility = Visibility.Visible; studentMedia3.Open(studentAudio3); break;
+                    user3.Content = user.userName; user3.Visibility = Visibility.Visible; studentMedia3.Open(studentAudio3); break;
                 case 4:
-                    user4.Content = user.userName; user4.Foreground = new SolidColorBrush(Colors.AliceBlue); user4.Visibility = Visibility.Visible; studentMedia4.Open(studentAudio4); break;
+                    user4.Content = user.userName; user4.Visibility = Visibility.Visible; studentMedia4.Open(studentAudio4); break;
                 case 5:
-                    user5.Content = user.userName; user5.Foreground = new SolidColorBrush(Colors.AliceBlue); user5.Visibility = Visibility.Visible; studentMedia5.Open(studentAudio5); break;
+                    user5.Content = user.userName; user5.Visibility = Visibility.Visible; studentMedia5.Open(studentAudio5); break;
             }
             mute(userPosition);
         }
