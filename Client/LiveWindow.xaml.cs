@@ -96,14 +96,12 @@ namespace OnlineCourse
 
             if (server == null) {
                 RoomControlWindow roomControl = new RoomControlWindow(userIn,this.server);
-                Window thiswindow = Window.GetWindow(this);
-                thiswindow.Close();
+                Window thisWindow = Window.GetWindow(this);
+                thisWindow.Close();
                 roomControl.Show();
             }
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
-            Window thisWindow = Window.GetWindow(this);
-            thisWindow.ResizeMode = ResizeMode.CanResizeWithGrip;
 
             //变量赋值与初始化
             hasStudent = new Boolean[6] { true, false, false, false, false, false };
@@ -495,11 +493,6 @@ namespace OnlineCourse
             {
                 //修改清除画板按钮状态
                 deleteIcon.Dispatcher.Invoke(() => {
-                    // 学生清空不可见
-                    if (userPosition != 0)
-                    {
-                        deleteIcon.Visibility = Visibility.Hidden;
-                    }
                     deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
                     deleteIcon.Cursor = Cursors.Arrow;
                 });
