@@ -1794,15 +1794,51 @@ namespace OnlineCourse
                     switch (position)
                     {
                         case 1:
-                            studentMedia1.Close(); user1.Visibility = Visibility.Hidden; break;
+                            studentMedia1.Close();
+                            try
+                            {
+                                user1.Dispatcher.Invoke(() => {
+                                    user1.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            break;
                         case 2:
-                            studentMedia2.Close(); user2.Visibility = Visibility.Hidden; break;
+                            studentMedia2.Close(); try
+                            {
+                                user2.Dispatcher.Invoke(() => {
+                                    user2.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            break;
                         case 3:
-                            studentMedia3.Close(); user3.Visibility = Visibility.Hidden; break;
+                            studentMedia3.Close(); try
+                            {
+                                user3.Dispatcher.Invoke(() => {
+                                    user3.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            break;
                         case 4:
-                            studentMedia4.Close(); user4.Visibility = Visibility.Hidden; break;
+                            studentMedia4.Close(); try
+                            {
+                                user4.Dispatcher.Invoke(() => {
+                                    user4.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            break;
                         case 5:
-                            studentMedia5.Close(); user5.Visibility = Visibility.Hidden; break;
+                            studentMedia5.Close(); try
+                            {
+                                user5.Dispatcher.Invoke(() => {
+                                    user5.Visibility = Visibility.Hidden;
+                                });
+                            }
+                            catch (Exception ex) { }
+                            break;
                     }
                 }
 
