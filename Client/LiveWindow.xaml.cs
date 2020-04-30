@@ -65,7 +65,7 @@ namespace OnlineCourse
         //服务器地址
         static string serverIP = "172.19.241.249";
         //服务器地址
-        static string streamIP = "172.19.241.249:8082";
+        static string streamIP = "172.19.241.249:1935";
         //服务器Socket端口
         static int serverPort = 8085;
         //老师与学生的地址
@@ -75,6 +75,11 @@ namespace OnlineCourse
         Uri studentAddress3;
         Uri studentAddress4;
         Uri studentAddress5;
+        Uri studentAudio1;
+        Uri studentAudio2;
+        Uri studentAudio3;
+        Uri studentAudio4;
+        Uri studentAudio5;
 
         Boolean isClosing;
 
@@ -107,6 +112,11 @@ namespace OnlineCourse
             studentAddress3 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "3");
             studentAddress4 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "4");
             studentAddress5 = new Uri("rtmp://" + streamIP + "/live/" + roomId + "5");
+            studentAudio1 = new Uri("rtmp://" + streamIP + "/onlyaudio/" + roomId + "1");
+            studentAudio2 = new Uri("rtmp://" + streamIP + "/onlyaudio/" + roomId + "2");
+            studentAudio3 = new Uri("rtmp://" + streamIP + "/onlyaudio/" + roomId + "3");
+            studentAudio4 = new Uri("rtmp://" + streamIP + "/onlyaudio/" + roomId + "4");
+            studentAudio5 = new Uri("rtmp://" + streamIP + "/onlyaudio/" + roomId + "5");
             user = userIn;
             currentColor = new byte[4];
             currentColor[0] = 0xFF;
@@ -141,15 +151,15 @@ namespace OnlineCourse
             switch (userPosition)
             {
                 case 1:
-                    studentMedia1.Open(studentAddress1);break;
+                    studentMedia1.Open(studentAudio1);break;
                 case 2:
-                    studentMedia2.Open(studentAddress2); break;
+                    studentMedia2.Open(studentAudio2); break;
                 case 3:
-                    studentMedia3.Open(studentAddress3); break;
+                    studentMedia3.Open(studentAudio3); break;
                 case 4:
-                    studentMedia4.Open(studentAddress4); break;
+                    studentMedia4.Open(studentAudio4); break;
                 case 5:
-                    studentMedia5.Open(studentAddress5); break;
+                    studentMedia5.Open(studentAudio5); break;
             }
             mute(userPosition);
         }
@@ -1151,7 +1161,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 1)
                     {
-                        studentMedia1.Open(studentAddress1);
+                        studentMedia1.Open(studentAudio1);
                         try { studentMedia1.Dispatcher.Invoke(() => { if (studentMedia1.Volume != 0) studentMedia1.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1159,7 +1169,15 @@ namespace OnlineCourse
                         // 检查1号位置有没有学生接入
                         if (hasStudent[1])
                         {
-                            studentMedia1.Open(studentAddress1);
+                            // 老师播放音视频
+                            if (userPosition == 0)
+                            {
+                                studentMedia1.Open(studentAddress1);
+                            }
+                            else //学生播放音频
+                            {
+                                studentMedia1.Open(studentAudio1);
+                            }
                         }
                         else
                         {
@@ -1172,7 +1190,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 2)
                     {
-                        studentMedia2.Open(studentAddress2);
+                        studentMedia2.Open(studentAudio2);
                         try { studentMedia2.Dispatcher.Invoke(() => { if (studentMedia2.Volume != 0) studentMedia2.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1180,7 +1198,15 @@ namespace OnlineCourse
                         // 检查2号位置有没有学生接入
                         if (hasStudent[2])
                         {
-                            studentMedia2.Open(studentAddress2);
+                            // 老师播放音视频
+                            if (userPosition == 0)
+                            {
+                                studentMedia2.Open(studentAddress2);
+                            }
+                            else //学生播放音频
+                            {
+                                studentMedia2.Open(studentAudio2);
+                            }
                         }
                         else
                         {
@@ -1193,7 +1219,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 3)
                     {
-                        studentMedia3.Open(studentAddress3);
+                        studentMedia3.Open(studentAudio3);
                         try { studentMedia3.Dispatcher.Invoke(() => { if (studentMedia3.Volume != 0) studentMedia3.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1201,7 +1227,15 @@ namespace OnlineCourse
                         // 检查3号位置有没有学生接入
                         if (hasStudent[3])
                         {
-                            studentMedia3.Open(studentAddress3);
+                            // 老师播放音视频
+                            if (userPosition == 0)
+                            {
+                                studentMedia3.Open(studentAddress3);
+                            }
+                            else //学生播放音频
+                            {
+                                studentMedia3.Open(studentAudio3);
+                            }
                         }
                         else
                         {
@@ -1214,7 +1248,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 4)
                     {
-                        studentMedia4.Open(studentAddress4);
+                        studentMedia4.Open(studentAudio4);
                         try { studentMedia4.Dispatcher.Invoke(() => { if (studentMedia4.Volume != 0) studentMedia4.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1222,7 +1256,15 @@ namespace OnlineCourse
                         // 检查4号位置有没有学生接入
                         if (hasStudent[4])
                         {
-                            studentMedia4.Open(studentAddress4);
+                            // 老师播放音视频
+                            if (userPosition == 0)
+                            {
+                                studentMedia4.Open(studentAddress4);
+                            }
+                            else //学生播放音频
+                            {
+                                studentMedia4.Open(studentAudio4);
+                            }
                         }
                         else
                         {
@@ -1236,7 +1278,7 @@ namespace OnlineCourse
                 {
                     if (userPosition == 5)
                     {
-                        studentMedia5.Open(studentAddress5);
+                        studentMedia5.Open(studentAudio5);
                         try { studentMedia5.Dispatcher.Invoke(() => { if (studentMedia5.Volume != 0) studentMedia5.Volume = 0; }); } catch (Exception ex) { };
                     }
                     else
@@ -1244,7 +1286,15 @@ namespace OnlineCourse
                         // 检查5号位置有没有学生接入
                         if (hasStudent[5])
                         {
-                            studentMedia5.Open(studentAddress5);
+                            // 老师播放音视频
+                            if (userPosition == 0)
+                            {
+                                studentMedia5.Open(studentAddress5);
+                            }
+                            else //学生播放音频
+                            {
+                                studentMedia5.Open(studentAudio5);
+                            }
                         }
                         else
                         {
@@ -1896,15 +1946,15 @@ namespace OnlineCourse
                                 switch (studentPosition)
                                 {
                                     case 1:
-                                        studentMedia1.Open(studentAddress1); break;
+                                        studentMedia1.Open(studentAudio1); break;
                                     case 2:
-                                        studentMedia2.Open(studentAddress2); break;
+                                        studentMedia2.Open(studentAudio2); break;
                                     case 3:
-                                        studentMedia3.Open(studentAddress3); break;
+                                        studentMedia3.Open(studentAudio3); break;
                                     case 4:
-                                        studentMedia4.Open(studentAddress4); break;
+                                        studentMedia4.Open(studentAudio4); break;
                                     case 5:
-                                        studentMedia5.Open(studentAddress5); break;
+                                        studentMedia5.Open(studentAudio5); break;
                                 }
                             }                            
                         }
