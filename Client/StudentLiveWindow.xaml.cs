@@ -1692,6 +1692,7 @@ namespace OnlineCourse
                     ActivateComputerIcons();
                     ActivateCanvasIcons();
                     hasControl = userPosition;
+                    DisableComputerIcon(disablePosition, true);
                 }
                 //学生收到教师收回自己控制权命令
                 else if (disablePosition == userPosition)
