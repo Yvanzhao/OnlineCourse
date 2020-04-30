@@ -39,7 +39,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,36,0,43"/>
+                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,36,0,43" Visibility="Hidden"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -62,7 +62,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0"  Loaded="stu2Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,35,0,44" RenderTransformOrigin="0.977,0.528"/>
+                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0"  Loaded="stu2Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,35,0,44" RenderTransformOrigin="0.977,0.528" Visibility="Hidden"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -85,7 +85,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu3Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,38,0,41" RenderTransformOrigin="1.953,1"/>
+                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu3Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,38,0,41" RenderTransformOrigin="1.953,1" Visibility="Hidden"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -108,7 +108,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu4Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.594,1.25"/>
+                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu4Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.594,1.25" Visibility="Hidden"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -130,7 +130,7 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu5Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.636,1.55"/>
+                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu5Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.636,1.55" Visibility="Hidden"/>
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>

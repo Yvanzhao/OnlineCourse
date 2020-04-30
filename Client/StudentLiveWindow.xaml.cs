@@ -142,7 +142,7 @@ namespace OnlineCourse
             switch (userPosition)
             {
                 case 1:
-                    user1.Content = user.userName;user1.Foreground = new SolidColorBrush(Colors.AliceBlue); user1.Visibility = Visibility.Visible; studentMedia1.Open(studentAudio1);break;
+                    user1.Content = user.userName; user1.Visibility = Visibility.Visible; studentMedia1.Open(studentAudio1);break;
                 case 2:
                     user2.Content = user.userName; user2.Foreground = new SolidColorBrush(Colors.AliceBlue); user2.Visibility = Visibility.Visible; studentMedia2.Open(studentAudio2); break;
                 case 3:
@@ -1843,15 +1843,56 @@ namespace OnlineCourse
                                     switch (studentPosition)
                                     {
                                         case 1:
-                                            studentMedia1.Open(studentAudio1);user1.Content = server.getUserName(roomId, studentPosition); user1.Visibility = Visibility.Visible; break;
+                                            studentMedia1.Open(studentAudio1);
+                                            try
+                                            {
+                                                user1.Dispatcher.Invoke(() => {
+                                                    user1.Content = server.getUserName(roomId, studentPosition); user1.Visibility = Visibility.Visible;
+                                                });
+                                            }
+                                            catch (Exception ex) { }
+                                             break;
                                         case 2:
-                                            studentMedia2.Open(studentAudio2);user2.Content = server.getUserName(roomId, studentPosition); user2.Visibility = Visibility.Visible; break;
+                                            studentMedia2.Open(studentAudio2);
+                                            try
+                                            {
+                                                user2.Dispatcher.Invoke(() => {
+                                                    user2.Content = server.getUserName(roomId, studentPosition); user2.Visibility = Visibility.Visible;
+                                                });
+                                            }
+                                            catch (Exception ex) { }
+                                            break;
                                         case 3:
-                                            studentMedia3.Open(studentAudio3); user3.Content = server.getUserName(roomId, studentPosition); user3.Visibility = Visibility.Visible; break;
+                                            studentMedia3.Open(studentAudio3);
+                                            try
+                                            {
+                                                user3.Dispatcher.Invoke(() => {
+                                                    user3.Content = server.getUserName(roomId, studentPosition); user3.Visibility = Visibility.Visible;
+                                                });
+                                            }
+                                            catch (Exception ex) { }
+                                            break; 
                                         case 4:
-                                            studentMedia4.Open(studentAudio4); user4.Content = server.getUserName(roomId, studentPosition); user4.Visibility = Visibility.Visible; break;
+                                            studentMedia4.Open(studentAudio4);
+                                            try
+                                            {
+                                                user4.Dispatcher.Invoke(() => {
+                                                    user4.Content = server.getUserName(roomId, studentPosition); user4.Visibility = Visibility.Visible;
+                                                });
+                                            }
+                                            catch (Exception ex) { }
+                                            break;
                                         case 5:
-                                            studentMedia5.Open(studentAudio5); user5.Content = server.getUserName(roomId, studentPosition); user5.Visibility = Visibility.Visible; break;
+                                            studentMedia5.Open(studentAudio5);
+                                            try
+                                            {
+                                                user5.Dispatcher.Invoke(() => {
+                                                    user5.Content = server.getUserName(roomId, studentPosition); user5.Visibility = Visibility.Visible;
+                                                });
+                                            }
+                                            catch (Exception ex) { }
+                                            break;
+                                            break;
                                     }
                                 }
                             }                            
