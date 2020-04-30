@@ -126,6 +126,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StudentLiveWindow.xaml.cs">
+      <DependentUpon>StudentLiveWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\Structs.cs" />
     <Compile Include="RoomControlWindow.xaml.cs">
       <DependentUpon>RoomControlWindow.xaml</DependentUpon>
@@ -135,6 +138,10 @@
     <Compile Include="SignupWindow.xaml.cs">
       <DependentUpon>SignupWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="StudentLiveWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

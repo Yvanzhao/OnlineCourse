@@ -9,13 +9,16 @@ using System.Windows.Shapes;
 using Unosquare.FFME.Common;
 using System.Threading;
 using System.Net.Sockets;
+using System.Net;
+using System.Text;
+using System.IO;
 
 namespace OnlineCourse
 {
     /// <summary>
     /// LiveWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class LiveWindow : Window
+    public partial class StudentLiveWindow : Window
     {
         //用于记录鼠标落下时的位置，避免落下与抬起位置不同造成的bug
         int mouseClickedTag = 0;
@@ -85,7 +88,7 @@ namespace OnlineCourse
         /// 利用tag 分辨老师与学生
         /// </summary>
         /// <param name="tag"></param>
-        public LiveWindow(string roomIdIn,user userIn, Server.ServerService server)
+        public StudentLiveWindow(string roomIdIn,user userIn, Server.ServerService server)
         {
             pushTool = new LiveCapture();
 
@@ -127,8 +130,8 @@ namespace OnlineCourse
             isClosing = false;
 
             hasControl = 0;
-            userPosition = 0;
-            TeacherInitialization();
+            userPosition = server.getUserPosition(roomIdIn, userIn.userName);
+            StudentInitialization();
             connectToServer();
 
             // 开始推流
@@ -136,18 +139,34 @@ namespace OnlineCourse
 
             teacherMedia.Open(teacherAddress);
             // 播放自己
+            switch (userPosition)
+            {
+                case 1:
+                    studentMedia1.Open(studentAudio1);break;
+                case 2:
+                    studentMedia2.Open(studentAudio2); break;
+                case 3:
+                    studentMedia3.Open(studentAudio3); break;
+                case 4:
+                    studentMedia4.Open(studentAudio4); break;
+                case 5:
+                    studentMedia5.Open(studentAudio5); break;
+            }
             mute(userPosition);
         }
-
+        
         /// <summary>
-        /// 作为老师初始化窗口
+        /// 作为学生初始化窗口
         /// </summary>
-        private void TeacherInitialization() {
-            
+        private void StudentInitialization() {
+            isStudent = true;
+
+            hasStudent[userPosition] = true;
+
             DeactivateComputerIcons(0);
+            DisableComputerIcon(userPosition, true);
             DeactivateRecordIcons();
-            
-            isStudent = false;
+            DeactivateCanvasIcons();
         }
 
         /// <summary>
@@ -409,17 +428,6 @@ namespace OnlineCourse
                 });
             }
             catch (Exception ex) { };
-            if (isStudent == false) {//学生不可以清楚（虽然我不知道为什么会有这个要求）
-                //修改清除画板按钮状态
-                try
-                {
-                    deleteIcon.Dispatcher.Invoke(() => {
-                        deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteIcon"]);
-                        deleteIcon.Cursor = Cursors.Hand;
-                    });
-                }
-                catch (Exception ex) { };
-            }
             
             //修改颜色选择按钮状态
             try
@@ -448,11 +456,6 @@ namespace OnlineCourse
             catch (Exception ex) { };
             try
             {
-                //修改清除画板按钮状态
-                deleteIcon.Dispatcher.Invoke(() => {
-                    deleteIcon.SetValue(Button.StyleProperty, Application.Current.Resources["DeleteInactiveIcon"]);
-                    deleteIcon.Cursor = Cursors.Arrow;
-                });
                 //修改颜色选择按钮状态
                 colorChooser.Dispatcher.Invoke(() => {
                     colorChooser.SetValue(Button.StyleProperty, Application.Current.Resources["ColorChoserDiabled"]);
@@ -627,7 +630,6 @@ namespace OnlineCourse
                                     EnableComputerIcon(position, true);
                             }
                             DeactivateCanvasIcons();
-                            enableRecoverControl();//启用一键收回控制权按钮
                             //老师移交控制权的Socket函数
                             string order = "EnableControl@" + roomId + "@" + userPosition + "@" + tagHead + "@";
                             sendOrder(order);
@@ -639,7 +641,6 @@ namespace OnlineCourse
                         //恢复教师端的画板与移交控制权按钮
                         ActivateComputerIcons(); 
                         ActivateCanvasIcons();
-                        disableRecoverControl();//禁用一键收回控制权按钮
                         //老师拿回控制权的Socket函数
                         string order = "DisableControl@" + roomId + "@" + userPosition + "@" + hasControl + "@";
                         sendOrder(order);
@@ -1331,84 +1332,7 @@ namespace OnlineCourse
             //重置状态值避免bug
             mouseClickedTag = 0;
         }
-
-        /// <summary>
-        /// 鼠标落下事件，此按钮用于一键收回控制权。点击确认变量数值： 98 表征是一键收回控制权按钮。 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RecoverControl_MouseDown(object sender, MouseButtonEventArgs e) {
-            Image button = sender as Image;
-            if (int.Parse(button.Tag.ToString()) == 0)
-                return;
-            mouseClickedTag = 98;
-        }
-
-        /// <summary>
-        /// 鼠标抬起事件，此按钮用于一键收回控制权
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void RecoverControl_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Image image = sender as Image;
-            if (image != null)
-            {
-                if (mouseClickedTag != 98 || isStudent) {
-                    mouseClickedTag = 0;//重置状态值避免bug
-                    return;
-                }
-                    
-                int tag = int.Parse(image.Tag.ToString());
-                if (tag == 1 && hasControl != 0) {
-                    sendOrder("DisableControl@"+roomId+"@"+userPosition+"@" + hasControl+"@");
-                    ActivateCanvasIcons();
-                    disableRecoverControl();
-
-                    //这里将一堆控制权按钮改掉
-                    for (int position = 1; position < 6; position++)
-                    {
-                        if (hasStudent[position])
-                            DisableComputerIcon(position, true);
-                        else
-                            DisableComputerIcon(position, false);
-                    }
-                    hasControl = 0;
-                }
-                mouseClickedTag = 0;//重置状态值避免bug
-            }
-        }
         
-        /// <summary>
-        /// 收回控制权，同时调用方法将其他控制权按钮置为对应的普通状态
-        /// </summary>
-        private void disableRecoverControl() {
-            try
-            {
-                recoverControlIcon.Dispatcher.Invoke(() => {
-                    recoverControlIcon.Tag = 0;
-                    recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerActivatedWhenInactiveIcon"]);
-                    recoverControlIcon.Cursor = Cursors.Arrow;
-                });
-            }
-            catch (Exception ex) { };
-        }
-
-        /// <summary>
-        /// 控制权交给学生，启用一键收回控制权按钮
-        /// </summary>
-        private void enableRecoverControl()
-        {
-            try
-            {
-                recoverControlIcon.Dispatcher.Invoke(() => {
-                    recoverControlIcon.Tag = 1;
-                    recoverControlIcon.SetValue(Button.StyleProperty, Application.Current.Resources["ComputerIcon"]);
-                    recoverControlIcon.Cursor = Cursors.Hand;
-                });
-            }
-            catch (Exception ex) { };
-        }
 
         /// <summary>
         /// 鼠标移入镜头区域的函数，用于使隐藏的三个按钮展示出来
@@ -1768,7 +1692,6 @@ namespace OnlineCourse
                     ActivateComputerIcons();
                     ActivateCanvasIcons();
                     hasControl = userPosition;
-                    disableRecoverControl();
                 }
                 //学生收到教师收回自己控制权命令
                 else if (disablePosition == userPosition)
@@ -1865,22 +1788,21 @@ namespace OnlineCourse
                             else
                                 DisableComputerIcon(positionIP, false);
                         }
-                        disableRecoverControl();
 
                     }
                     
                     switch (position)
                     {
                         case 1:
-                            studentMedia1.Close(); break;
+                            studentMedia1.Close(); user1.Visibility = Visibility.Hidden; break;
                         case 2:
-                            studentMedia2.Close(); break;
+                            studentMedia2.Close(); user2.Visibility = Visibility.Hidden; break;
                         case 3:
-                            studentMedia3.Close(); break;
+                            studentMedia3.Close(); user3.Visibility = Visibility.Hidden; break;
                         case 4:
-                            studentMedia4.Close(); break;
+                            studentMedia4.Close(); user4.Visibility = Visibility.Hidden; break;
                         case 5:
-                            studentMedia5.Close(); break;
+                            studentMedia5.Close(); user5.Visibility = Visibility.Hidden; break;
                     }
                 }
 
@@ -1921,15 +1843,15 @@ namespace OnlineCourse
                                     switch (studentPosition)
                                     {
                                         case 1:
-                                            studentMedia1.Open(studentAudio1); break;
+                                            studentMedia1.Open(studentAudio1);user1.Content = server.getUserName(roomId, studentPosition); user1.Visibility = Visibility.Visible; break;
                                         case 2:
-                                            studentMedia2.Open(studentAudio2); break;
+                                            studentMedia2.Open(studentAudio2);user2.Content = server.getUserName(roomId, studentPosition); user2.Visibility = Visibility.Visible; break;
                                         case 3:
-                                            studentMedia3.Open(studentAudio3); break;
+                                            studentMedia3.Open(studentAudio3); user3.Content = server.getUserName(roomId, studentPosition); user3.Visibility = Visibility.Visible; break;
                                         case 4:
-                                            studentMedia4.Open(studentAudio4); break;
+                                            studentMedia4.Open(studentAudio4); user4.Content = server.getUserName(roomId, studentPosition); user4.Visibility = Visibility.Visible; break;
                                         case 5:
-                                            studentMedia5.Open(studentAudio5); break;
+                                            studentMedia5.Open(studentAudio5); user5.Content = server.getUserName(roomId, studentPosition); user5.Visibility = Visibility.Visible; break;
                                     }
                                 }
                             }                            

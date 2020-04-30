@@ -15,9 +15,9 @@ namespace Server
         public int createRoom(string roomId) { return 0; }
         public int enterRoom(string roomId) { return 0; }
         public int createUser(string userName, string password) { return -1; }
-        public int getUserPosition(string roomId, int userId) { return 1; }
+        public int getUserPosition(string roomId, string userName) { return 1; }
         public void setEmptyPosition(string roomId, int position) { }
-        
+        public string getUserName(string roomId, int position) { return ""; }
         
     }
 }

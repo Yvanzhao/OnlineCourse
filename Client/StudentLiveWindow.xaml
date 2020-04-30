@@ -1,0 +1,173 @@
+﻿<Window x:Class="OnlineCourse.StudentLiveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ffme="clr-namespace:Unosquare.FFME;assembly=ffme.win"
+        xmlns:local="clr-namespace:OnlineCourse"
+        xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        mc:Ignorable="d"
+        Title="直播窗口" Height="750" Width="1300" Icon="Resource/logo.png" ShowInTaskbar="False" Closing="LiveWindow_Closing">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--摄像头列表-->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="12*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
+
+            <!--教师摄像头-->
+            <!--播放控件请直接替换VLC下面的Grid即可-->
+            <ffme:MediaElement x:Name="teacherMedia" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="teaMedia_Loaded" MediaOpening="mute_MediaOpening"/>
+
+            <!--学生摄像头1号-->
+            <Grid Grid.Row="1" Margin="10,10,10,10" Tag="1" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <ffme:MediaElement x:Name="studentMedia1" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0" Loaded="stu1Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,36,0,43"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="computerIcon_1" Tag="10" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_1" Tag="10" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_1" Grid.Row="2" Margin="-2,8,8,8" Tag="10" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                </Grid>
+                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="user1" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top"  Visibility="Hidden"/>
+            </Grid>
+            <!--学生摄像头2号-->
+            <Grid Grid.Row="2" Margin="10,10,10,10" Tag="2" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <ffme:MediaElement x:Name="studentMedia2" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual" Grid.Column="0"  Loaded="stu2Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,35,0,44" RenderTransformOrigin="0.977,0.528"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="computerIcon_2" Tag="20" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_2" Tag="20" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_2" Grid.Row="2" Margin="-2,8,8,8" Tag="20" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                </Grid>
+                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="user2" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            </Grid>
+            <!--学生摄像头3号-->
+            <Grid Grid.Row="3" Margin="10,10,10,10" Tag="3" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <ffme:MediaElement x:Name="studentMedia3" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu3Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,38,0,41" RenderTransformOrigin="1.953,1"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="computerIcon_3" Tag="30" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_3" Tag="30" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_3" Grid.Row="2" Margin="-2,8,8,8" Tag="30" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                </Grid>
+                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="user3" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            </Grid>
+            <!--学生摄像头4号-->
+            <Grid Grid.Row="4" Margin="10,10,10,10" Tag="4" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+
+                <ffme:MediaElement x:Name="studentMedia4" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu4Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.594,1.25"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="computerIcon_4" Tag="40" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_4" Tag="40" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_4" Grid.Row="2" Margin="-2,8,8,8" Tag="40" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                </Grid>
+                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="user4" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            </Grid>
+            <!--学生摄像头5号-->
+            <Grid Grid.Row="5" Margin="10,10,10,10" Tag="5" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <ffme:MediaElement x:Name="studentMedia5" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="stu5Media_Loaded" MediaOpening="mute_MediaOpening" Margin="119,42,0,37" RenderTransformOrigin="0.636,1.55"/>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="4*"/>
+                    </Grid.RowDefinitions>
+                    <Image x:Name="computerIcon_5" Tag="50" Grid.Row="0" Margin="-2,8,8,5" Style="{StaticResource ComputerIcon}" Cursor="Hand" MouseLeftButtonDown="ComputerIcon_MouseDown" MouseLeftButtonUp="ComputerIcon_MouseUp" Visibility="Hidden"></Image>
+                    <Image x:Name="recordIcon_5" Tag="50" Grid.Row="1" Margin="-2,8,8,0" Style="{StaticResource RecordIcon}" Cursor="Hand" MouseLeftButtonDown="RecordIcon_MouseDown" MouseLeftButtonUp="RecordIcon_MouseUp" Visibility="Hidden"></Image>
+                    <!--刷新按钮-->
+                    <Image x:Name="refreshIcon_5" Grid.Row="2" Margin="-2,8,8,8" Tag="50" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp" Visibility="Hidden"/>
+                </Grid>
+                <Label Content="当前位置学生:" HorizontalAlignment="Left" Margin="3,21,0,0" VerticalAlignment="Top" IsEnabled="False" Height="24" Width="104"/>
+                <Label x:Name="user5" Content="Label" HorizontalAlignment="Left" Margin="23,50,0,0" VerticalAlignment="Top" Visibility="Hidden"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <!--退出按钮-->
+            <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
+            <!--画板-->
+            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Pen"/>
+            <!--画板控制区域-->
+            <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
+                <!--颜色选择按钮-->
+                <Ellipse x:Name="colorChooser" DockPanel.Dock="Left" Width="30" Height="30" Style="{StaticResource ColorChoser}" StrokeThickness="3" Margin="2,5,10,0" Cursor="Hand" MouseLeftButtonDown="ColorChooser_MouseDown" MouseLeftButtonUp="ColorChooser_MouseUp"/>
+            </DockPanel>
+            <!--刷新按钮-->
+            <Image x:Name="refreshIcon_0" Grid.Row="2" Grid.Column="1" Margin="8,8,8,8" Tag="00" Style="{StaticResource RefreshIcon}" Cursor="Hand" MouseLeftButtonDown="RefreshIcon_MouseDown" MouseLeftButtonUp="RefreshIcon_MouseUp"/>
+        </Grid>
+    </Grid>
+</Window>
