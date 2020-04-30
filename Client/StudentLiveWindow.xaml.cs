@@ -1699,8 +1699,10 @@ namespace OnlineCourse
                 {
                     isDrawing = false;
                     if (isDrawing)
-                        endDrawing(userPosition);                   
-                    DisableComputerIcon(userPosition, true);//将按钮状态从可按已激活变成可按未激活
+                        endDrawing(userPosition);
+                    for (int i = 1;i<6;i++) {
+                        DisableComputerIcon(i, true);//将按钮状态从可按已激活变成可按未激活
+                    } 
                     DeactivateCanvasIcons();
                     hasControl = 0;
                     
