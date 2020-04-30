@@ -1964,6 +1964,5 @@ namespace OnlineCourse
             socketServer.Send(System.Text.Encoding.Default.GetBytes(order));
         }
 
-        
     }
 }
