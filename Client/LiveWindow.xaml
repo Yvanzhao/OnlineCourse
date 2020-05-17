@@ -30,7 +30,7 @@
             <!--教师摄像头-->
             <!--播放控件请直接替换VLC下面的Grid即可-->
             <ffme:MediaElement x:Name="teacherMedia" Background="Gray" LoadedBehavior="Play" UnloadedBehavior="Manual"  Loaded="teaMedia_Loaded" MediaOpening="mute_MediaOpening"/>
-            
+
             <!--学生摄像头1号-->
             <Grid Grid.Row="1" Margin="10,10,10,10" Tag="1" MouseEnter="CameraMouseEnter" MouseLeave="CameraMouseLeave" Background="#FFFEFEFE">
                 <Grid.ColumnDefinitions>
@@ -150,7 +150,11 @@
             <!--退出按钮-->
             <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
             <!--画板-->
-            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross"/>
+            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross">
+                <Viewbox  Stretch="Fill">
+                    <Border x:Name="CanvasBorder" BorderBrush="Black" BorderThickness="1"/>
+                </Viewbox>
+            </Canvas>
             <!--画板控制区域-->
             <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
                 <!--颜色选择按钮-->

@@ -103,6 +103,22 @@ namespace OnlineCourse
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
 
+            Loaded += delegate
+            {
+                canvasborder.Width = printCanvas.ActualWidth;
+                canvasborder.Height = printCanvas.ActualHeight;
+                stuborder1.Width = studentMedia1.ActualWidth;
+                stuborder1.Height = studentMedia1.ActualHeight;
+                stuborder2.Width = studentMedia2.ActualWidth;
+                stuborder2.Height = studentMedia2.ActualHeight;
+                stuborder3.Width = studentMedia3.ActualWidth;
+                stuborder3.Height = studentMedia3.ActualHeight;
+                stuborder4.Width = studentMedia4.ActualWidth;
+                stuborder4.Height = studentMedia4.ActualHeight;
+                stuborder5.Width = studentMedia5.ActualWidth;
+                stuborder5.Height = studentMedia5.ActualHeight;
+            };
+
             //变量赋值与初始化
             hasStudent = new Boolean[6] { true, false, false, false, false, false };
             roomId = roomIdIn;

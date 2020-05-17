@@ -160,7 +160,19 @@
             <!--退出按钮-->
             <Image Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" Style="{StaticResource ExitIcon}" Cursor="Hand" MouseLeftButtonDown="ExitIcon_MouseDown" MouseLeftButtonUp="ExitIcon_MouseUp"/>
             <!--画板-->
-            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross"/>
+            <Canvas x:Name="printCanvas" Grid.Row="1" Grid.Column="0" Background="Azure" MouseLeftButtonDown="PrintCanvas_MouseDown" MouseLeftButtonUp="PrintCanvas_MouseUp" MouseLeave="printCanvas_MouseLeave"  MouseMove="PrintCanvas_MouseMove" Cursor="Cross">
+                <Border x:Name="canvasborder" BorderBrush="Black" BorderThickness="1" Height="575" Width="1025">
+                    <Border x:Name="stuborder1" BorderBrush="Black" BorderThickness="1" Margin="-180,75,1038,399">
+                        <Border x:Name="stuborder2" BorderBrush="Black" BorderThickness="1" Margin="0,120,0,-120">
+                            <Border x:Name="stuborder3" BorderBrush="Black" BorderThickness="1" Margin="0,114,0,-114">
+                                <Border x:Name="stuborder4" BorderBrush="Black" BorderThickness="1" Margin="0,117,0,-117">
+                                    <Border x:Name="stuborder5" BorderBrush="Black" BorderThickness="1" Margin="-3,114,3,-114"/>
+                                </Border>
+                            </Border>
+                        </Border>
+                    </Border>
+                </Border>
+            </Canvas>
             <!--画板控制区域-->
             <DockPanel Grid.Row="2" Grid.Column="0" Margin="8,0,8,24" LastChildFill="False">
                 <!--颜色选择按钮-->

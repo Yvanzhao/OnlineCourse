@@ -100,6 +100,13 @@ namespace OnlineCourse
             InitializeComponent();
             this.WindowState = System.Windows.WindowState.Maximized;
 
+            Loaded += delegate
+            {
+                CanvasBorder.Width = printCanvas.ActualWidth;
+                CanvasBorder.Height = printCanvas.ActualHeight;
+            };
+            
+
             //变量赋值与初始化
             hasStudent = new Boolean[6] { true, false, false, false, false, false };
             roomId = roomIdIn;
