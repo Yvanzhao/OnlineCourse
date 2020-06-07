@@ -105,8 +105,8 @@ namespace OnlineCourse
 
             Loaded += delegate
             {
-                canvasborder.Width = printCanvas.ActualWidth;
-                canvasborder.Height = printCanvas.ActualHeight;
+                CanvasBorder.Width = printCanvas.ActualWidth;
+                CanvasBorder.Height = printCanvas.ActualHeight;
             };
 
             //变量赋值与初始化
